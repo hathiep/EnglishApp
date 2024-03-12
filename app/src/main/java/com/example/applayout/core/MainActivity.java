@@ -12,6 +12,10 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.applayout.R;
+import com.example.applayout.core.exam.ExamMain;
+import com.example.applayout.core.exercise.ExerciseMain;
+import com.example.applayout.core.learn.LearnMain;
+import com.example.applayout.core.support.SupportMain;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -27,18 +31,42 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        Button bt1 = findViewById(R.id.button_hoctuvung);
-        Button bt2 = findViewById(R.id.button_baitap);
-        Button bt3 = findViewById(R.id.button_kiemtra);
-        Button bt4 = findViewById(R.id.button_hotrohoctapkhac);
+        Button btn_learn = findViewById(R.id.btn_learn);
+        Button btn_exercise = findViewById(R.id.btn_exercise);
+        Button btn_exam = findViewById(R.id.btn_exam);
+        Button btn_support = findViewById(R.id.btn_support);
 
-        /*bt1.setOnClickListener(new View.OnClickListener() {
+        btn_learn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                Intent intent = new Intent(getApplicationContext(), LearnMain.class);
                 startActivity(intent);
                 finish();
             }
-        });*/
+        });
+        btn_exercise.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), ExerciseMain.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+        btn_exam.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), ExamMain.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+        btn_support.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), SupportMain.class);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 }
