@@ -11,7 +11,6 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-import com.example.applayout.learn.LearnActivity;
 import com.example.applayout.R;
 
 public class MainActivity extends AppCompatActivity {
@@ -33,13 +32,13 @@ public class MainActivity extends AppCompatActivity {
         Button bt3 = findViewById(R.id.button_kiemtra);
         Button bt4 = findViewById(R.id.button_hotrohoctapkhac);
 
-        bt1.setOnClickListener(new View.OnClickListener() {
+        /*bt1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), LearnActivity.class);
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
                 finish();
             }
-        });
+        });*/
     }
 }
