@@ -17,7 +17,8 @@
         android:layout_marginTop="150dp"
         android:layout_marginRight="20dp"
         android:background="@drawable/background_button"
-        android:text="Học từ vựng" />
+        android:text="Học từ vựng"
+        android:textSize="18dp"/>
 
     <Button
         android:id="@+id/button_baitap"
@@ -26,7 +27,8 @@
         android:layout_marginLeft="200dp"
         android:layout_marginRight="20dp"
         android:background="@drawable/background_button2"
-        android:text="Bài tập" />
+        android:text="Bài tập"
+        android:textSize="18dp"/>
 
     <Button
         android:id="@+id/button_kiemtra"
@@ -35,7 +37,8 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:background="@drawable/background_button"
-        android:text="Kiểm tra" />
+        android:text="Kiểm tra"
+        android:textSize="18dp"/>
 
     <Button
         android:id="@+id/button_hotrohoctapkhac"
@@ -44,7 +47,8 @@
         android:layout_marginLeft="200dp"
         android:layout_marginRight="20dp"
         android:background="@drawable/background_button2"
-        android:text="Hỗ trợ \nhọc tập khác" />
+        android:text="Hỗ trợ \n học tập khác"
+        android:textSize="18dp"/>
 
 
 </LinearLayout>

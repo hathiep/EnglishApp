@@ -8,7 +8,7 @@
     android:orientation="vertical"
     android:gravity="center"
     android:padding="15dp"
-    tools:context=".Register">
+    tools:context=".core.Register">
 
     <TextView
         android:text="@string/register"

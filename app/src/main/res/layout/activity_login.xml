@@ -7,7 +7,7 @@
     android:gravity="center"
     android:orientation="vertical"
     android:padding="15dp"
-    tools:context=".Login" android:layout_width="match_parent">
+    tools:context=".core.Login" android:layout_width="match_parent">
 
     <TextView
         android:layout_width="match_parent"
