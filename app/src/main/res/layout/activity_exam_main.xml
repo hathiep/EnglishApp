@@ -1,10 +1,100 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".core.exam.ExamMain">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        tools:ignore="MissingConstraints">
+
+        <ImageView
+            android:id="@+id/imV_back"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:background="@color/pink"
+            app:srcCompat="@drawable/icon_back" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_weight="0.8"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Kiểm tra"
+            android:textSize="30dp"
+            android:fontFamily="sans-serif-medium"
+            android:textAlignment="center"
+            android:background="@color/pink"/>
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            android:background="@color/pink"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Nội dung"
+            android:textSize="30dp"
+            android:fontFamily="sans-serif-medium"
+            android:textAlignment="center" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="#fafad2">
+
+        <ImageView
+            android:id="@+id/imV_home"
+            android:layout_width="68dp"
+            android:layout_height="match_parent"
+            android:background="#fafad2"
+            app:srcCompat="@drawable/icon_home" />
+
+        <ImageView
+            android:id="@+id/imV_learn"
+            android:layout_width="68dp"
+            android:layout_height="match_parent"
+            android:background="#fafad2"
+            app:srcCompat="@drawable/icon_learn" />
+        <ImageView
+            android:id="@+id/imV_exercise"
+            android:layout_width="68dp"
+            android:layout_height="match_parent"
+            android:background="#fafad2"
+            app:srcCompat="@drawable/icon_exercise" />
+        <ImageView
+            android:id="@+id/imV_exam"
+            android:layout_width="68dp"
+            android:layout_height="match_parent"
+            android:background="@color/gray"
+            app:srcCompat="@drawable/icon_exam" />
+        <ImageView
+            android:id="@+id/imV_support"
+            android:layout_width="68dp"
+            android:layout_height="match_parent"
+            android:background="#fafad2"
+            app:srcCompat="@drawable/icon_support" />
+        <ImageView
+            android:id="@+id/imV_profile"
+            android:layout_width="68dp"
+            android:layout_height="match_parent"
+            android:background="#fafad2"
+            app:srcCompat="@drawable/icon_profile" />
+
+    </LinearLayout>
+
+</LinearLayout>
