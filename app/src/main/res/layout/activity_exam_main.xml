@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
@@ -8,9 +8,10 @@
     tools:context=".core.exam.ExamMain">
 
     <LinearLayout
+        android:id="@+id/heading"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        tools:ignore="MissingConstraints">
+        android:layout_alignParentTop="true">
 
         <ImageView
             android:id="@+id/imV_back"
@@ -37,25 +38,68 @@
 
     </LinearLayout>
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1">
+        android:layout_below="@+id/heading">
 
-        <TextView
-            android:id="@+id/textView2"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="Nội dung"
-            android:textSize="30dp"
-            android:fontFamily="sans-serif-medium"
-            android:textAlignment="center" />
-    </LinearLayout>
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:text="Nội dung 1"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:text="Nội dung 2"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:text="Nội dung 3"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:text="Nội dung 4"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:text="Nội dung 5"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:text="Nội dung 6"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:text="Nội dung 7"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:text="Nội dung 8"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:text="Nội dung 9"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:text="Nội dung 10"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
 
     <LinearLayout
+        android:id="@+id/bottom"
         android:layout_width="match_parent"
         android:layout_height="80dp"
-        android:background="#fafad2">
+        android:background="#fafad2"
+        android:layout_alignParentBottom="true">
 
         <ImageView
             android:id="@+id/imV_home"
@@ -88,14 +132,13 @@
             android:layout_height="match_parent"
             android:background="#fafad2"
             app:srcCompat="@drawable/icon_support" />
-
         <ImageView
             android:id="@+id/imV_profile"
-            android:layout_width="match_parent"
+            android:layout_width="68dp"
             android:layout_height="match_parent"
             android:background="#fafad2"
             app:srcCompat="@drawable/icon_profile" />
 
     </LinearLayout>
 
-</LinearLayout>
+</RelativeLayout>
