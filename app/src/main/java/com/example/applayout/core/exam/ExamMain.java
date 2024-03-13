@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,6 +14,9 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.applayout.R;
 import com.example.applayout.core.MainActivity;
+import com.example.applayout.core.exercise.ExerciseMain;
+import com.example.applayout.core.learn.LearnMain;
+import com.example.applayout.core.support.SupportMain;
 
 public class ExamMain extends AppCompatActivity {
 
@@ -47,6 +51,93 @@ public class ExamMain extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+        imV_learn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), LearnMain.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+        imV_exercise.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), ExerciseMain.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+        imV_exam.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), ExamMain.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+        imV_support.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), SupportMain.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+//        imV_profile.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(getApplicationContext(), Profile.class);
+//                startActivity(intent);
+//                finish();
+//            }
+//        });
+
+        TextView tv_vocabulary = findViewById(R.id.tv_vocabulary);
+        TextView tv_grammar = findViewById(R.id.tv_grammar);
+        TextView tv_listening = findViewById(R.id.tv_listening);
+        TextView tv_writing = findViewById(R.id.tv_writing);
+        TextView tv_synthetic = findViewById(R.id.tv_synthetic);
+
+        tv_vocabulary.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), ExamVocabulary.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+        tv_grammar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), ExamGrammar.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+        tv_listening.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), ExamListening.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+        tv_writing.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), ExamWriting.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+        tv_synthetic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), ExamSynthetic.class);
                 startActivity(intent);
                 finish();
             }
