@@ -7,4 +7,218 @@
     android:layout_height="match_parent"
     tools:context=".core.exercise.ExerciseMain">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#F5F5F5"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="-16dp"
+        tools:layout_editor_absoluteY="-39dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#D5E8D4"
+            android:orientation="horizontal">
+
+
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="7dp"
+                app:srcCompat="@drawable/ex_baseline_arrow_back_ios_24" />
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="40dp"
+                android:layout_weight="1"
+                android:fontFamily="@font/ex_akaya_telivigala"
+                android:gravity="center"
+                android:text="Bài Tập"
+                android:textSize="35sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_coban"
+                android:layout_width="92dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="#86FC9D"
+                android:fontFamily="@font/ex_adamina"
+                android:gravity="center"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:text="Cơ bản"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/tv_nangcao"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="#6FD17C"
+                android:fontFamily="@font/ex_adamina"
+                android:gravity="center"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:text="Nâng cao"
+                android:textSize="20sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="540dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:background="#F5F5F5"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/unit_1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/ex_bg_green_1_corner_30"
+                android:gravity="center"
+                android:paddingTop="20dp"
+                android:paddingBottom="20dp"
+                android:text="unit_1"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/unit_2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/ex_bg_yellow_1_corner_30"
+                android:gravity="center"
+                android:paddingTop="20dp"
+                android:paddingBottom="20dp"
+                android:text="unit_2"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/unit_3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/ex_bg_red_1_corner_30"
+                android:gravity="center"
+                android:paddingTop="20dp"
+                android:paddingBottom="20dp"
+                android:text="unit_3"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/unit_4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/ex_bg_purple_1_corner_30"
+                android:gravity="center"
+                android:paddingTop="20dp"
+                android:paddingBottom="20dp"
+                android:text="unit_4"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/unit_5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/ex_bg_blue_1_corner_30"
+                android:gravity="center"
+                android:paddingTop="20dp"
+                android:paddingBottom="20dp"
+                android:text="unit_5"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/unit_6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/ex_bg_green_1_corner_30"
+                android:gravity="center"
+                android:paddingTop="20dp"
+                android:paddingBottom="20dp"
+                android:text="unit_6"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/unit_7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/ex_bg_yellow_1_corner_30"
+                android:gravity="center"
+                android:paddingTop="20dp"
+                android:paddingBottom="20dp"
+                android:text="unit_7"
+                android:textSize="20sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:background="#fafad2">
+
+            <ImageView
+                android:id="@+id/imV_home"
+                android:layout_width="68dp"
+                android:layout_height="match_parent"
+                android:background="#fafad2"
+                app:srcCompat="@drawable/icon_home" />
+
+            <ImageView
+                android:id="@+id/imV_learn"
+                android:layout_width="68dp"
+                android:layout_height="match_parent"
+                android:background="#fafad2"
+                app:srcCompat="@drawable/icon_learn" />
+
+            <ImageView
+                android:id="@+id/imV_exercise"
+                android:layout_width="68dp"
+                android:layout_height="match_parent"
+                android:background="@color/gray"
+                app:srcCompat="@drawable/icon_exercise" />
+
+            <ImageView
+                android:id="@+id/imV_exam"
+                android:layout_width="68dp"
+                android:layout_height="match_parent"
+                android:background="#fafad2"
+                app:srcCompat="@drawable/icon_exam" />
+
+            <ImageView
+                android:id="@+id/imV_support"
+                android:layout_width="68dp"
+                android:layout_height="match_parent"
+                android:background="#fafad2"
+                app:srcCompat="@drawable/icon_support" />
+
+            <ImageView
+                android:id="@+id/imV_profile"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#fafad2"
+                app:srcCompat="@drawable/icon_profile" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

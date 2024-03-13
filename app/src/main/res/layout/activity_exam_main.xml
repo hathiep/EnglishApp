@@ -88,9 +88,10 @@
             android:layout_height="match_parent"
             android:background="#fafad2"
             app:srcCompat="@drawable/icon_support" />
+
         <ImageView
             android:id="@+id/imV_profile"
-            android:layout_width="68dp"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="#fafad2"
             app:srcCompat="@drawable/icon_profile" />

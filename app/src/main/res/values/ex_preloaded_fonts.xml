@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="preloaded_fonts" translatable="false">
+        <item>@font/ex_aclonica</item>
+        <item>@font/ex_adamina</item>
+        <item>@font/ex_akaya_telivigala</item>
+        <item>@font/ex_alfa_slab_one</item>
+    </array>
+</resources>

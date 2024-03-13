@@ -3,7 +3,7 @@ package com.example.applayout.core.exercise;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.TextView;
+import android.widget.ImageView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -13,26 +13,26 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.applayout.R;
 
-public class ExerciseMain extends AppCompatActivity {
+public class ExerciseBasicActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_exercise_main);
+        setContentView(R.layout.activity_exercise_basic);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
-        //next trang co ban
-        TextView tvCoBan = findViewById(R.id.tv_coban);
+        //back trang home
+        ImageView ic_back = findViewById(R.id.ic_back);
 
-        tvCoBan.setOnClickListener(new View.OnClickListener() {
+        ic_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), ExerciseBasicActivity.class);
+                Intent intent = new Intent(getApplicationContext(), ExerciseMain.class);
                 startActivity(intent);
                 finish();
             }
