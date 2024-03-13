@@ -5,7 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".core.exercise.ExerciseBasicActivity">
+    tools:context=".core.exercise.ExerciseUnit1AdvancedActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -49,7 +49,7 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/tv_coban"
+                android:id="@+id/tv_nangcao"
                 android:layout_width="92dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -58,7 +58,7 @@
                 android:gravity="center"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
-                android:text="Cơ bản"
+                android:text="Nâng cao"
                 android:textSize="20sp" />
 
 
@@ -184,6 +184,18 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/imageView3"
                     app:layout_constraintVertical_bias="0.774" />
+
+                <ImageView
+                    android:id="@+id/imV_volume"
+                    android:layout_width="34dp"
+                    android:layout_height="36dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_question"
+                    app:layout_constraintEnd_toEndOf="@+id/tv_question"
+                    app:layout_constraintHorizontal_bias="0.006"
+                    app:layout_constraintStart_toStartOf="@+id/tv_question"
+                    app:layout_constraintTop_toTopOf="@+id/tv_question"
+                    app:layout_constraintVertical_bias="0.444"
+                    app:srcCompat="@drawable/icon_volume" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>

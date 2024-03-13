@@ -15,38 +15,38 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.applayout.R;
 import com.example.applayout.core.MainActivity;
 
-public class ExerciseMain extends AppCompatActivity {
+public class ExerciseAdvancedActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.exercise_main_activity);
+        setContentView(R.layout.exercise_advanced_activity);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
+        TextView tvCoBan = findViewById(R.id.tv_coban);
         TextView tvUnit1 = findViewById(R.id.unit_1);
-        TextView tvNangCao = findViewById(R.id.tv_nangcao);
         ImageView ic_back = findViewById(R.id.ic_back);
 
-        //next trang unit1 co ban
-        tvUnit1.setOnClickListener(new View.OnClickListener() {
+        //next trang co ban
+        tvCoBan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), ExerciseUnit1BasicActivity.class);
+                Intent intent = new Intent(getApplicationContext(), ExerciseMain.class);
                 startActivity(intent);
                 finish();
             }
         });
 
-        //next trang nang cao
-        tvNangCao.setOnClickListener(new View.OnClickListener() {
+        //next trang unit1 nang cao
+        tvUnit1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), ExerciseAdvancedActivity.class);
+                Intent intent = new Intent(getApplicationContext(), ExerciseUnit1AdvancedActivity.class);
                 startActivity(intent);
                 finish();
             }
