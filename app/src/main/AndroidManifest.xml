@@ -13,7 +13,13 @@
         android:theme="@style/Theme.AppLayout"
         tools:targetApi="31">
         <activity
-            android:name=".core.exercise.ExerciseBasicActivity"
+            android:name=".core.exercise.ExerciseUnit1BasicActivity"
+            android:exported="false" />
+        <activity
+            android:name=".core.exercise.ExerciseUnit1AdvancedActivity"
+            android:exported="false" />
+        <activity
+            android:name=".core.exercise.ExerciseAdvancedActivity"
             android:exported="false" />
         <activity
             android:name=".core.support.SupportMain"
@@ -28,7 +34,19 @@
             android:name=".core.exam.ExamMain"
             android:exported="false" />
         <activity
-            android:name=".test.Exam_Main"
+            android:name=".core.exam.ExamVocabulary"
+            android:exported="false" />
+        <activity
+            android:name=".core.exam.ExamGrammar"
+            android:exported="false" />
+        <activity
+            android:name=".core.exam.ExamListening"
+            android:exported="false" />
+        <activity
+            android:name=".core.exam.ExamWriting"
+            android:exported="false" />
+        <activity
+            android:name=".core.exam.ExamSynthetic"
             android:exported="false" />
         <activity
             android:name=".core.Login"
