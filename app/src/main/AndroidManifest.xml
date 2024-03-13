@@ -13,21 +13,6 @@
         android:theme="@style/Theme.AppLayout"
         tools:targetApi="31">
         <activity
-            android:name=".core.exam.ExamSynthetic"
-            android:exported="false" />
-        <activity
-            android:name=".core.exam.ExamWriting"
-            android:exported="false" />
-        <activity
-            android:name=".core.exam.ExamListening"
-            android:exported="false" />
-        <activity
-            android:name=".core.exam.ExamGrammar"
-            android:exported="false" />
-        <activity
-            android:name=".core.exam.ExamVocabulary"
-            android:exported="false" />
-        <activity
             android:name=".core.exercise.ExerciseBasicActivity"
             android:exported="false" />
         <activity
