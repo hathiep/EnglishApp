@@ -32,6 +32,13 @@ public class ExerciseAdvancedActivity extends AppCompatActivity {
         TextView tvUnit1 = findViewById(R.id.unit_1);
         ImageView ic_back = findViewById(R.id.ic_back);
 
+        //Đánh dấu activity hiện tại trên thanh menu
+        ImageView imV_exercise = findViewById(R.id.imV_exercise);
+        TextView tv_exercise = findViewById(R.id.tv_exercise);
+        imV_exercise.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        imV_exercise.setImageResource(R.drawable.icon_exercise2);
+        tv_exercise.setTextAppearance(R.style.menu_text);
+
         //next trang co ban
         tvCoBan.setOnClickListener(new View.OnClickListener() {
             @Override
