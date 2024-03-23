@@ -27,6 +27,13 @@ public class ExerciseResultActivity extends AppCompatActivity {
             return insets;
         });
 
+        //Đánh dấu activity hiện tại trên thanh menu
+        ImageView imV_exercise = findViewById(R.id.imV_exercise);
+        TextView tv_exercise = findViewById(R.id.tv_exercise);
+        imV_exercise.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        imV_exercise.setImageResource(R.drawable.icon_exercise2);
+        tv_exercise.setTextAppearance(R.style.menu_text);
+
         //back next home
         ImageView icNext = findViewById(R.id.ic_next);
         icNext.setOnClickListener(new View.OnClickListener() {

@@ -197,56 +197,6 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/bottom"
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:layout_alignParentBottom="true"
-        android:background="#fafad2">
-
-
-        <ImageView
-            android:id="@+id/imV_home"
-            android:layout_width="68dp"
-            android:layout_height="match_parent"
-            android:background="#fafad2"
-            app:srcCompat="@drawable/icon_home" />
-
-        <ImageView
-            android:id="@+id/imV_learn"
-            android:layout_width="68dp"
-            android:layout_height="match_parent"
-            android:background="#fafad2"
-            app:srcCompat="@drawable/icon_learn" />
-
-        <ImageView
-            android:id="@+id/imV_exercise"
-            android:layout_width="68dp"
-            android:layout_height="match_parent"
-            android:background="@color/gray"
-            app:srcCompat="@drawable/icon_exercise" />
-
-        <ImageView
-            android:id="@+id/imV_exam"
-            android:layout_width="68dp"
-            android:layout_height="match_parent"
-            android:background="#fafad2"
-            app:srcCompat="@drawable/icon_exam" />
-
-        <ImageView
-            android:id="@+id/imV_support"
-            android:layout_width="68dp"
-            android:layout_height="match_parent"
-            android:background="#fafad2"
-            app:srcCompat="@drawable/icon_support" />
-
-        <ImageView
-            android:id="@+id/imV_profile"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#fafad2"
-            app:srcCompat="@drawable/icon_profile" />
-
-    </LinearLayout>
+    <include layout="@layout/menu_bottom"/>
 
 </RelativeLayout>
