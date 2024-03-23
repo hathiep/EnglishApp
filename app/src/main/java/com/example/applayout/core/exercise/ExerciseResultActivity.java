@@ -47,7 +47,7 @@ public class ExerciseResultActivity extends AppCompatActivity {
         TextView tvResult = findViewById(R.id.tv_result);
         Intent intent = getIntent();
         int result = intent.getIntExtra("result", 0);
-        String dataResult = "Chúc mừng bạn đã hoàn thành " + result*10 + "%";
+        String dataResult = "Chúc mừng bạn đã hoàn thành " + result*20 + "%";
         tvResult.setText(dataResult);
     }
 
