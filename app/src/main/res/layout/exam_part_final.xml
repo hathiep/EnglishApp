@@ -1,0 +1,60 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".core.exam.ExamPartFinal">
+
+    <include layout="@layout/exam_header"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/header">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <include layout="@layout/exam_part_header"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="40dp"
+                    android:layout_marginBottom="10dp"
+                    android:gravity="center"
+                    android:text="Chúc mừng bạn đã hoàn thành bài kiểm tra Part A1 - Vocabulary với số điểm là"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:layout_width="300dp"
+                    android:layout_height="300dp"
+                    android:paddingHorizontal="40dp"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/exam_part_final_congratulation"
+                    android:gravity="center"
+                    android:text="9/10"
+                    android:textSize="36sp"
+                    android:textColor="@color/white"/>
+
+            </LinearLayout>
+
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <include layout="@layout/menu_bottom"/>
+
+</RelativeLayout>

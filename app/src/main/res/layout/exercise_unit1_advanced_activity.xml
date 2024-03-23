@@ -100,7 +100,7 @@
                     app:srcCompat="@drawable/ex_question" />
 
                 <TextView
-                    android:id="@+id/tv_question"
+                    android:id="@+id/tv_question_num"
                     android:layout_width="192dp"
                     android:layout_height="54dp"
                     android:gravity="center"
@@ -189,11 +189,11 @@
                     android:id="@+id/imV_volume"
                     android:layout_width="34dp"
                     android:layout_height="36dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/tv_question"
-                    app:layout_constraintEnd_toEndOf="@+id/tv_question"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_question_num"
+                    app:layout_constraintEnd_toEndOf="@+id/tv_question_num"
                     app:layout_constraintHorizontal_bias="0.006"
-                    app:layout_constraintStart_toStartOf="@+id/tv_question"
-                    app:layout_constraintTop_toTopOf="@+id/tv_question"
+                    app:layout_constraintStart_toStartOf="@+id/tv_question_num"
+                    app:layout_constraintTop_toTopOf="@+id/tv_question_num"
                     app:layout_constraintVertical_bias="0.444"
                     app:srcCompat="@drawable/icon_volume" />
 
