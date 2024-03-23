@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/menu_bottom"
+    android:layout_width="match_parent"
+    android:layout_height="80dp"
+    android:layout_alignParentBottom="true"
+    android:background="@drawable/border"
+    android:paddingTop="1dp"
+    android:elevation="100dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1.66"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/imV_home"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            app:srcCompat="@drawable/icon_home" />
+
+        <TextView
+            android:id="@+id/tv_home"
+            android:layout_weight="2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="0dp"
+            android:background="@color/white"
+            android:text="Home"
+            android:textColor="@color/green"
+            android:textSize="12dp"
+            android:gravity="center_horizontal"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1.66"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/imV_learn"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            app:srcCompat="@drawable/icon_learn" />
+
+        <TextView
+            android:id="@+id/tv_learn"
+            android:layout_weight="2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="0dp"
+            android:background="@color/white"
+            android:text="Learn"
+            android:textColor="@color/green"
+            android:textSize="12dp"
+            android:gravity="center_horizontal"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1.66"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/imV_exercise"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            app:srcCompat="@drawable/icon_exercise" />
+
+        <TextView
+            android:id="@+id/tv_exercise"
+            android:layout_weight="2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="0dp"
+            android:background="@color/white"
+            android:text="Exercise"
+            android:textColor="@color/green"
+            android:textSize="12dp"
+            android:gravity="center_horizontal"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1.66"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/imV_exam"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:scaleType="centerInside"
+            app:srcCompat="@drawable/icon_exam" />
+
+        <TextView
+            android:id="@+id/tv_exam"
+            android:layout_weight="2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="0dp"
+            android:background="@color/white"
+            android:text="Exam"
+            android:textColor="@color/green"
+            android:textSize="12dp"
+            android:textStyle="normal"
+            android:gravity="center_horizontal"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1.66"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/imV_support"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            app:srcCompat="@drawable/icon_support" />
+
+        <TextView
+            android:id="@+id/tv_support"
+            android:layout_weight="2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="0dp"
+            android:background="@color/white"
+            android:text="Support"
+            android:textColor="@color/green"
+            android:textSize="12dp"
+            android:gravity="center_horizontal"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1.66"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/imV_profile"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            app:srcCompat="@drawable/icon_profile" />
+
+        <TextView
+            android:id="@+id/tv_profile"
+            android:layout_weight="2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="0dp"
+            android:background="@color/white"
+            android:text="Profile"
+            android:textColor="@color/green"
+            android:textSize="12dp"
+            android:gravity="center_horizontal"/>
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,106 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".core.exam.ExamWriting">
+
+    <include layout="@layout/exam_header"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/header">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <include layout="@layout/exam_part_header"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Điền các từ/cụm từ/câu vào chỗ trống để hoàn thành đoạn văn sau"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="bottom">
+
+
+                    <TextView
+                        android:id="@+id/tv1"
+                        android:layout_width="match_parent"
+                        android:layout_height="400dp"
+                        android:paddingHorizontal="35dp"
+                        android:paddingVertical="40dp"
+                        android:text="Hi, Nam. I've registered for a upcycling workshop on ___________. There are two workshop but the second one I was busy so __________. The workshop will be held at The Center for Sustainable Art, 204 Nurberry Road. In _____, Jackie will explain the basics of mosaic-making and then let participants' imaginations do the rest! To ____________, Jackie will display some of her own work as ____________. We need to bring glass jars, glass or ceramic items you no longer need, buttons, beads, _______, _______, etc. This will be my first _________, I'm really looking forward to it! Would you like to _____________? I'm sure you'll ______________"
+                        android:textSize="18dp"
+                        android:justificationMode="inter_word"
+                        android:background="@drawable/exam_part_w_bg_white">
+
+                    </TextView>
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                android:paddingBottom="80dp"
+                android:orientation="horizontal"
+                android:gravity="center">
+
+                <Button
+                    android:id="@+id/btn_reset"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:layout_marginHorizontal="30dp"
+                    android:gravity="center"
+                    android:backgroundTint="@color/red"
+                    android:text="Reset"
+                    android:textSize="20sp"/>
+
+                <Button
+                    android:id="@+id/btn_answer"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:layout_marginHorizontal="30dp"
+                    android:gravity="center"
+                    android:backgroundTint="@color/green"
+                    android:text="Đáp án"
+                    android:textSize="20sp"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <include layout="@layout/menu_bottom"/>
+
+</RelativeLayout>

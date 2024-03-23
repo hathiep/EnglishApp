@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="exam_red_light">#FF4D4D</color>
+    <color name="exam_red_dark">#FF0000</color>
+    <color name="exam_green_light">#80FF85</color>
+    <color name="exam_green_dark">#00A107</color>
+    <color name="exam_yellow_light">#FFEB3B</color>
+    <color name="exam_yellow_dark">#FF9800</color>
+    <color name="exam_purple_light">#EC80FF</color>
+    <color name="exam_purple_dark">#D800FF</color>
+    <color name="exam_blue_light">#80D7FF</color>
+    <color name="exam_blue_dark">#0055FF</color>
+    <color name="exam_blue_1">#339af0</color>
+    <color name="exam_blue2">#b1ddf0</color>
+    <color name="exam_blue3">#dae8fc</color>
+</resources>

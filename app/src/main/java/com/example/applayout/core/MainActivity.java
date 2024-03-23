@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -32,12 +33,12 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        Button btn_learn = findViewById(R.id.btn_learn);
-        Button btn_exercise = findViewById(R.id.btn_exercise);
-        Button btn_exam = findViewById(R.id.btn_exam);
-        Button btn_support = findViewById(R.id.btn_support);
+        TextView tv_learn = findViewById(R.id.tv_learn);
+        TextView tv_exercise = findViewById(R.id.tv_exercise);
+        TextView tv_exam = findViewById(R.id.tv_exam);
+        TextView tv_support = findViewById(R.id.tv_support);
 
-        btn_learn.setOnClickListener(new View.OnClickListener() {
+        tv_learn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), LearnMain.class);
@@ -45,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
                 finish();
             }
         });
-        btn_exercise.setOnClickListener(new View.OnClickListener() {
+        tv_exercise.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), ExerciseMain.class);
@@ -53,7 +54,7 @@ public class MainActivity extends AppCompatActivity {
                 finish();
             }
         });
-        btn_exam.setOnClickListener(new View.OnClickListener() {
+        tv_exam.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), ExamMain.class);
@@ -61,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
                 finish();
             }
         });
-        btn_support.setOnClickListener(new View.OnClickListener() {
+        tv_support.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), SupportMain.class);
@@ -70,21 +71,19 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //Đánh dấu activity hiện tại trên thanh menu
         ImageView imV_home = findViewById(R.id.imV_home);
+        TextView tv_home = findViewById(R.id.tv_home);
+        imV_home.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        imV_home.setImageResource(R.drawable.icon_home2);
+        tv_home.setTextAppearance(R.style.menu_text);
+
+
         ImageView imV_learn = findViewById(R.id.imV_learn);
         ImageView imV_exercise = findViewById(R.id.imV_exercise);
         ImageView imV_exam = findViewById(R.id.imV_exam);
         ImageView imV_support = findViewById(R.id.imV_support);
         ImageView imV_profile = findViewById(R.id.imV_profile);
-
-        imV_home.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });
 
         imV_learn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,13 +117,13 @@ public class MainActivity extends AppCompatActivity {
                 finish();
             }
         });
-//        imV_profile.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent intent = new Intent(getApplicationContext(), Profile.class);
-//                startActivity(intent);
-//                finish();
-//            }
-//        });
+        imV_profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), Profile.class);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 }
