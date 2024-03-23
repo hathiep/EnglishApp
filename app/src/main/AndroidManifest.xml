@@ -19,6 +19,9 @@
             android:name=".core.exam.ExamPartFinal"
             android:exported="false" />
         <activity
+            android:name=".core.exercise.ExerciseResultActivity"
+            android:exported="false" />
+        <activity
             android:name=".core.exercise.ExerciseUnit1BasicActivity"
             android:exported="false" />
         <activity
