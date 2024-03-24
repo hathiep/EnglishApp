@@ -2,9 +2,11 @@ package com.example.applayout.core;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,6 +32,8 @@ public class Login extends AppCompatActivity {
     TextView textView;
     ProgressBar progressBar;
     FirebaseAuth mAuth;
+    ImageView imV_eye;
+    Integer eye;
 
     @Override
     public void onStart() {
@@ -59,8 +63,34 @@ public class Login extends AppCompatActivity {
         btnLogin = findViewById(R.id.btn_login);
         progressBar = findViewById(R.id.progress_bar);
         textView = findViewById(R.id.register_now);
+        imV_eye = findViewById(R.id.imV_eye);
 
+        eye = 0;
 
+        imV_eye.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(eye == 0){
+                    // Chuyển icon unhide thành hide
+                    imV_eye.setImageResource(R.drawable.icon_hide);
+                    // Chuyển txt từ hide thành unhide
+                    editTextPassword.setInputType(InputType.TYPE_CLASS_TEXT);
+                    // Đặt con trỏ nháy ở cuối input đã nhập
+                    editTextPassword.setSelection(editTextPassword.getText().length());
+                    eye = 1;
+                }
+                else {
+                    // Chuyển icon hide thành unhide
+                    imV_eye.setImageResource(R.drawable.icon_unhide);
+                    // Chuyển text từ unhide thành hide
+                    int inputType = InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD;
+                    editTextPassword.setInputType(inputType);
+                    // Đặt con trỏ nháy ở cuối input đã nhập
+                    editTextPassword.setSelection(editTextPassword.getText().length());
+                    eye = 0;
+                }
+            }
+        });
 
 
         textView.setOnClickListener(new View.OnClickListener() {
@@ -80,11 +110,11 @@ public class Login extends AppCompatActivity {
                 password = editTextPassword.getText().toString();
 
                 if(TextUtils.isEmpty(email)){
-                    Toast.makeText(Login.this, "Enter Email", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Login.this, "Vui lòng nhập email!", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if(TextUtils.isEmpty(password)){
-                    Toast.makeText(Login.this, "Enter Password", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Login.this, "Vui lòng nhập mật khẩu!", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 mAuth.signInWithEmailAndPassword(email, password)
@@ -95,7 +125,7 @@ public class Login extends AppCompatActivity {
                                 if (task.isSuccessful()) {
                                     // Sign in success, update UI with the signed-in user's information
 
-                                    Toast.makeText(Login.this, "Success",
+                                    Toast.makeText(Login.this, "Đăng nhập thành công!",
                                             Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                                     startActivity(intent);
@@ -103,7 +133,7 @@ public class Login extends AppCompatActivity {
                                 } else {
                                     // If sign in fails, display a message to the user.
 
-                                    Toast.makeText(Login.this, "Authentication failed.",
+                                    Toast.makeText(Login.this, "Đăng nhập không thành công!",
                                             Toast.LENGTH_SHORT).show();
 
                                 }

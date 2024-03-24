@@ -1,10 +1,13 @@
 package com.example.applayout.core;
 
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,14 +28,15 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class Register extends AppCompatActivity {
-    TextInputEditText editTextEmail, editTextPassword;
+    TextInputEditText editTextEmail, editTextPassword, editTextPasswordAgain;
     Button btnRegister;
-    TextView textView;
+    ImageView imV_back, imV_eye1, imV_eye2;
     ProgressBar progressBar;
     FirebaseAuth mAuth;
+    Integer eye1, eye2;
 
 
-//    @Override
+    //    @Override
 //    public void onStart() {
 //        super.onStart();
 //
@@ -56,16 +60,70 @@ public class Register extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         editTextEmail = findViewById(R.id.email);
         editTextPassword = findViewById(R.id.password);
+        editTextPasswordAgain = findViewById(R.id.password_again);
         btnRegister = findViewById(R.id.btn_register);
         progressBar = findViewById(R.id.progress_bar);
-        textView = findViewById(R.id.login_now);
+        imV_back = findViewById(R.id.imV_back);
+        imV_eye1 = findViewById(R.id.imV_eye1);
+        imV_eye2 = findViewById(R.id.imV_eye2);
 
-        textView.setOnClickListener(new View.OnClickListener() {
+        imV_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(),Login.class);
                 startActivity(intent);
                 finish();
+            }
+        });
+        eye1 = 0;
+        eye2 = 0;
+        imV_eye1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(eye1 == 0){
+                    // Chuyển icon unhide thành hide
+                    imV_eye1.setImageResource(R.drawable.icon_hide);
+                    // Chuyển text từ hide thành unhide
+                    editTextPassword.setInputType(InputType.TYPE_CLASS_TEXT);
+                    // Đặt con trỏ nháy ở cuối input đã nhập
+                    editTextPassword.setSelection(editTextPassword.getText().length());
+                    eye1 = 1;
+                }
+                else {
+                    // Chuyển icon hide thành unhide
+                    imV_eye1.setImageResource(R.drawable.icon_unhide);
+                    // Chuyển text từ unhide thành hide
+                    int inputType = InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD;
+                    editTextPassword.setInputType(inputType);
+                    // Đặt con trỏ nháy ở cuối input đã nhập
+                    editTextPassword.setSelection(editTextPassword.getText().length());
+                    eye1 = 0;
+                }
+            }
+        });
+
+        imV_eye2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(eye2 == 0){
+                    // Chuyển icon unhide thành hide
+                    imV_eye2.setImageResource(R.drawable.icon_hide);
+                    // Chuyển text từ hide thành unhide
+                    editTextPasswordAgain.setInputType(InputType.TYPE_CLASS_TEXT);
+                    // Đặt con trỏ nháy ở cuối input đã nhập
+                    editTextPasswordAgain.setSelection(editTextPasswordAgain.getText().length());
+                    eye2 = 1;
+                }
+                else {
+                    // Chuyển icon hide thành unhide
+                    imV_eye2.setImageResource(R.drawable.icon_hide);
+                    // Chuyển text từ unhide thành hide
+                    int inputType = InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD;
+                    editTextPasswordAgain.setInputType(inputType);
+                    // Đặt con trỏ nháy ở cuối input đã nhập
+                    editTextPasswordAgain.setSelection(editTextPasswordAgain.getText().length());
+                    eye2 = 0;
+                }
             }
         });
 
@@ -78,11 +136,11 @@ public class Register extends AppCompatActivity {
                 password = editTextPassword.getText().toString();
 
                 if(TextUtils.isEmpty(email)){
-                    Toast.makeText(Register.this, "Enter Email", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Register.this, "Vui lòng nhập email!", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if(TextUtils.isEmpty(password)){
-                    Toast.makeText(Register.this, "Enter Password", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Register.this, "Vui lòng nhập mật khẩu!", Toast.LENGTH_SHORT).show();
                     return;
                 }
                 mAuth.createUserWithEmailAndPassword(email, password)
@@ -92,13 +150,18 @@ public class Register extends AppCompatActivity {
                                 progressBar.setVisibility(View.GONE);
                                 if (task.isSuccessful()) {
 
-                                    Toast.makeText(Register.this, "Account created",
+                                    Toast.makeText(Register.this, "Tạo tài khoản thành công!",
                                             Toast.LENGTH_SHORT).show();
+
+                                    //Back to login
+                                    Intent intent = new Intent(getApplicationContext(),Login.class);
+                                    startActivity(intent);
+                                    finish();
 
                                 } else {
                                     // If sign in fails, display a message to the user.
 
-                                    Toast.makeText(Register.this, "Authentication failed.",
+                                    Toast.makeText(Register.this, "Tạo tài khoản không thành công!",
                                             Toast.LENGTH_SHORT).show();
 
                                 }
