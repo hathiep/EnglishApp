@@ -1,10 +1,13 @@
 <resources>
     <string name="app_name">EnglishApp</string>
-    <string name="login">Login</string>
+    <string name="welcome">Welcome to EnglishApp</string>
+    <string name="login">Đăng nhập</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
-    <string name="register">Register</string>
+    <string name="register">Đăng ký</string>
     <string name="click_here_to_login">Click here to login</string>
-    <string name="register_now">New? Register now!</string>
-    <string name="logout">Logout</string>
+    <string name="forgot">Quên mật khẩu?</string>
+    <string name="suggest">Bạn chưa có tài khoản?</string>
+    <string name="register_now">Đăng ký ngay</string>
+    <string name="logout">Đăng xuất</string>
 </resources>
