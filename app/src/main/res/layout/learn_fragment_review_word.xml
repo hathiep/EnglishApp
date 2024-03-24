@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".core.learn.ReviewWordFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/green_1"
+        android:orientation="vertical">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                >
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:text="Chủ đề đã học:"
+                    android:textSize="20dp"
+                    android:layout_margin="20dp"/>
+
+                <Button
+                    android:id="@+id/learn_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:layout_margin="15dp"
+                    android:backgroundTint="#5FC16F"
+                    android:text="Animals"/>
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:layout_margin="15dp"
+                    android:backgroundTint="#9E68B1"
+                    android:text="Economic"/>
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:layout_margin="15dp"
+                    android:backgroundTint="#D8B94C"
+                    android:text="Health"/>
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:layout_margin="15dp"
+                    android:backgroundTint="#4B87D1"
+                    android:text="Correspondence"/>
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:layout_margin="15dp"
+                    android:backgroundTint="#DA46E4"
+                    android:text="Entertainment"/>
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:layout_margin="15dp"
+                    android:backgroundTint="#EC244C"
+                    android:text="Art"/>
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:layout_margin="15dp"
+                    android:backgroundTint="#4AD6AF"
+                    android:text="Environment"/>
+
+            </LinearLayout>
+        </ScrollView>
+
+
+    </LinearLayout>
+
+
+</FrameLayout>

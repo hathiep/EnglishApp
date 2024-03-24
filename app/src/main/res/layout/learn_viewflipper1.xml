@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <com.wajahatkarim3.easyflipview.EasyFlipView
+        android:layout_width="match_parent"
+        android:layout_height="430dp"
+        app:autoFlipBack="false"
+        app:flipDuration="400"
+        app:flipEnabled="true"
+        app:flipFrom="right"
+        app:flipOnTouch="true"
+        app:flipType="horizontal"
+        tools:ignore="MissingConstraints">
+
+        <!-- Back Layout Goes Here -->
+        <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:layout_gravity="center"
+            >
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/dog"
+                >
+
+            </ImageView>
+
+        </FrameLayout>
+
+        <!-- Front Layout Goes Here -->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:background="@drawable/border"
+            android:backgroundTint="#C695CC"
+            android:layout_gravity="center"
+
+            >
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/exam_part_l_volume">
+
+            </ImageView>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Dog"
+                android:textSize="70sp"
+                android:textAlignment="center"
+                android:layout_margin="20dp"
+                >
+            </TextView>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Con chó"
+                android:textSize="30sp"
+                android:textAlignment="center"
+                android:gravity="bottom"
+                android:layout_margin="20dp"
+                tools:ignore="RtlCompat">
+            </TextView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.wajahatkarim3.easyflipview.EasyFlipView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
