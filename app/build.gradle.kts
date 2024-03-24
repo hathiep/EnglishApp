@@ -36,6 +36,7 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:32.7.4"))
     implementation("com.google.firebase:firebase-analytics")
     implementation(libs.appcompat)
+    implementation("com.wajahatkarim:EasyFlipView:3.0.3")
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
