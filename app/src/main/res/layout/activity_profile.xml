@@ -7,6 +7,108 @@
     android:layout_height="match_parent"
     tools:context=".core.Profile">
 
+    <LinearLayout
+        android:id="@+id/bg_top"
+        android:layout_width="match_parent"
+        android:layout_height="200dp">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/exam_blue3"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingVertical="80dp"
+        android:paddingHorizontal="20dp"
+        android:orientation="vertical"
+        android:background="@color/gray"
+        android:layout_below="@+id/bg_top">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:drawableLeft="@drawable/icon_email"
+            android:drawableRight="@drawable/icon_edit"
+            android:drawablePadding="2dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="nguyenvanad20@gmail.com"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:drawableLeft="@drawable/icon_calendar"
+            android:drawableRight="@drawable/icon_edit"
+            android:drawablePadding="2dp"
+            android:text="10/10/2002"/>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:drawableLeft="@drawable/icon_phone"
+            android:drawableRight="@drawable/icon_edit"
+            android:drawablePadding="2dp"
+            android:text="0868666888"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingVertical="30dp"
+            android:paddingHorizontal="30dp"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/btn_logout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:backgroundTint="@color/red"
+                android:text="@string/logout"
+                android:textSize="20sp"/>
+
+            <ProgressBar
+                android:id="@+id/progress_bar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone" />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/imV_avt"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="125dp"
+        android:layout_marginLeft="10dp"
+        android:src="@drawable/profile_bg_avt"/>
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="175dp"
+        android:layout_marginLeft="60dp"
+        android:src="@drawable/icon_camera"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="150dp"
+        android:layout_marginLeft="150dp"
+        android:layout_marginRight="20dp"
+        android:drawableRight="@drawable/icon_edit"
+        android:text="Nguyễn Văn A"/>
+
     <include layout="@layout/menu_bottom"/>
 
 </RelativeLayout>
