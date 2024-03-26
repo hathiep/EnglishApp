@@ -116,7 +116,7 @@ public class Register extends AppCompatActivity {
                 }
                 else {
                     // Chuyển icon hide thành unhide
-                    imV_eye2.setImageResource(R.drawable.icon_hide);
+                    imV_eye2.setImageResource(R.drawable.icon_unhide);
                     // Chuyển text từ unhide thành hide
                     int inputType = InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD;
                     editTextPasswordAgain.setInputType(inputType);
