@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/grey"
+    tools:context=".Activities.AnnouncementSupport">
+
+
+    <LinearLayout
+        android:id="@+id/header"
+        android:background="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/announceBackBtn"
+            android:layout_width="30dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="15dp"
+            app:srcCompat="@drawable/ic_back_arrow" />
+
+        <TextView
+            android:id="@+id/titleTxt"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:layout_width="wrap_content"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@color/text"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Cài đặt thông báo" />
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/bottom"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/header">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <Switch
+                android:id="@+id/switch1"
+                android:padding="14sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Chế độ rung"
+                android:textSize="20sp" />
+
+            <Switch
+                android:id="@+id/switch2"
+                android:padding="14sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Nhạc chuông"
+                android:textSize="20sp" />
+
+            <Switch
+                android:id="@+id/switch3"
+                android:padding="14sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Thông báo đẩy"
+                android:textSize="20sp" />
+        </LinearLayout>
+    </ScrollView>
+
+
+    <LinearLayout
+        android:id="@+id/bottom"
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        android:layout_alignParentBottom="true"
+        android:background="#fafad2"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageView
+            android:id="@+id/imV_home"
+            android:layout_width="68dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:background="#fafad2"
+            app:srcCompat="@drawable/icon_home" />
+
+        <ImageView
+            android:id="@+id/imV_learn"
+            android:layout_weight="1"
+            android:layout_width="68dp"
+            android:layout_height="match_parent"
+            android:background="#fafad2"
+            app:srcCompat="@drawable/icon_learn" />
+
+        <ImageView
+            android:id="@+id/imV_exercise"
+            android:layout_weight="1"
+            android:layout_width="68dp"
+            android:layout_height="match_parent"
+            android:background="#fafad2"
+            app:srcCompat="@drawable/icon_exercise" />
+
+        <ImageView
+            android:id="@+id/imV_exam"
+            android:layout_width="68dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:background="#fafad2"
+            app:srcCompat="@drawable/icon_exam" />
+
+        <ImageView
+            android:id="@+id/imV_support"
+            android:layout_weight="1"
+            android:layout_width="68dp"
+            android:layout_height="match_parent"
+            android:background="@color/grey"
+            app:srcCompat="@drawable/icon_support" />
+
+        <ImageView
+            android:id="@+id/imV_profile"
+            android:layout_weight="1"
+            android:layout_width="68dp"
+            android:layout_height="match_parent"
+            android:background="#fafad2"
+            app:srcCompat="@drawable/icon_profile" />
+
+    </LinearLayout>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
