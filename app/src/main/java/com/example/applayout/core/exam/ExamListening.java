@@ -1,21 +1,18 @@
 package com.example.applayout.core.exam;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.InputType;
-import android.text.SpannableStringBuilder;
-import android.text.Spanned;
-import android.text.TextWatcher;
-import android.text.style.ForegroundColorSpan;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -27,8 +24,18 @@ import com.example.applayout.core.exercise.ExerciseMain;
 import com.example.applayout.core.learn.LearnMain;
 import com.example.applayout.core.support.SupportMain;
 
-public class ExamListening extends AppCompatActivity {
+import java.util.ArrayList;
+import java.util.List;
 
+public class ExamListening extends AppCompatActivity {
+    int question = 1;
+    List<EditText> list_editText = new ArrayList<>();
+    List<RelativeLayout> list_reLayout = new ArrayList<>();
+    List<String[]> list_sentence = new ArrayList<>();
+    List<String> list_userAnswer = new ArrayList<>();;
+    Button btn_reset, btn_answer;
+    int status_reset = 0;
+    int status_answer = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,7 +47,6 @@ public class ExamListening extends AppCompatActivity {
             return insets;
         });
 
-        int[] question = {1};
         // Bắt sự kiện cho nút back và gán giá trị cho header
         ImageView imV_back = findViewById(R.id.imV_back);
         TextView tv_part = findViewById(R.id.tv_part);
@@ -56,7 +62,7 @@ public class ExamListening extends AppCompatActivity {
         });
         tv_part.setText("Part A3");
         tv_exam_name.setText("Listening");
-        tv_question_num.setText(String.valueOf(question[0]) + "/10");
+        tv_question_num.setText(String.valueOf(question) + "/10");
 
         //Đánh dấu activity hiện tại trên thanh menu
         ImageView imV_exam = findViewById(R.id.imV_exam);
@@ -64,6 +70,83 @@ public class ExamListening extends AppCompatActivity {
         imV_exam.setScaleType(ImageView.ScaleType.CENTER_CROP);
         imV_exam.setImageResource(R.drawable.icon_exam2);
         tv_exam.setTextAppearance(R.style.menu_text);
+
+        set_list_reLayout();
+        set_list_editText();
+        list_sentence = get_sentence(question);
+        set_editText();
+
+        btn_reset = findViewById(R.id.btn_reset);
+        btn_answer = findViewById(R.id.btn_answer);
+
+        btn_reset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(status_reset == 0){
+                    for(int i=0; i<list_sentence.size(); i++){
+                        if(list_sentence.get(i)[2] == "1"){
+                            list_editText.get(i).setText("");
+                        }
+                    }
+                    list_userAnswer.clear();
+                }
+                else if(status_reset == 1) {
+                    set_userAnswer();
+                    btn_reset.setText("Đáp án");
+                    btn_reset.setBackgroundTintList(ContextCompat.getColorStateList(ExamListening.this, R.color.green));
+                    status_reset = 2;
+                }
+                else {
+                    set_correctAnswer();
+                    btn_reset.setText("Xem lại");
+                    btn_reset.setBackgroundTintList(ContextCompat.getColorStateList(ExamListening.this, R.color.red));
+                    status_reset = 1;
+                }
+            }
+        });
+
+        btn_answer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(status_answer == 0){
+                    get_userAnswer();
+                    if(check_user_filled()){
+                        set_correctAnswer();
+                        set_edt_enable(false);
+                        if(question == 10) btn_answer.setText("Kết thúc");
+                        else btn_answer.setText("Tiếp theo");
+                        btn_reset.setText("Xem lại");
+                        status_reset = status_answer = 1;
+                    }
+                    else{
+                        list_userAnswer.clear();
+                        Toast toast = Toast.makeText(getApplicationContext(), "Hãy điền đầy đủ các câu!", Toast.LENGTH_SHORT);
+                        toast.show();
+                    }
+                }
+                else {
+                    if(question==10) {
+                        Intent intent = new Intent(getApplicationContext(), ExamPartFinal.class);
+                        startActivity(intent);
+                        finish();
+                    }
+                    else{
+                        question++;
+                        set_list_reLayout();
+                        set_list_editText();
+                        list_sentence = get_sentence(question);
+                        set_edt_enable(true);
+                        set_editText();
+                        list_userAnswer.clear();
+                        btn_reset.setText("Reset");
+                        btn_answer.setText("Đáp án");
+                        btn_reset.setBackgroundTintList(ContextCompat.getColorStateList(ExamListening.this, R.color.red));
+                        tv_question_num.setText(String.valueOf(question) + "/10");
+                        status_reset = status_answer = 0;
+                    }
+                }
+            }
+        });
 
         //Bắt sự kiện thanh menu
         ImageView imV_home = findViewById(R.id.imV_home);
@@ -112,5 +195,88 @@ public class ExamListening extends AppCompatActivity {
                 finish();
             }
         });
+    }
+
+    private void set_list_reLayout(){
+        list_reLayout.add(findViewById(R.id.reLay_a1));
+        list_reLayout.add(findViewById(R.id.reLay_b1));
+        list_reLayout.add(findViewById(R.id.reLay_a2));
+        list_reLayout.add(findViewById(R.id.reLay_b2));
+        list_reLayout.add(findViewById(R.id.reLay_a3));
+        list_reLayout.add(findViewById(R.id.reLay_b3));
+    }
+    private void set_list_editText(){
+        list_editText.add(findViewById(R.id.edt_a1));
+        list_editText.add(findViewById(R.id.edt_b1));
+        list_editText.add(findViewById(R.id.edt_a2));
+        list_editText.add(findViewById(R.id.edt_b2));
+        list_editText.add(findViewById(R.id.edt_a3));
+        list_editText.add(findViewById(R.id.edt_b3));
+    }
+
+    private void set_editText(){
+        for(int i=0; i<6; i++){
+            if(i<list_sentence.size()){
+                list_reLayout.get(i).setVisibility(View.VISIBLE);
+                if(list_sentence.get(i)[2] == "0"){
+                    list_editText.get(i).setFocusable(false);
+                    list_editText.get(i).setText(list_sentence.get(i)[0]);
+                }
+                else{
+                    list_editText.get(i).setFocusable(true);
+                    list_editText.get(i).setText("");
+                }
+            }
+            else list_reLayout.get(i).setVisibility(View.GONE);
+        }
+    }
+    private void set_edt_enable(boolean x){
+        for(int i=0; i<list_sentence.size(); i++){
+            list_editText.get(i).setFocusable(x);
+        }
+    }
+    private void set_userAnswer(){
+        int t=0;
+        for(int i=0; i<list_sentence.size(); i++){
+            if(list_sentence.get(i)[2]=="1"){
+                list_editText.get(i).setText(list_userAnswer.get(t));
+                t++;
+            }
+        }
+    }
+
+    private void get_userAnswer(){
+        for(int i=0; i<list_sentence.size(); i++){
+            if(list_sentence.get(i)[2]=="1"){
+                list_userAnswer.add(String.valueOf(list_editText.get(i).getText()));
+            }
+        }
+    }
+    private boolean check_user_filled(){
+        for(int i=0; i<list_userAnswer.size(); i++){
+            if(list_userAnswer.get(i).trim().length()==0){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private void set_correctAnswer(){
+        for(int i=0; i<list_sentence.size(); i++){
+            list_editText.get(i).setText(list_sentence.get(i)[0]);
+        }
+    }
+
+    private List<String[]> get_sentence(int question_num){
+        List<String[]> list_sentence = new ArrayList<>();
+
+        list_sentence.add(new String[]{"Person 1 say 1", "1", "0"});
+        list_sentence.add(new String[]{"Person 2 say 1", "2", "1"});
+        list_sentence.add(new String[]{"Person 1 say 2", "1", "0"});
+        list_sentence.add(new String[]{"Person 2 say 2", "2", "1"});
+        list_sentence.add(new String[]{"Person 1 say 3", "1", "1"});
+//        list_sentence.add(new String[]{"Person 2 say 3", "2", "0"});
+
+        return list_sentence;
     }
 }
