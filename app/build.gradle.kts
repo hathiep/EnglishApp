@@ -33,6 +33,9 @@ android {
 }
 
 dependencies {
+    implementation("com.github.bumptech.glide:glide:4.12.0")
+    implementation("androidx.appcompat:appcompat:1.6.1")
+    implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
     implementation(platform("com.google.firebase:firebase-bom:32.7.4"))
     implementation("com.google.firebase:firebase-analytics")
     implementation(libs.appcompat)

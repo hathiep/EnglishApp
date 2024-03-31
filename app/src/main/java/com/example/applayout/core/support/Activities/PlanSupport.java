@@ -9,9 +9,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.learning_app.Adapters.PlanAdapter;
-import com.example.learning_app.Domains.PlanDomain;
-import com.example.learning_app.R;
+import com.example.applayout.R;
+import com.example.applayout.core.support.Adapters.PlanAdapter;
+import com.example.applayout.core.support.Domains.PlanDomain;
+import com.example.applayout.core.support.SupportMain;
 
 import java.util.ArrayList;
 
@@ -37,7 +38,7 @@ public class PlanSupport extends AppCompatActivity {
         backBtn.setOnClickListener(v -> {
             Intent intent = new Intent(
                     this,
-                    SupportSupport.class
+                    SupportMain.class
             );
             startActivity(intent);
         });

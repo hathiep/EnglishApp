@@ -3,7 +3,6 @@ package com.example.applayout.core;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -112,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
         imV_support.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), SupportMain.class);
+                Intent intent = new Intent(getApplicationContext(), com.example.applayout.core.support.SupportMain.class);
                 startActivity(intent);
                 finish();
             }
