@@ -11,8 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.learning_app.Domains.TaskDomain;
-import com.example.learning_app.R;
+import com.example.applayout.R;
+import com.example.applayout.core.support.Domains.TaskDomain;
 
 import java.util.ArrayList;
 

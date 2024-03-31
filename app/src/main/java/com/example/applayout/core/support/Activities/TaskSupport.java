@@ -9,9 +9,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.learning_app.Adapters.TaskAdapter;
-import com.example.learning_app.Domains.TaskDomain;
-import com.example.learning_app.R;
+import com.example.applayout.R;
+import com.example.applayout.core.support.Adapters.TaskAdapter;
+import com.example.applayout.core.support.Domains.TaskDomain;
 
 import java.util.ArrayList;
 

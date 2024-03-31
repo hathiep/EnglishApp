@@ -75,6 +75,25 @@
         <activity
             android:name=".core.MainActivity"
             android:exported="false" />
+        <activity
+            android:name=".core.support.Activities.PlanSupport"
+            android:exported="false" />
+        <activity
+            android:name=".core.support.Activities.TaskSupport"
+            android:exported="false" />
+        <activity
+            android:name=".core.support.Activities.CreatePlanSupport"
+            android:exported="false" />
+        <activity
+            android:name=".core.support.Activities.TrackerSupport"
+            android:exported="false" />
+        <activity
+            android:name=".core.support.Activities.AnnouncementSupport"
+            android:exported="false" />
+        <activity
+            android:name=".core.support.SupportMain$SupportMain"
+            android:exported="true">
+        </activity>
     </application>
 
 </manifest>

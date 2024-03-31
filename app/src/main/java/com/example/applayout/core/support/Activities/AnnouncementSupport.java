@@ -6,7 +6,9 @@ import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.learning_app.R;
+import com.example.applayout.R;
+import com.example.applayout.core.support.SupportMain;
+
 
 public class AnnouncementSupport extends AppCompatActivity {
 
@@ -19,7 +21,7 @@ public class AnnouncementSupport extends AppCompatActivity {
         backBtn.setOnClickListener(v -> {
             Intent intent = new Intent(
                     this,
-                    SupportSupport.class
+                    SupportMain.class
             );
             startActivity(intent);
         });

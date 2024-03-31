@@ -6,7 +6,8 @@ import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.learning_app.R;
+import com.example.applayout.R;
+
 
 public class CreatePlanSupport extends AppCompatActivity {
     @Override

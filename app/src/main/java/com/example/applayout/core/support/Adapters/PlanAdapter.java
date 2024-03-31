@@ -9,8 +9,8 @@ import android.widget.ImageButton;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.learning_app.Domains.PlanDomain;
-import com.example.learning_app.R;
+import com.example.applayout.R;
+import com.example.applayout.core.support.Domains.PlanDomain;
 
 import java.util.ArrayList;
 

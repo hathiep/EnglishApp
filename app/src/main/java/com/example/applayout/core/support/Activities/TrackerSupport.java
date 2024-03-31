@@ -11,7 +11,8 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
-import com.example.learning_app.R;
+import com.example.applayout.R;
+import com.example.applayout.core.support.SupportMain;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
@@ -80,7 +81,7 @@ public class TrackerSupport extends AppCompatActivity {
         backBtn.setOnClickListener(v -> {
             Intent intent = new Intent(
                     this,
-                    SupportSupport.class
+                    SupportMain.class
             );
             startActivity(intent);
         });
