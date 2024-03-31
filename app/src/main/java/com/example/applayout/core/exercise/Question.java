@@ -11,6 +11,9 @@ public class Question {
     private MediaPlayer voice;
     private List<Answer> listAnswer;
 
+    public Question(){
+
+    }
     public Question(int number, String content, MediaPlayer voice, List<Answer> listAnswer) {
         this.number = number;
         this.content = content;

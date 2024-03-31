@@ -91,7 +91,7 @@ public class ExerciseUnit1AdvancedActivity extends AppCompatActivity implements 
         tvAnswer3.setBackgroundResource(R.drawable.ex_bg_while_border_corner_15);
         tvAnswer4.setBackgroundResource(R.drawable.ex_bg_while_border_corner_15);
 
-        String quantityQuestion = question.getNumber() + "/10";
+        String quantityQuestion = question.getNumber() + "/5";
         tvQuantity.setText(quantityQuestion);
         tvQuestion.setText(question.getContent());
         tvAnswer1.setText(question.getListAnswer().get(0).getContent());
@@ -117,40 +117,40 @@ public class ExerciseUnit1AdvancedActivity extends AppCompatActivity implements 
         List<Question> list = new ArrayList<>();
 
         List<Answer> answerList1 = new ArrayList<>();
-        answerList1.add(new Answer("your", true));
-        answerList1.add(new Answer("is", false));
-        answerList1.add(new Answer("my", false));
-        answerList1.add(new Answer("are", false));
+        answerList1.add(new Answer("What's your name?", true));
+        answerList1.add(new Answer("What your name?", false));
+        answerList1.add(new Answer("What you name?", false));
+        answerList1.add(new Answer("What's you name?", false));
 
         List<Answer> answerList2 = new ArrayList<>();
-        answerList2.add(new Answer("is", false));
-        answerList2.add(new Answer("are", false));
-        answerList2.add(new Answer("you", false));
-        answerList2.add(new Answer("your", true));
+        answerList2.add(new Answer("What your name?", false));
+        answerList2.add(new Answer("What you name?", false));
+        answerList2.add(new Answer("What's you name?", false));
+        answerList2.add(new Answer("What's your name?", true));
 
         List<Answer> answerList3 = new ArrayList<>();
-        answerList3.add(new Answer("am", false));
-        answerList3.add(new Answer("your", true));
-        answerList3.add(new Answer("are", false));
-        answerList3.add(new Answer("is", false));
+        answerList3.add(new Answer("What's you name?", false));
+        answerList3.add(new Answer("What's your name?", true));
+        answerList3.add(new Answer("What your name?", false));
+        answerList3.add(new Answer("What you name?", false));
 
         List<Answer> answerList4 = new ArrayList<>();
-        answerList4.add(new Answer("am", false));
-        answerList4.add(new Answer("your", true));
-        answerList4.add(new Answer("are", false));
-        answerList4.add(new Answer("is", false));
+        answerList4.add(new Answer("What's you name?", false));
+        answerList4.add(new Answer("What's your name?", true));
+        answerList4.add(new Answer("What your name?", false));
+        answerList4.add(new Answer("What you name?", false));
 
         List<Answer> answerList5 = new ArrayList<>();
-        answerList5.add(new Answer("am", false));
-        answerList5.add(new Answer("your", true));
-        answerList5.add(new Answer("are", false));
-        answerList5.add(new Answer("is", false));
+        answerList5.add(new Answer("What you name?", false));
+        answerList5.add(new Answer("What's your name?", true));
+        answerList5.add(new Answer("What's you name?", false));
+        answerList5.add(new Answer("What your name?", false));
 
-        list.add(new Question(1, "What's .... name?", MediaPlayer.create(this, R.raw.ex_q1), answerList1));
-        list.add(new Question(2, "What's .... name?", MediaPlayer.create(this, R.raw.ex_q2), answerList2));
-        list.add(new Question(3, "What's .... name?", MediaPlayer.create(this, R.raw.ex_q1), answerList3));
-        list.add(new Question(4, "What's .... name?", MediaPlayer.create(this, R.raw.ex_q1), answerList4));
-        list.add(new Question(5, "What's .... name?", MediaPlayer.create(this, R.raw.ex_q1), answerList5));
+        list.add(new Question(1, ".................", MediaPlayer.create(this, R.raw.ex_q2), answerList1));
+        list.add(new Question(2, ".................", MediaPlayer.create(this, R.raw.ex_q2), answerList2));
+        list.add(new Question(3, ".................", MediaPlayer.create(this, R.raw.ex_q2), answerList3));
+        list.add(new Question(4, ".................", MediaPlayer.create(this, R.raw.ex_q2), answerList4));
+        list.add(new Question(5, ".................", MediaPlayer.create(this, R.raw.ex_q2), answerList5));
 
 
         return list;
