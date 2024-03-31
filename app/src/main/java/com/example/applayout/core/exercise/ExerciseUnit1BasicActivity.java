@@ -92,7 +92,7 @@ public class ExerciseUnit1BasicActivity extends AppCompatActivity implements Vie
         tvAnswer3.setBackgroundResource(R.drawable.ex_bg_while_border_corner_15);
         tvAnswer4.setBackgroundResource(R.drawable.ex_bg_while_border_corner_15);
 
-        String quantityQuestion = question.getNumber() + "/10";
+        String quantityQuestion = question.getNumber() + "/5";
         tvQuantity.setText(quantityQuestion);
         tvQuestion.setText(question.getContent());
         tvAnswer1.setText(question.getListAnswer().get(0).getContent());
@@ -146,7 +146,7 @@ public class ExerciseUnit1BasicActivity extends AppCompatActivity implements Vie
         answerList5.add(new Answer("is", false));
 
         list.add(new Question(1, "What's .... name?", MediaPlayer.create(this, R.raw.ex_q1), answerList1));
-        list.add(new Question(2, "What's .... name?", MediaPlayer.create(this, R.raw.ex_q2), answerList2));
+        list.add(new Question(2, "What's .... name?", MediaPlayer.create(this, R.raw.ex_q1), answerList2));
         list.add(new Question(3, "What's .... name?", MediaPlayer.create(this, R.raw.ex_q1), answerList3));
         list.add(new Question(4, "What's .... name?", MediaPlayer.create(this, R.raw.ex_q1), answerList4));
         list.add(new Question(5, "What's .... name?", MediaPlayer.create(this, R.raw.ex_q1), answerList5));
