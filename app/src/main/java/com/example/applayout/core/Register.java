@@ -20,20 +20,30 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.applayout.R;
+import com.example.applayout.core.exam.synthetic.Question;
+import com.example.applayout.core.main.Exam;
+import com.example.applayout.core.main.Exercise;
+import com.example.applayout.core.main.Unit;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class Register extends AppCompatActivity {
-    TextInputEditText editTextEmail, editTextPassword, editTextPasswordAgain;
+    TextInputEditText editTextName, editTextEmail, editTextPhone, editTextPassword, editTextPasswordAgain;
     Button btnRegister;
     ImageView imV_back, imV_eye1, imV_eye2;
     ProgressBar progressBar;
     FirebaseAuth mAuth;
     Integer eye1, eye2;
+    FirebaseDatabase database;
 
 
     //    @Override
@@ -59,6 +69,8 @@ public class Register extends AppCompatActivity {
         });
         mAuth = FirebaseAuth.getInstance();
         editTextEmail = findViewById(R.id.email);
+        editTextName = findViewById(R.id.fullname);
+        editTextPhone = findViewById(R.id.phone);
         editTextPassword = findViewById(R.id.password);
         editTextPasswordAgain = findViewById(R.id.password_again);
         btnRegister = findViewById(R.id.btn_register);
@@ -149,6 +161,7 @@ public class Register extends AppCompatActivity {
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 progressBar.setVisibility(View.GONE);
                                 if (task.isSuccessful()) {
+                                    insertUserToRealtimeDatabase();
 
                                     Toast.makeText(Register.this, "Tạo tài khoản thành công!",
                                             Toast.LENGTH_SHORT).show();
@@ -170,6 +183,31 @@ public class Register extends AppCompatActivity {
             }
 
 
+        });
+    }
+    private void insertUserToRealtimeDatabase(){
+        database = FirebaseDatabase.getInstance();
+        DatabaseReference ref = database.getReference("User/");
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Exam exam = new Exam(0,0,0,0,0);
+                Unit unit = new Unit(0);
+                Exercise exercise = new Exercise(unit, unit);
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                if(user == null){
+                    return;
+                }
+                String uid = user.getUid();
+                ref.child(uid).child("exam").setValue(exam);
+                ref.child(uid).child("exercise").setValue(exercise);
+                ref.child(uid).child("newword").child("0").setValue("0");
+                ref.child(uid).child("name").setValue(editTextName.getText().toString());
+                ref.child(uid).child("phone").setValue(editTextPhone.getText().toString());
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
         });
     }
 }

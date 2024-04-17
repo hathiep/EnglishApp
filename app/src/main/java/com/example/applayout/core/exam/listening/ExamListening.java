@@ -1,4 +1,4 @@
-package com.example.applayout.core.exam;
+package com.example.applayout.core.exam.listening;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,23 +6,32 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.applayout.R;
 import com.example.applayout.core.MainActivity;
 import com.example.applayout.core.Profile;
+import com.example.applayout.core.exam.ExamMain;
+import com.example.applayout.core.exam.ExamPartFinal;
 import com.example.applayout.core.exercise.ExerciseMain;
 import com.example.applayout.core.learn.LearnMain;
 import com.example.applayout.core.support.SupportMain;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,12 +39,15 @@ import java.util.List;
 public class ExamListening extends AppCompatActivity {
     int question = 1;
     List<EditText> list_editText = new ArrayList<>();
-    List<RelativeLayout> list_reLayout = new ArrayList<>();
-    List<String[]> list_sentence = new ArrayList<>();
-    List<String> list_userAnswer = new ArrayList<>();;
+    List<Sentence> list_sentence = new ArrayList<>();
+    List<String> list_userAnswer = new ArrayList<>();
     Button btn_reset, btn_answer;
     int status_reset = 0;
     int status_answer = 0;
+    FirebaseDatabase database;
+    private RecyclerView rcvSentences;
+    private SentenceAdapter mSentenceAdapter;
+    static long list_sentence_size = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,10 +83,10 @@ public class ExamListening extends AppCompatActivity {
         imV_exam.setImageResource(R.drawable.icon_exam2);
         tv_exam.setTextAppearance(R.style.menu_text);
 
-        set_list_reLayout();
-        set_list_editText();
-        list_sentence = get_sentence(question);
-        set_editText();
+        //Khởi tạo RecycleView và
+        initUi();
+        get_sentence(question);
+        create_database(5);
 
         btn_reset = findViewById(R.id.btn_reset);
         btn_answer = findViewById(R.id.btn_answer);
@@ -84,7 +96,7 @@ public class ExamListening extends AppCompatActivity {
             public void onClick(View view) {
                 if(status_reset == 0){
                     for(int i=0; i<list_sentence.size(); i++){
-                        if(list_sentence.get(i)[2] == "1"){
+                        if(list_sentence.get(i).getStatus() == 1){
                             list_editText.get(i).setText("");
                         }
                     }
@@ -132,11 +144,9 @@ public class ExamListening extends AppCompatActivity {
                     }
                     else{
                         question++;
-                        set_list_reLayout();
-                        set_list_editText();
-                        list_sentence = get_sentence(question);
+                        initUi();
+                        get_sentence(question);
                         set_edt_enable(true);
-                        set_editText();
                         list_userAnswer.clear();
                         btn_reset.setText("Reset");
                         btn_answer.setText("Đáp án");
@@ -179,6 +189,14 @@ public class ExamListening extends AppCompatActivity {
                 finish();
             }
         });
+        imV_exam.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), ExamMain.class);
+                startActivity(intent);
+                finish();
+            }
+        });
         imV_support.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -197,38 +215,14 @@ public class ExamListening extends AppCompatActivity {
         });
     }
 
-    private void set_list_reLayout(){
-        list_reLayout.add(findViewById(R.id.reLay_a1));
-        list_reLayout.add(findViewById(R.id.reLay_b1));
-        list_reLayout.add(findViewById(R.id.reLay_a2));
-        list_reLayout.add(findViewById(R.id.reLay_b2));
-        list_reLayout.add(findViewById(R.id.reLay_a3));
-        list_reLayout.add(findViewById(R.id.reLay_b3));
-    }
-    private void set_list_editText(){
-        list_editText.add(findViewById(R.id.edt_a1));
-        list_editText.add(findViewById(R.id.edt_b1));
-        list_editText.add(findViewById(R.id.edt_a2));
-        list_editText.add(findViewById(R.id.edt_b2));
-        list_editText.add(findViewById(R.id.edt_a3));
-        list_editText.add(findViewById(R.id.edt_b3));
-    }
+    private void initUi(){
+        rcvSentences = findViewById(R.id.rcv_sentences);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        rcvSentences.setLayoutManager(linearLayoutManager);
 
-    private void set_editText(){
-        for(int i=0; i<6; i++){
-            if(i<list_sentence.size()){
-                list_reLayout.get(i).setVisibility(View.VISIBLE);
-                if(list_sentence.get(i)[2] == "0"){
-                    list_editText.get(i).setFocusable(false);
-                    list_editText.get(i).setText(list_sentence.get(i)[0]);
-                }
-                else{
-                    list_editText.get(i).setFocusable(true);
-                    list_editText.get(i).setText("");
-                }
-            }
-            else list_reLayout.get(i).setVisibility(View.GONE);
-        }
+        list_sentence = new ArrayList<>();
+        mSentenceAdapter = new SentenceAdapter(list_sentence);
+        rcvSentences.setAdapter(mSentenceAdapter);
     }
     private void set_edt_enable(boolean x){
         for(int i=0; i<list_sentence.size(); i++){
@@ -238,7 +232,7 @@ public class ExamListening extends AppCompatActivity {
     private void set_userAnswer(){
         int t=0;
         for(int i=0; i<list_sentence.size(); i++){
-            if(list_sentence.get(i)[2]=="1"){
+            if(list_sentence.get(i).getStatus() == 1){
                 list_editText.get(i).setText(list_userAnswer.get(t));
                 t++;
             }
@@ -247,7 +241,7 @@ public class ExamListening extends AppCompatActivity {
 
     private void get_userAnswer(){
         for(int i=0; i<list_sentence.size(); i++){
-            if(list_sentence.get(i)[2]=="1"){
+            if(list_sentence.get(i).getStatus() == 1){
                 list_userAnswer.add(String.valueOf(list_editText.get(i).getText()));
             }
         }
@@ -263,20 +257,50 @@ public class ExamListening extends AppCompatActivity {
 
     private void set_correctAnswer(){
         for(int i=0; i<list_sentence.size(); i++){
-            list_editText.get(i).setText(list_sentence.get(i)[0]);
+            list_editText.get(i).setText(list_sentence.get(i).getContext());
         }
     }
 
-    private List<String[]> get_sentence(int question_num){
-        List<String[]> list_sentence = new ArrayList<>();
-
-        list_sentence.add(new String[]{"Person 1 say 1", "1", "0"});
-        list_sentence.add(new String[]{"Person 2 say 1", "2", "1"});
-        list_sentence.add(new String[]{"Person 1 say 2", "1", "0"});
-        list_sentence.add(new String[]{"Person 2 say 2", "2", "1"});
-        list_sentence.add(new String[]{"Person 1 say 3", "1", "1"});
-//        list_sentence.add(new String[]{"Person 2 say 3", "2", "0"});
-
-        return list_sentence;
+    private void create_database(int size){
+        database = FirebaseDatabase.getInstance();
+        DatabaseReference ref = database.getReference("Exam/Listening/" + question);
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                // Tìm ID của `Sentence` mới nhất
+                long latestId = snapshot.getChildrenCount();
+                // Thêm `size` `Sentence` mới với ID là `latestId + 1`, `latestId + 2`,...
+                for (int i = 1; i <= size; i++) {
+                    long nextId = latestId + i;
+                    Sentence sentence = new Sentence("Test " + i, 0);
+                    ref.child(String.valueOf(nextId)).setValue(sentence);
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
     }
+
+    private void get_sentence(int question_num){
+        list_sentence.clear();
+        database = FirebaseDatabase.getInstance();
+        DatabaseReference ref = database.getReference("Exam/Listening/" + question);
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                for(DataSnapshot dataSnapshot : snapshot.getChildren()){
+                    Sentence sentence = dataSnapshot.getValue(Sentence.class);
+                    list_sentence.add(sentence);
+                }
+                mSentenceAdapter.notifyDataSetChanged();
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+    }
+
 }
