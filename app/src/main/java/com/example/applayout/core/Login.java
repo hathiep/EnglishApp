@@ -104,27 +104,21 @@ public class Login extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                progressBar.setVisibility(View.VISIBLE);
+                // Lấy các giá trị từ input
                 String email, password;
                 email = editTextEmail.getText().toString();
                 password = editTextPassword.getText().toString();
-
-                if(TextUtils.isEmpty(email)){
-                    Toast.makeText(Login.this, "Vui lòng nhập email!", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if(TextUtils.isEmpty(password)){
-                    Toast.makeText(Login.this, "Vui lòng nhập mật khẩu!", Toast.LENGTH_SHORT).show();
-                    return;
-                }
+                // Gọi đối tượng validate
+                Validate validate = new Validate(Login.this);
+                if(!validate.validateLogin(email, password)) return;
+                // Check đăng nhập
+                progressBar.setVisibility(View.VISIBLE);
                 mAuth.signInWithEmailAndPassword(email, password)
                         .addOnCompleteListener( new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 progressBar.setVisibility(View.GONE);
                                 if (task.isSuccessful()) {
-                                    // Sign in success, update UI with the signed-in user's information
-
                                     Toast.makeText(Login.this, "Đăng nhập thành công!",
                                             Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
@@ -133,7 +127,7 @@ public class Login extends AppCompatActivity {
                                 } else {
                                     // If sign in fails, display a message to the user.
 
-                                    Toast.makeText(Login.this, "Đăng nhập không thành công!",
+                                    Toast.makeText(Login.this, "Thông tin không đúng, vui lòng thử lại!",
                                             Toast.LENGTH_SHORT).show();
 
                                 }
