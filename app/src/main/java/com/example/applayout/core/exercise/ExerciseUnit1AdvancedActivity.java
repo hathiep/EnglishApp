@@ -212,6 +212,7 @@ public class ExerciseUnit1AdvancedActivity extends AppCompatActivity implements 
         if(currentQuestion == 10){
             Intent intent = new Intent(this, ExerciseResultActivity.class);
             intent.putExtra("result", result);
+            intent.putExtra("unit", "advanced/" + unit.getUnit().toLowerCase());
             startActivity(intent);
         } else {
             currentQuestion++;
