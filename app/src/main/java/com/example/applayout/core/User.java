@@ -1,19 +1,25 @@
 package com.example.applayout.core;
 
 public class User {
+    private String name;
     private String email;
-    private String exam;
-    private String exercise;
-    private String newword;
+    private String phone;
 
     public User() {
     }
 
-    public User(String email, String exam, String exercise, String newword) {
+    public User(String name, String email, String phone) {
+        this.name = name;
         this.email = email;
-        this.exam = exam;
-        this.exercise = exercise;
-        this.newword = newword;
+        this.phone = phone;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getEmail() {
@@ -24,27 +30,11 @@ public class User {
         this.email = email;
     }
 
-    public String getExam() {
-        return exam;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setExam(String exam) {
-        this.exam = exam;
-    }
-
-    public String getExercise() {
-        return exercise;
-    }
-
-    public void setExercise(String exercise) {
-        this.exercise = exercise;
-    }
-
-    public String getNewword() {
-        return newword;
-    }
-
-    public void setNewword(String newword) {
-        this.newword = newword;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 }

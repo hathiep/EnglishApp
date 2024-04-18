@@ -13,6 +13,12 @@
         android:theme="@style/Theme.AppLayout"
         tools:targetApi="31">
         <activity
+            android:name=".core.ChangePassword"
+            android:exported="false" />
+        <activity
+            android:name=".core.ForgotPassword"
+            android:exported="false" />
+        <activity
             android:name=".core.learn.FlashCardActivity"
             android:exported="false" />
         <activity
@@ -92,8 +98,7 @@
             android:exported="false" />
         <activity
             android:name=".core.support.SupportMain$SupportMain"
-            android:exported="true">
-        </activity>
+            android:exported="true" />
     </application>
 
 </manifest>
