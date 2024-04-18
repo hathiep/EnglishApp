@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/reLay_b"
+    android:layout_width="match_parent"
+    android:layout_height="110dp"
+    android:paddingTop="10dp"
+    android:orientation="horizontal"
+    android:gravity="bottom">
+
+    <EditText
+        android:id="@+id/edt_a"
+        android:layout_width="wrap_content"
+        android:layout_height="100dp"
+        android:layout_weight="1"
+        android:paddingHorizontal="15dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="20dp"
+        android:text=""
+        android:textSize="20dp"
+        android:gravity="center"
+        android:background="@drawable/exam_part_l_bg_right"/>
+
+    <ImageView
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_marginRight="0dp"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/exam_part_l_person2"/>
+
+</LinearLayout>

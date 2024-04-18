@@ -4,14 +4,21 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.ViewFlipper;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
 import com.example.applayout.R;
+import com.example.applayout.core.Profile;
+import com.example.applayout.core.exam.ExamMain;
+import com.example.applayout.core.exercise.ExerciseMain;
+import com.example.applayout.core.learn.LearnMain;
 import com.example.applayout.core.support.SupportMain;
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.XAxis;
@@ -142,5 +149,53 @@ public class TrackerSupport extends AppCompatActivity {
         barChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
         barChart.getXAxis().setGranularity(1f);
         barChart.getXAxis().setGranularityEnabled(true);
+
+        ImageView imV_home = findViewById(R.id.imV_home);
+        ImageView imV_learn = findViewById(R.id.imV_learn);
+        ImageView imV_exercise = findViewById(R.id.imV_exercise);
+        ImageView imV_support = findViewById(R.id.imV_support);
+        ImageView imV_profile = findViewById(R.id.imV_profile);
+        ImageView imv_exam = findViewById(R.id.imV_exam);
+
+        imV_home.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), com.example.applayout.core.MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+        imV_learn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), LearnMain.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+        imV_exercise.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), ExerciseMain.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+        imv_exam.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), ExamMain.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+        imV_profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), Profile.class);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 }
