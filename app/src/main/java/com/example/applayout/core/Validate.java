@@ -1,6 +1,8 @@
 package com.example.applayout.core;
 
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.widget.Toast;
 
@@ -24,7 +26,7 @@ public class Validate {
     // Hàm thông báo validate xâu rỗng 2 tham số
     public boolean checkValidateEmpty(String a, String b){
         if(validateEmpty(a) || validateEmpty(b)){
-            Toast.makeText(context, "Vui lòng nhập đầy đủ thông tin!", Toast.LENGTH_SHORT).show();
+            show_dialog("Vui lòng nhập đầy đủ thông tin!", 1);
             return false;
         }
         return true;
@@ -32,7 +34,7 @@ public class Validate {
     // Hàm thông báo validate xâu rỗng 3 tham số
     public boolean checkValidateEmpty(String a, String b, String c){
         if(validateEmpty(a) || validateEmpty(b)  || validateEmpty(c)){
-            Toast.makeText(context, "Vui lòng nhập đầy đủ thông tin!", Toast.LENGTH_SHORT).show();
+            show_dialog("Vui lòng nhập đầy đủ thông tin!", 1);
             return false;
         }
         return true;
@@ -40,7 +42,7 @@ public class Validate {
     // Hàm thông báo validate xâu rỗng 4 tham số
     public boolean checkValidateEmpty(String a, String b, String c, String d){
         if(validateEmpty(a) || validateEmpty(b)  || validateEmpty(c)  || validateEmpty(d)){
-            Toast.makeText(context, "Vui lòng nhập đầy đủ thông tin!", Toast.LENGTH_SHORT).show();
+            show_dialog("Vui lòng nhập đầy đủ thông tin!", 1);
             return false;
         }
         return true;
@@ -48,7 +50,7 @@ public class Validate {
     // Hàm thông báo validate xâu rỗng 5 tham số
     public boolean checkValidateEmpty(String a, String b, String c, String d, String e){
         if(validateEmpty(a) || validateEmpty(b)  || validateEmpty(c)  || validateEmpty(d)  || validateEmpty(e) ){
-            Toast.makeText(context, "Vui lòng nhập đầy đủ thông tin!", Toast.LENGTH_SHORT).show();
+            show_dialog("Vui lòng nhập đầy đủ thông tin!", 1);
             return false;
         }
         return true;
@@ -61,7 +63,7 @@ public class Validate {
     // Hàm thông báo validate email
     public boolean checkValidateEmail(String email){
         if(!validateEmail(email)){
-            Toast.makeText(context, "Email không đúng. Vui lòng nhập lại!", Toast.LENGTH_SHORT).show();
+            show_dialog("Email không đúng. Vui lòng nhập lại!", 2);
             return false;
         }
         return true;
@@ -81,7 +83,7 @@ public class Validate {
     // Hàm thông báo validate phone
     public boolean checkValidatePhone(String phone){
         if(!validatePhone(phone)){
-            Toast.makeText(context, "Số điện thoại không đúng. Vui lòng nhập lại!", Toast.LENGTH_SHORT).show();
+            show_dialog("Số điện thoại không đúng. Vui lòng nhập lại!", 2);
             return false;
         }
         return true;
@@ -113,7 +115,7 @@ public class Validate {
     // Hàm thông báo validate phone
     public boolean checkValidatePassword(String password){
         if(!validatePassword(password)){
-            Toast.makeText(context, "Mật khẩu dài từ 8 đến 20 kí tự, bao gồm cả chữ cái viết hoa, chữ cái viết thường và số. Vui lòng nhập lại!", Toast.LENGTH_SHORT).show();
+            show_dialog("Mật khẩu dài từ 8 đến 20 kí tự, bao gồm cả chữ cái viết hoa, chữ cái viết thường và số. Vui lòng nhập lại!", 3);
             return false;
         }
         return true;
@@ -125,7 +127,7 @@ public class Validate {
     // Hàm thông báo validate phone
     public boolean checkValidatePasswordEqual(String password, String passwordequal){
         if(!validatePasswordEqual(password, passwordequal)){
-            Toast.makeText(context, "Mật khẩu không trùng khớp. Vui lòng nhập lại!", Toast.LENGTH_SHORT).show();
+            show_dialog("Mật khẩu không trùng khớp. Vui lòng nhập lại!", 2);
             return false;
         }
         return true;
@@ -139,5 +141,29 @@ public class Validate {
                 || !checkValidateEmail(email) || !checkValidatePhone(phone)
                 || !checkValidatePassword(password) || !checkValidatePasswordEqual(password, passwordagain)) return false;
         return true;
+    }
+    public boolean validateProfile(String name, String phone){
+        if(!checkValidateEmpty(name, phone) || !checkValidatePhone(phone)) return false;
+        return true;
+    }
+    public boolean validateChangePassword(String old_password, String new_password, String new_password_again){
+        if(!checkValidateEmpty(old_password, new_password, new_password_again) || !checkValidatePassword(new_password)
+        || !checkValidatePasswordEqual(new_password, new_password_again)) return false;
+        return true;
+    }
+    private void show_dialog(String s, int time){
+        ProgressDialog progressDialog = new ProgressDialog(context);
+        progressDialog.setTitle("Thông báo");
+        progressDialog.setMessage(s);
+        progressDialog.show();
+
+        // Sử dụng Handler để gửi một tin nhắn hoạt động sau một khoảng thời gian
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Ẩn Dialog sau khi đã qua một khoảng thời gian nhất định
+                progressDialog.dismiss();
+            }
+        }, time * 1000); // Số milliseconds bạn muốn Dialog biến mất sau đó
     }
 }

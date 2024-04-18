@@ -1,5 +1,6 @@
 package com.example.applayout.core;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -19,7 +20,8 @@ import com.example.applayout.core.learn.LearnMain;
 import com.example.applayout.core.support.SupportMain;
 
 public class MainActivity extends AppCompatActivity {
-
+    TextView tv_home, tv_learn, tv_exercise, tv_exam, tv_support;
+    ImageView imV_home, imV_learn, imV_exercise, imV_exam, imV_support, imV_profile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,96 +34,59 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        TextView tv_learn = findViewById(R.id.tv_learn);
-        TextView tv_exercise = findViewById(R.id.tv_exercise);
-        TextView tv_exam = findViewById(R.id.tv_exam);
-        TextView tv_support = findViewById(R.id.tv_support);
-
-        tv_learn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), LearnMain.class);
-                startActivity(intent);
-                finish();
-            }
-        });
-        tv_exercise.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), ExerciseMain.class);
-                startActivity(intent);
-                finish();
-            }
-        });
-        tv_exam.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), ExamMain.class);
-                startActivity(intent);
-                finish();
-            }
-        });
-        tv_support.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), SupportMain.class);
-                startActivity(intent);
-                finish();
-            }
-        });
-
-        //Đánh dấu activity hiện tại trên thanh menu
-        ImageView imV_home = findViewById(R.id.imV_home);
-        TextView tv_home = findViewById(R.id.tv_home);
+        initUi();
+        try {
+            setOnClickListener();
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        } catch (InstantiationException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    private void initUi() {
+        tv_learn = findViewById(R.id.tv_learn);
+        tv_exercise = findViewById(R.id.tv_exercise);
+        tv_exam = findViewById(R.id.tv_exam);
+        tv_support = findViewById(R.id.tv_support);
+        imV_home = findViewById(R.id.imV_home);
+        tv_home = findViewById(R.id.tv_home);
         imV_home.setScaleType(ImageView.ScaleType.CENTER_CROP);
         imV_home.setImageResource(R.drawable.icon_home2);
         tv_home.setTextAppearance(R.style.menu_text);
-
-
-        ImageView imV_learn = findViewById(R.id.imV_learn);
-        ImageView imV_exercise = findViewById(R.id.imV_exercise);
-        ImageView imV_exam = findViewById(R.id.imV_exam);
-        ImageView imV_support = findViewById(R.id.imV_support);
-        ImageView imV_profile = findViewById(R.id.imV_profile);
-
-        imV_learn.setOnClickListener(new View.OnClickListener() {
+        imV_learn = findViewById(R.id.imV_learn);
+        imV_exercise = findViewById(R.id.imV_exercise);
+        imV_exam = findViewById(R.id.imV_exam);
+        imV_support = findViewById(R.id.imV_support);
+        imV_profile = findViewById(R.id.imV_profile);
+    }
+    private void setOnClickListener() throws IllegalAccessException, InstantiationException {
+        // Menu giữa màn hình
+        onClickTVMenu(tv_learn, LearnMain.class.newInstance());
+        onClickTVMenu(tv_exercise, ExerciseMain.class.newInstance());
+        onClickTVMenu(tv_exam, ExamMain.class.newInstance());
+        onClickTVMenu(tv_support, SupportMain.class.newInstance());
+        // Menu dưới màn hình
+        onClickImVMenu(imV_learn, LearnMain.class.newInstance());
+        onClickImVMenu(imV_exercise, ExerciseMain.class.newInstance());
+        onClickImVMenu(imV_exam, ExamMain.class.newInstance());
+        onClickImVMenu(imV_support, SupportMain.class.newInstance());
+        onClickImVMenu(imV_profile, Profile.class.newInstance());
+    }
+    private void onClickImVMenu(ImageView imV, Context context){
+        imV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), LearnMain.class);
+                Intent intent = new Intent(getApplicationContext(), context.getClass());
                 startActivity(intent);
-                finish();
             }
         });
-        imV_exercise.setOnClickListener(new View.OnClickListener() {
+    }
+    private void onClickTVMenu(TextView tv, Context context){
+        tv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), ExerciseMain.class);
+                Intent intent = new Intent(getApplicationContext(), context.getClass());
                 startActivity(intent);
-                finish();
-            }
-        });
-        imV_exam.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), ExamMain.class);
-                startActivity(intent);
-                finish();
-            }
-        });
-        imV_support.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), com.example.applayout.core.support.SupportMain.class);
-                startActivity(intent);
-                finish();
-            }
-        });
-        imV_profile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), Profile.class);
-                startActivity(intent);
-                finish();
             }
         });
     }

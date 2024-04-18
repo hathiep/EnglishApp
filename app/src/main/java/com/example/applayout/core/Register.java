@@ -1,9 +1,11 @@
 package com.example.applayout.core;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.media.Image;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.view.View;
@@ -29,6 +31,7 @@ import com.example.applayout.core.main.Unit;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.firebase.auth.ActionCodeSettings;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -46,23 +49,10 @@ public class Register extends AppCompatActivity {
     ImageView imV_back, imV_eye1, imV_eye2;
     ProgressBar progressBar;
     FirebaseAuth mAuth;
+    FirebaseUser user;
     Integer eye1, eye2;
     FirebaseDatabase database;
-    private static final Pattern EMAIL_PATTERN = Pattern.compile("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$");
-    private static final Pattern PHONE_NUMBER_PATTERN = Pattern.compile("^\\d{10}$");
 
-
-    //    @Override
-//    public void onStart() {
-//        super.onStart();
-//
-//        FirebaseUser currentUser = mAuth.getCurrentUser();
-//        if(currentUser != null){
-//            Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-//            startActivity(intent);
-//            finish();
-//        }
-//    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,62 +64,11 @@ public class Register extends AppCompatActivity {
             return insets;
         });
         initUi();
-        imV_back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(),Login.class);
-                startActivity(intent);
-                finish();
-            }
-        });
         eye1 = 0;
         eye2 = 0;
         setUiEye(imV_eye1, editTextPassword, 1);
         setUiEye(imV_eye2, editTextPasswordAgain, 2);
-        mAuth = FirebaseAuth.getInstance();
-
-        btnRegister.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Lấy các giá trị từ input
-                String name, email, phone, password, passwordagain;
-                name = editTextName.getText().toString().trim();
-                email = editTextEmail.getText().toString().trim();
-                phone = editTextPhone.getText().toString().trim();
-                password = editTextPassword.getText().toString().trim();
-                passwordagain = editTextPasswordAgain.getText().toString().trim();
-                // Gọi đối tượng validate
-                Validate validate = new Validate(Register.this);
-                if(!validate.validateRegister(name, email, phone, password, passwordagain)) return;
-                // Chạy vòng loading
-                progressBar.setVisibility(View.VISIBLE);
-                // Check đăng ký
-                mAuth.createUserWithEmailAndPassword(email, password)
-                        .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                progressBar.setVisibility(View.GONE);
-
-                                if (task.isSuccessful()) {
-                                    insertUserToRealtimeDatabase();
-                                    Toast.makeText(Register.this, "Tạo tài khoản thành công!",
-                                            Toast.LENGTH_SHORT).show();
-                                    //Back to login
-                                    Intent intent = new Intent(getApplicationContext(),Login.class);
-                                    startActivity(intent);
-                                    finish();
-
-                                } else {
-                                    Toast.makeText(Register.this, "Email đã được sử dụng.Vui lòng thử nhập email khác!",
-                                            Toast.LENGTH_SHORT).show();
-
-                                }
-                            }
-                        });
-            }
-
-
-        });
+        setOnClickListener();
     }
     private void initUi(){
         editTextEmail = findViewById(R.id.email);
@@ -142,6 +81,7 @@ public class Register extends AppCompatActivity {
         imV_back = findViewById(R.id.imV_back);
         imV_eye1 = findViewById(R.id.imV_eye1);
         imV_eye2 = findViewById(R.id.imV_eye2);
+        mAuth = FirebaseAuth.getInstance();
     }
     private void setUiEye(ImageView imv_eye, EditText edt, int x){
         imv_eye.setOnClickListener(new View.OnClickListener() {
@@ -176,6 +116,89 @@ public class Register extends AppCompatActivity {
             }
         });
     }
+    private void setOnClickListener(){
+        imV_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(),Login.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+        btnRegister.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Lấy các giá trị từ input
+                String name, email, phone, password, passwordagain;
+                name = editTextName.getText().toString().trim();
+                email = editTextEmail.getText().toString().trim();
+                phone = editTextPhone.getText().toString().trim();
+                password = editTextPassword.getText().toString().trim();
+                passwordagain = editTextPasswordAgain.getText().toString().trim();
+                // Gọi đối tượng validate
+                Validate validate = new Validate(Register.this);
+                if(!validate.validateRegister(name, email, phone, password, passwordagain)) return;
+                // Chạy vòng loading
+                progressBar.setVisibility(View.VISIBLE);
+                // Check đăng ký
+                createUserWithEmailAndPassword(email, password);
+            }
+
+
+        });
+    }
+
+    private void createUserWithEmailAndPassword(String email, String password){
+        mAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        progressBar.setVisibility(View.GONE);
+
+                        if (task.isSuccessful()) {
+                            user = mAuth.getCurrentUser();
+                            if (user != null) {
+                                sendEmailVerify(email);
+                            }
+
+                        } else {
+                            show_dialog("Email đã được sử dụng.Vui lòng thử nhập email khác!", 2);
+                            new Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    editTextEmail.requestFocus(); // Yêu cầu EditText edt_name nhận focus
+                                    editTextEmail.setSelection(editTextEmail.getText().length()); // Di chuyển con trỏ nháy đến cuối của edt_name
+                                }
+                            }, 100);
+                        }
+                    }
+                });
+    }
+    private void sendEmailVerify(String email){
+        user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    // Email xác thực đã được gửi thành công
+                    show_dialog("Tạo tài khoản thành công. Email xác thực đã được gửi đến " + email + "\nVui lòng truy cập email để xác nhận!", 3);
+                    // Lưu thông tin user vào Realtime Database
+                    insertUserToRealtimeDatabase();
+                    //Back to login
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            Intent intent = new Intent(getApplicationContext(),Login.class);
+                            startActivity(intent);
+                            finish();
+                        }
+                    }, 4000);
+                } else {
+                    // Không thể gửi email xác thực
+                    show_dialog("Không thể gửi email xác thực. Vui lòng kiểm tra lại email!", 3);
+                }
+            }
+        });
+    }
 
     //Hàm khởi tạo thông tin User trên RealTimeDatabase
     private void insertUserToRealtimeDatabase(){
@@ -202,5 +225,20 @@ public class Register extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError error) {
             }
         });
+    }
+    private void show_dialog(String s, int time){
+        ProgressDialog progressDialog = new ProgressDialog(Register.this);
+        progressDialog.setTitle("Thông báo");
+        progressDialog.setMessage(s);
+        progressDialog.show();
+
+        // Sử dụng Handler để gửi một tin nhắn hoạt động sau một khoảng thời gian
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Ẩn Dialog sau khi đã qua một khoảng thời gian nhất định
+                progressDialog.dismiss();
+            }
+        }, time * 1000); // Số milliseconds bạn muốn Dialog biến mất sau đó
     }
 }
