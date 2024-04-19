@@ -1,5 +1,6 @@
 package com.example.applayout.core.exam;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -17,12 +18,15 @@ import com.example.applayout.core.MainActivity;
 import com.example.applayout.core.Profile;
 import com.example.applayout.core.exam.listening.ExamListening;
 import com.example.applayout.core.exam.synthetic.ExamSynthetic;
+import com.example.applayout.core.exam.vocabulary.ExamVocabulary;
 import com.example.applayout.core.exam.writing.ExamWriting;
 import com.example.applayout.core.exercise.ExerciseMain;
 import com.example.applayout.core.learn.LearnMain;
 import com.example.applayout.core.support.SupportMain;
 
 public class ExamMain extends AppCompatActivity {
+    ImageView imV_back, imV_home, imV_learn, imV_exercise, imV_exam, imV_support, imV_profile;
+    TextView tv_exam, tv_vocabulary, tv_grammar, tv_listening, tv_writing, tv_synthetic;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,114 +38,70 @@ public class ExamMain extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
+        // Ánh xạ view
+        initUi();
+        // Gọi hàm onClick
+        try {
+            setOnClickListener();
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        } catch (InstantiationException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    // Hàm ánh xạ view
+    private void initUi() {
+        tv_vocabulary = findViewById(R.id.tv_vocabulary);
+        tv_grammar = findViewById(R.id.tv_grammar);
+        tv_listening = findViewById(R.id.tv_listening);
+        tv_writing = findViewById(R.id.tv_writing);
+        tv_synthetic = findViewById(R.id.tv_synthetic);
+        imV_back = findViewById(R.id.imV_back);
+        imV_home = findViewById(R.id.imV_home);
+        imV_learn = findViewById(R.id.imV_learn);
+        imV_exercise = findViewById(R.id.imV_exercise);
+        imV_support = findViewById(R.id.imV_support);
+        imV_profile = findViewById(R.id.imV_profile);
         //Đánh dấu activity hiện tại trên thanh menu
-        ImageView imV_exam = findViewById(R.id.imV_exam);
-        TextView tv_exam = findViewById(R.id.tv_exam);
+        imV_exam = findViewById(R.id.imV_exam);
+        tv_exam = findViewById(R.id.tv_exam);
         imV_exam.setScaleType(ImageView.ScaleType.CENTER_CROP);
         imV_exam.setImageResource(R.drawable.icon_exam2);
         tv_exam.setTextAppearance(R.style.menu_text);
-
-        ImageView imV_back = findViewById(R.id.imV_back);
-        ImageView imV_home = findViewById(R.id.imV_home);
-        ImageView imV_learn = findViewById(R.id.imV_learn);
-        ImageView imV_exercise = findViewById(R.id.imV_exercise);
-        ImageView imV_support = findViewById(R.id.imV_support);
-        ImageView imV_profile = findViewById(R.id.imV_profile);
-
-        imV_back.setOnClickListener(new View.OnClickListener() {
+    }
+    // Hàm onClickListener
+    private void setOnClickListener() throws IllegalAccessException, InstantiationException {
+        // Menu giữa màn hình
+        onClickTVMenu(tv_vocabulary, ExamVocabulary.class.newInstance());
+        onClickTVMenu(tv_grammar, ExamGrammar.class.newInstance());
+        onClickTVMenu(tv_listening, ExamListening.class.newInstance());
+        onClickTVMenu(tv_writing, ExamWriting.class.newInstance());
+        onClickTVMenu(tv_synthetic, ExamSynthetic.class.newInstance());
+        // Menu dưới màn hình
+        onClickImVMenu(imV_back, MainActivity.class.newInstance());
+        onClickImVMenu(imV_home, ExamMain.class.newInstance());
+        onClickImVMenu(imV_learn, LearnMain.class.newInstance());
+        onClickImVMenu(imV_exercise, ExerciseMain.class.newInstance());
+        onClickImVMenu(imV_support, SupportMain.class.newInstance());
+        onClickImVMenu(imV_profile, Profile.class.newInstance());
+    }
+    // Hàm onClickImageView
+    private void onClickImVMenu(ImageView imV, Context context){
+        imV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                Intent intent = new Intent(getApplicationContext(), context.getClass());
                 startActivity(intent);
-                finish();
             }
         });
-        imV_home.setOnClickListener(new View.OnClickListener() {
+    }
+    // Hàm onClickTextView
+    private void onClickTVMenu(TextView tv, Context context){
+        tv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                Intent intent = new Intent(getApplicationContext(), context.getClass());
                 startActivity(intent);
-                finish();
-            }
-        });
-        imV_learn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), LearnMain.class);
-                startActivity(intent);
-                finish();
-            }
-        });
-        imV_exercise.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), ExerciseMain.class);
-                startActivity(intent);
-                finish();
-            }
-        });
-        imV_support.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), SupportMain.class);
-                startActivity(intent);
-                finish();
-            }
-        });
-        imV_profile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), Profile.class);
-                startActivity(intent);
-                finish();
-            }
-        });
-
-        TextView tv_vocabulary = findViewById(R.id.tv_vocabulary);
-        TextView tv_grammar = findViewById(R.id.tv_grammar);
-        TextView tv_listening = findViewById(R.id.tv_listening);
-        TextView tv_writing = findViewById(R.id.tv_writing);
-        TextView tv_synthetic = findViewById(R.id.tv_synthetic);
-
-        tv_vocabulary.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), ExamVocabulary.class);
-                startActivity(intent);
-                finish();
-            }
-        });
-        tv_grammar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), ExamGrammar.class);
-                startActivity(intent);
-                finish();
-            }
-        });
-        tv_listening.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), ExamListening.class);
-                startActivity(intent);
-                finish();
-            }
-        });
-        tv_writing.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), ExamWriting.class);
-                startActivity(intent);
-                finish();
-            }
-        });
-        tv_synthetic.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), ExamSynthetic.class);
-                startActivity(intent);
-                finish();
             }
         });
     }

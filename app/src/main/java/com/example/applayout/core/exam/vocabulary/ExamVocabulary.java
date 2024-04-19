@@ -1,8 +1,8 @@
-package com.example.applayout.core.exam;
+package com.example.applayout.core.exam.vocabulary;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
@@ -20,52 +21,36 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.applayout.R;
 import com.example.applayout.core.MainActivity;
 import com.example.applayout.core.Profile;
+import com.example.applayout.core.RandomArray;
+import com.example.applayout.core.exam.ExamMain;
+import com.example.applayout.core.exam.ExamPartFinal;
 import com.example.applayout.core.exercise.ExerciseMain;
 import com.example.applayout.core.learn.LearnMain;
 import com.example.applayout.core.support.SupportMain;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.Stack;
 
 public class ExamVocabulary extends AppCompatActivity {
+    ImageView imV_back, imV_home, imV_learn, imV_exercise, imV_exam, imV_support, imV_profile;
+    TextView tv_exam, tv_part, tv_exam_name, tv_question_num, tv_q1, tv_q2, tv_q3, tv_q4, tv_a1, tv_a2, tv_a3, tv_a4;
+    FirebaseAuth auth;
+    FirebaseUser user;
+    FirebaseDatabase database;
+    List<TextView> list_tv_q, list_tv_a;
+    List<List<Integer>> colors_matrix;
+    int word_used[] = new int[40];
+    int word_index[];
+    int question = 1;
 
-    public static List<List<Integer>> generateRandomPermutations(int[] numbers) {
-        List<List<Integer>> permutations = generatePermutations(numbers);
-
-        // Sử dụng thuật toán Fisher-Yates để hoán đổi vị trí các chỉnh hợp
-        Random random = new Random();
-        for (int i = permutations.size() - 1; i >= 0; i--) {
-            int j = random.nextInt(i + 1);
-            List<Integer> temp = permutations.get(i);
-            permutations.set(i, permutations.get(j));
-            permutations.set(j, temp);
-        }
-
-        return permutations;
-    }
-
-    public static List<List<Integer>> generatePermutations(int[] numbers) {
-        List<List<Integer>> permutations = new ArrayList<>();
-        generatePermutationsHelper(numbers, new ArrayList<>(), permutations);
-        return permutations;
-    }
-
-    public static void generatePermutationsHelper(int[] numbers, List<Integer> currentPermutation, List<List<Integer>> permutations) {
-        if (currentPermutation.size() == 4) {
-            permutations.add(new ArrayList<>(currentPermutation));
-            return;
-        }
-
-        for (int i = 0; i < numbers.length; i++) {
-            if (!currentPermutation.contains(numbers[i])) {
-                currentPermutation.add(numbers[i]);
-                generatePermutationsHelper(numbers, currentPermutation, permutations);
-                currentPermutation.remove(currentPermutation.size() - 1);
-            }
-        }
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,34 +63,20 @@ public class ExamVocabulary extends AppCompatActivity {
             return insets;
         });
 
-        int[] question = {1};
-        // Bắt sự kiện cho nút back và gán giá trị cho header
-        ImageView imV_back = findViewById(R.id.imV_back);
-        TextView tv_part = findViewById(R.id.tv_part);
-        TextView tv_exam_name = findViewById(R.id.tv_exam_name);
-        TextView tv_question_num = findViewById(R.id.tv_question_num);
-        imV_back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), ExamMain.class);
-                startActivity(intent);
-                finish();
-            }
-        });
-        tv_part.setText("Part A1");
-        tv_exam_name.setText("Vocabulary");
-        tv_question_num.setText(String.valueOf(question[0]) + "/10");
-
-        //Đánh dấu activity hiện tại trên thanh menu
-        ImageView imV_exam = findViewById(R.id.imV_exam);
-        TextView tv_exam = findViewById(R.id.tv_exam);
-        imV_exam.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        imV_exam.setImageResource(R.drawable.icon_exam2);
-        tv_exam.setTextAppearance(R.style.menu_text);
-
-        //Tạo ma trận màu ngẫu nhiên các chỉnh hợp chập 4 của 4 đáp án
-        int[] numbers = {0, 1, 2, 3};
-        List<List<Integer>> colors_matrix = generateRandomPermutations(numbers);
+        // Ánh xạ view
+        initUi();
+        // Khởi tạo các giá trị
+        init_variable();
+        // Gọi hàm onClick
+        try {
+            setOnClickListener();
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        } catch (InstantiationException e) {
+            throw new RuntimeException(e);
+        }
+        setUi();
+        getWordFromDataBase();
 
         List<String[]> list_word_q = new ArrayList<>();
         List<String[]> list_word_a = new ArrayList<>();
@@ -130,23 +101,6 @@ public class ExamVocabulary extends AppCompatActivity {
         list_word_a.add(new String[]{"con gà", "quả dứa", "đôi giày", "xe tải"});
         list_word_a.add(new String[]{"con gà", "quả dứa", "đôi giày", "xe tải"});
 
-
-        List<TextView> list_tv_q = new ArrayList<>();
-        list_tv_q.add(findViewById(R.id.tv_q1));
-        list_tv_q.add(findViewById(R.id.tv_q2));
-        list_tv_q.add(findViewById(R.id.tv_q3));
-        list_tv_q.add(findViewById(R.id.tv_q4));
-        for(int i=0; i<4; i++){
-            list_tv_q.get(i).setText((i+1) + ". " + list_word_q.get(question[0])[i]);
-        }
-        List<TextView> list_tv_a = new ArrayList<>();
-        list_tv_a.add(findViewById(R.id.tv_a1));
-        list_tv_a.add(findViewById(R.id.tv_a2));
-        list_tv_a.add(findViewById(R.id.tv_a3));
-        list_tv_a.add(findViewById(R.id.tv_a4));
-        for(int i=0; i<4; i++){
-            list_tv_a.get(i).setText((char)('A'+i) + ". " + list_word_a.get(question[0])[colors_matrix.get(question[0]).get(i)]);
-        }
         Button btn_answer = findViewById(R.id.btn_answer);
         Button btn_reset = findViewById(R.id.btn_reset);
 
@@ -245,17 +199,17 @@ public class ExamVocabulary extends AppCompatActivity {
                         tv_q.setBackgroundTintList(ContextCompat.getColorStateList(ExamVocabulary.this, colors_dark[i]));
                         tv_q.setBackgroundTintMode(PorterDuff.Mode.SRC_IN);
                         tv_q.setTextColor(getColor(R.color.white));
-                        tv_a.setBackgroundTintList(ContextCompat.getColorStateList(ExamVocabulary.this, colors_dark[colors_matrix.get(question[0]).get(i)]));
+                        tv_a.setBackgroundTintList(ContextCompat.getColorStateList(ExamVocabulary.this, colors_dark[colors_matrix.get(question).get(i)]));
                         tv_a.setBackgroundTintMode(PorterDuff.Mode.SRC_IN);
                         tv_a.setTextColor(getColor(R.color.white));
                     }
                     btn_reset.setText("Xem lại");
-                    if(question[0]==10) btn_answer.setText("Kết thúc");
+                    if(question==10) btn_answer.setText("Kết thúc");
                     else btn_answer.setText("Tiếp theo");
                     click_btn[0] = click_btn[1] = 1;
                 }
                 else {
-                    if(question[0]==10) {
+                    if(question==10) {
                         Intent intent = new Intent(getApplicationContext(), ExamPartFinal.class);
                         startActivity(intent);
                         finish();
@@ -264,11 +218,11 @@ public class ExamVocabulary extends AppCompatActivity {
                         for(int i=0; i<4; i++) {
                             TextView tv_q = list_tv_q.get(i);
                             TextView tv_a = list_tv_a.get(i);
-                            tv_q.setText((i+1) + ". " + list_word_q.get(question[0]+1)[i]);
+                            tv_q.setText((i+1) + ". " + list_word_q.get(question+1)[i]);
                             tv_q.setBackgroundTintList(ContextCompat.getColorStateList(ExamVocabulary.this, colors_light[i]));
                             tv_q.setBackgroundTintMode(PorterDuff.Mode.MULTIPLY);
                             tv_q.setTextColor(getColor(R.color.black));
-                            tv_a.setText((char)('A'+i) + ". " + list_word_a.get(question[0])[colors_matrix.get(question[0]+1).get(i)]);
+                            tv_a.setText((char)('A'+i) + ". " + list_word_a.get(question)[colors_matrix.get(question+1).get(i)]);
                             tv_a.setBackgroundTintList(ContextCompat.getColorStateList(ExamVocabulary.this, R.color.white));
                             tv_a.setBackgroundTintMode(PorterDuff.Mode.MULTIPLY);
                             tv_a.setTextColor(getColor(R.color.black));
@@ -279,9 +233,9 @@ public class ExamVocabulary extends AppCompatActivity {
                         btn_reset.setBackgroundTintList(ContextCompat.getColorStateList(ExamVocabulary.this, R.color.red));
                         btn_answer.setText("Đáp án");
                         click_btn[0] = click_btn[1] = 0;
-                        question[0]++;
+                        question++;
                         st.clear();
-                        tv_question_num.setText(String.valueOf(question[0]) + "/10");
+                        tv_question_num.setText(String.valueOf(question) + "/10");
                     }
                 }
             }
@@ -293,11 +247,11 @@ public class ExamVocabulary extends AppCompatActivity {
                     for(int i=0; i<4; i++) {
                         TextView tv_q = list_tv_q.get(i);
                         TextView tv_a = list_tv_a.get(i);
-                        tv_q.setText((i+1) + ". " + list_word_q.get(question[0])[i]);
+                        tv_q.setText((i+1) + ". " + list_word_q.get(question)[i]);
                         tv_q.setBackgroundTintList(ContextCompat.getColorStateList(ExamVocabulary.this, colors_light[i]));
                         tv_q.setBackgroundTintMode(PorterDuff.Mode.MULTIPLY);
                         tv_q.setTextColor(getColor(R.color.black));
-                        tv_a.setText((char)('A'+i) + ". " + list_word_a.get(question[0])[colors_matrix.get(question[0]).get(i)]);
+                        tv_a.setText((char)('A'+i) + ". " + list_word_a.get(question)[colors_matrix.get(question).get(i)]);
                         tv_a.setBackgroundTintList(ContextCompat.getColorStateList(ExamVocabulary.this, R.color.white));
                         tv_a.setBackgroundTintMode(PorterDuff.Mode.MULTIPLY);
                         tv_a.setTextColor(getColor(R.color.black));
@@ -321,7 +275,7 @@ public class ExamVocabulary extends AppCompatActivity {
                         tv_q.setBackgroundTintList(ContextCompat.getColorStateList(ExamVocabulary.this, colors_dark[i]));
                         tv_q.setBackgroundTintMode(PorterDuff.Mode.SRC_IN);
                         tv_q.setTextColor(getColor(R.color.white));
-                        tv_a.setBackgroundTintList(ContextCompat.getColorStateList(ExamVocabulary.this, colors_dark[colors_matrix.get(question[0]).get(i)]));
+                        tv_a.setBackgroundTintList(ContextCompat.getColorStateList(ExamVocabulary.this, colors_dark[colors_matrix.get(question).get(i)]));
                         tv_a.setBackgroundTintMode(PorterDuff.Mode.SRC_IN);
                         tv_a.setTextColor(getColor(R.color.white));
                     }
@@ -332,53 +286,122 @@ public class ExamVocabulary extends AppCompatActivity {
             }
         });
 
-        //Bắt sự kiện thanh menu
-        ImageView imV_home = findViewById(R.id.imV_home);
-        ImageView imV_learn = findViewById(R.id.imV_learn);
-        ImageView imV_exercise = findViewById(R.id.imV_exercise);
-        ImageView imV_support = findViewById(R.id.imV_support);
-        ImageView imV_profile = findViewById(R.id.imV_profile);
+    }
+    // Hàm ánh xạ view
+    private void initUi() {
+        // Ánh xạ view menu
+        imV_back = findViewById(R.id.imV_back);
+        imV_home = findViewById(R.id.imV_home);
+        imV_learn = findViewById(R.id.imV_learn);
+        imV_exercise = findViewById(R.id.imV_exercise);
+        imV_support = findViewById(R.id.imV_support);
+        imV_profile = findViewById(R.id.imV_profile);
+        //Đánh dấu activity hiện tại trên thanh menu
+        imV_exam = findViewById(R.id.imV_exam);
+        tv_exam = findViewById(R.id.tv_exam);
+        imV_exam.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        imV_exam.setImageResource(R.drawable.icon_exam2);
+        tv_exam.setTextAppearance(R.style.menu_text);
+        // Ánh xạ view header
+        tv_part = findViewById(R.id.tv_part);
+        tv_exam_name = findViewById(R.id.tv_exam_name);
+        tv_question_num = findViewById(R.id.tv_question_num);
+    }
+    // Khởi tạo giá trị
+    private void init_variable(){
+        // Khởi tạo mảng vị trí các từ trong database
+        word_index = new int[4];
+        // Khởi tạo list Textview từ và list Textview nghĩa
+        list_tv_q = new ArrayList<>();
+        list_tv_a = new ArrayList<>();
+        // Ánh xạ view list Textview từ và list Textview nghĩa
+        list_tv_q.add(findViewById(R.id.tv_q1));
+        list_tv_q.add(findViewById(R.id.tv_q2));
+        list_tv_q.add(findViewById(R.id.tv_q3));
+        list_tv_q.add(findViewById(R.id.tv_q4));
+        list_tv_a.add(findViewById(R.id.tv_a1));
+        list_tv_a.add(findViewById(R.id.tv_a2));
+        list_tv_a.add(findViewById(R.id.tv_a3));
+        list_tv_a.add(findViewById(R.id.tv_a4));
+        //Tạo ma trận màu ngẫu nhiên các chỉnh hợp chập 4 của 4 đáp án
+        RandomArray random = new RandomArray(4);
+        colors_matrix = random.generateRandomPermutations();
+        user = FirebaseAuth.getInstance().getCurrentUser();
+    }
+    // Gán giá trị cho view
+    private void setUi(){
+        tv_part.setText("Part A1");
+        tv_exam_name.setText("Vocabulary");
+        tv_question_num.setText(String.valueOf(question) + "/10");
+    }
+    private void getWordFromDataBase(){
+        database = FirebaseDatabase.getInstance();
+        DatabaseReference ref_vocabulary = database.getReference("Exam/Vocabulary");
+        ref_vocabulary.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                int size = (int) snapshot.getChildrenCount();
+                RandomArray random = new RandomArray();
+                word_index = random.generateRandomNumbersNotInArray(word_used, size);
+                database = FirebaseDatabase.getInstance();
+                for(int i=0; i<4; i++){
+                    setWord(list_tv_q.get(i), list_tv_a.get(colors_matrix.get(question).get(i)), word_index[i], i);
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+    }
+    private void setWord(TextView tv_q, TextView tv_a, int index, int x){
+        database = FirebaseDatabase.getInstance();
+        DatabaseReference ref_word = database.getReference("Exam/Vocabulary/" + index);
+        ref_word.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Word word = snapshot.getValue(Word.class);
+                tv_q.setText("1. " + word.getWord());
+                tv_a.setText(word.getMeaning());
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+    }
+    private void setPoint(){
+        String uid = user.getUid();
+        database = FirebaseDatabase.getInstance();
+        DatabaseReference ref = database.getReference("User/" + uid + "/..."); // thêm đường dẫn của từng người đến chỗ cần ghi điểm
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                int point = 0; // Đây là điểm sau khi làm bài xong
+                ref.setValue(point);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+    }
+    // Hàm onClickListener
+    private void setOnClickListener() throws IllegalAccessException, InstantiationException {
 
-        imV_home.setOnClickListener(new View.OnClickListener() {
+        // Menu dưới màn hình
+        onClickImVMenu(imV_back, MainActivity.class.newInstance());
+        onClickImVMenu(imV_home, ExamMain.class.newInstance());
+        onClickImVMenu(imV_learn, LearnMain.class.newInstance());
+        onClickImVMenu(imV_exercise, ExerciseMain.class.newInstance());
+        onClickImVMenu(imV_support, SupportMain.class.newInstance());
+        onClickImVMenu(imV_profile, Profile.class.newInstance());
+    }
+    // Hàm onClickImageView
+    private void onClickImVMenu(ImageView imV, Context context){
+        imV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                Intent intent = new Intent(getApplicationContext(), context.getClass());
                 startActivity(intent);
-                finish();
             }
         });
-        imV_learn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), LearnMain.class);
-                startActivity(intent);
-                finish();
-            }
-        });
-        imV_exercise.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), ExerciseMain.class);
-                startActivity(intent);
-                finish();
-            }
-        });
-        imV_support.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), SupportMain.class);
-                startActivity(intent);
-                finish();
-            }
-        });
-        imV_profile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), Profile.class);
-                startActivity(intent);
-                finish();
-            }
-        });
-
     }
 }

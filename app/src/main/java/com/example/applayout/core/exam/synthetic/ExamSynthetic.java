@@ -91,7 +91,7 @@ public class ExamSynthetic extends AppCompatActivity {
         List<String[]> list_answer = new ArrayList<>();
 //        list_answer.add(new String[]{"finish", "are finishing", "finished", "were finished", "3"});
 //        for(int i=1; i<20; i++){
-//            list_answer.add(new String[]{"Answer1", "Answer2" , "Answer3", "Answer4", "" + String.valueOf(new Random().nextInt(4) + 1)});
+//            list_answer.add(new String[]{"Answer1", "Answer2" , "Answer3", "Answer4", "" + String.valueOf(new RandomArray().nextInt(4) + 1)});
 //        }
 //
 //
