@@ -41,6 +41,7 @@ public class AnnouncementSupport extends AppCompatActivity {
             );
             startActivity(intent);
         });
+        
         ImageView imV_home = findViewById(R.id.imV_home);
         ImageView imV_learn = findViewById(R.id.imV_learn);
         ImageView imV_exercise = findViewById(R.id.imV_exercise);

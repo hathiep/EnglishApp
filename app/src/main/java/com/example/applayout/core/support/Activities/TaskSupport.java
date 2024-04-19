@@ -19,6 +19,8 @@ import com.example.applayout.core.exercise.ExerciseMain;
 import com.example.applayout.core.learn.LearnMain;
 import com.example.applayout.core.support.Adapters.TaskAdapter;
 import com.example.applayout.core.support.Domains.TaskDomain;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
@@ -197,7 +199,7 @@ public class TaskSupport extends AppCompatActivity {
                 finish();
             }
         });
-
+        
 
     }
 }
