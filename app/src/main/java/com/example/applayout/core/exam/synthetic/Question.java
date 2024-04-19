@@ -1,45 +1,31 @@
-package com.example.applayout.core.exercise;
-
-import android.media.MediaPlayer;
+package com.example.applayout.core.exam.synthetic;
 
 public class Question {
-    private int number;
-    private String question;
+    private String context;
     private String answer1;
     private String answer2;
     private String answer3;
     private String answer4;
     private String correct_answer;
-    private String voice;
 
     public Question() {
     }
 
-    public Question(int number, String question, String answer1, String answer2, String answer3, String answer4, String correct_answer, String voice) {
-        this.number = number;
-        this.question = question;
+    public Question(String context, String answer1, String answer2, String answer3, String answer4, String correct_answer) {
+        this.context = context;
         this.answer1 = answer1;
         this.answer2 = answer2;
         this.answer3 = answer3;
         this.answer4 = answer4;
         this.correct_answer = correct_answer;
-        this.voice = voice;
     }
 
-    public int getNumber() {
-        return number;
+    public String getContext() {
+        return context;
     }
 
-    public void setNumber(int number) {
-        this.number = number;
-    }
-
-    public String getQuestion() {
-        return question;
-    }
-
-    public void setQuestion(String question) {
-        this.question = question;
+    public void setContext(String context) {
+        this.context = context;
     }
 
     public String getAnswer1() {
@@ -80,13 +66,5 @@ public class Question {
 
     public void setCorrect_answer(String correct_answer) {
         this.correct_answer = correct_answer;
-    }
-
-    public String getVoice() {
-        return voice;
-    }
-
-    public void setVoice(String voice) {
-        this.voice = voice;
     }
 }

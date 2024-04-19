@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".core.exam.ExamSynthetic">
+    tools:context=".core.exam.synthetic.ExamSynthetic">
 
     <include layout="@layout/exam_header"/>
 

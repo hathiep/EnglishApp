@@ -5,19 +5,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.applayout.R;
 import com.example.applayout.core.Profile;
-import com.example.applayout.core.exam.ExamGrammar;
-import com.example.applayout.core.exam.ExamListening;
 import com.example.applayout.core.exam.ExamMain;
-import com.example.applayout.core.exam.ExamSynthetic;
-import com.example.applayout.core.exam.ExamVocabulary;
-import com.example.applayout.core.exam.ExamWriting;
 import com.example.applayout.core.exercise.ExerciseMain;
 import com.example.applayout.core.learn.LearnMain;
 import com.example.applayout.core.support.SupportMain;
