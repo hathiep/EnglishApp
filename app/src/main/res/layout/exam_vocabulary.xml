@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".core.exam.ExamVocabulary">
+    tools:context=".core.exam.vocabulary.ExamVocabulary">
 
     <include layout="@layout/exam_header"/>
 
