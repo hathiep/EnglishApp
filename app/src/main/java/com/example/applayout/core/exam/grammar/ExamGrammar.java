@@ -1,5 +1,7 @@
-package com.example.applayout.core.exam;
+package com.example.applayout.core.exam.grammar;
 
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
@@ -9,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
@@ -18,15 +22,35 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.applayout.R;
 import com.example.applayout.core.MainActivity;
 import com.example.applayout.core.Profile;
+import com.example.applayout.core.exam.ExamMain;
+import com.example.applayout.core.exam.ExamPartFinal;
+import com.example.applayout.core.exam.Result;
+import com.example.applayout.core.exam.vocabulary.ExamVocabulary;
 import com.example.applayout.core.exercise.ExerciseMain;
 import com.example.applayout.core.learn.LearnMain;
 import com.example.applayout.core.support.SupportMain;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 public class ExamGrammar extends AppCompatActivity {
+
+    ImageView imV_back, imV_home, imV_learn, imV_exercise, imV_exam, imV_support, imV_profile;
+    TextView tv_grammar, tv_part, tv_exam_name, tv_question_num, tv_status;
+    Button btn_reset, btn_answer;
+    FirebaseAuth auth = FirebaseAuth.getInstance();
+    FirebaseUser user = auth.getCurrentUser();
+    FirebaseDatabase database;
+    int question = 1;
+    int point = 0;
 
     String[] list_question = {"We are doing a project for this subject","We are doing a super big project for this subject", "We are doing a super big Java Mobile project for this subject", "I am", "He is an engineer", "She is a teacher", "They are happy", "We had finish the project", "We got 10 points for this project", "We got an A in this subject "};
     String[] answers = {};
@@ -56,35 +80,19 @@ public class ExamGrammar extends AppCompatActivity {
             return insets;
         });
 
-        int[] question = {1};
-        // Bắt sự kiện cho nút back và gán giá trị cho header
-        ImageView imV_back = findViewById(R.id.imV_back);
-        TextView tv_part = findViewById(R.id.tv_part);
-        TextView tv_exam_name = findViewById(R.id.tv_exam_name);
-        TextView tv_question_num = findViewById(R.id.tv_question_num);
-        imV_back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), ExamMain.class);
-                startActivity(intent);
-                finish();
-            }
-        });
-        tv_part.setText("Part A2");
-        tv_exam_name.setText("Grammar");
-        tv_question_num.setText(String.valueOf(question[0]) + "/10");
+        // Ánh xạ view
+        initUi();
+        // Gọi hàm onClick
+        try {
+            setOnClickListener();
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        } catch (InstantiationException e) {
+            throw new RuntimeException(e);
+        }
+        setUi();
 
-        //Đánh dấu activity hiện tại trên thanh menu
-        ImageView imV_exam = findViewById(R.id.imV_exam);
-        TextView tv_exam = findViewById(R.id.tv_exam);
-        imV_exam.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        imV_exam.setImageResource(R.drawable.icon_exam2);
-        tv_exam.setTextAppearance(R.style.menu_text);
-
-        answers = list_question[question[0]-1].split(" ");
-
-        Button btn_reset = findViewById(R.id.btn_reset);
-        Button btn_answer = findViewById(R.id.btn_answer);
+        answers = list_question[question-1].split(" ");
 
         int[] arr = new int[14];
         List<TextView> list_word = new ArrayList<>();
@@ -164,7 +172,7 @@ public class ExamGrammar extends AppCompatActivity {
         btn_reset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                answers = list_question[question[0]-1].split("\\s+");
+                answers = list_question[question-1].split("\\s+");
                 if(arr[12]==0){
                     for(int i=0; i<12; i++){
                         TextView tv_a = list_ans.get(i);
@@ -208,7 +216,7 @@ public class ExamGrammar extends AppCompatActivity {
         btn_answer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                answers = list_question[question[0]-1].split("\\s+");
+                answers = list_question[question-1].split("\\s+");
                 if(arr[13]==0){
                     for(int i=0; i<12; i++){
                         TextView tv_a = list_ans.get(i);
@@ -220,13 +228,13 @@ public class ExamGrammar extends AppCompatActivity {
                             tv_q.setBackgroundTintList(ContextCompat.getColorStateList(ExamGrammar.this, R.color.white));
                         }
                         btn_reset.setText("Xem lại");
-                        if(question[0]==10) btn_answer.setText("Kết thúc");
+                        if(question==10) btn_answer.setText("Kết thúc");
                         else btn_answer.setText("Tiếp theo");
                     }
                     arr[12] = arr[13] = 1;
                 }
                 else {
-                    if (question[0] == 10) {
+                    if (question == 10) {
                         Intent intent = new Intent(getApplicationContext(), ExamPartFinal.class);
                         startActivity(intent);
                         finish();
@@ -241,8 +249,8 @@ public class ExamGrammar extends AppCompatActivity {
                         btn_reset.setText("Reset");
                         btn_answer.setText("Đáp án");
                         arr[12] = arr[13] = 0;
-                        question[0]++;
-                        answers = list_question[question[0]-1].split(" ");
+                        question++;
+                        answers = list_question[question-1].split(" ");
                         int[] numbers = new int[answers.length];
                         for(int i=0; i<answers.length; i++) numbers[i] = i;
                         int[] words_random = random(numbers);
@@ -254,58 +262,165 @@ public class ExamGrammar extends AppCompatActivity {
                             else list_word.get(i).setVisibility(View.INVISIBLE);
                         }
                         sentence.clear();
-                        tv_question_num.setText(String.valueOf(question[0]) + "/10");
+                        tv_question_num.setText(String.valueOf(question) + "/10");
                     }
                 }
             }
         });
+    }
+    // Hàm ánh xạ view
+    private void initUi() {
+        // Ánh xạ view header
+        tv_part = findViewById(R.id.tv_part);
+        tv_exam_name = findViewById(R.id.tv_exam_name);
+        tv_question_num = findViewById(R.id.tv_question_num);
+        tv_status = findViewById(R.id.tv_status);
+        // Ánh xạ view menu
+        imV_back = findViewById(R.id.imV_back);
+        imV_home = findViewById(R.id.imV_home);
+        imV_learn = findViewById(R.id.imV_learn);
+        imV_exercise = findViewById(R.id.imV_exercise);
+        imV_support = findViewById(R.id.imV_support);
+        imV_profile = findViewById(R.id.imV_profile);
+        //Đánh dấu activity hiện tại trên thanh menu
+        imV_exam = findViewById(R.id.imV_exam);
+        tv_grammar = findViewById(R.id.tv_exam);
+        imV_exam.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        imV_exam.setImageResource(R.drawable.icon_exam2);
+        tv_grammar.setTextAppearance(R.style.menu_text);
 
-        //Bắt sự kiện thanh menu
-        ImageView imV_home = findViewById(R.id.imV_home);
-        ImageView imV_learn = findViewById(R.id.imV_learn);
-        ImageView imV_exercise = findViewById(R.id.imV_exercise);
-        ImageView imV_support = findViewById(R.id.imV_support);
-        ImageView imV_profile = findViewById(R.id.imV_profile);
+        // Ánh xạ view button
+        btn_answer = findViewById(R.id.btn_answer);
+        btn_reset = findViewById(R.id.btn_reset);
+    }
+    // Gán giá trị cho view
+    private void setUi(){
+        tv_part.setText("Part A2");
+        tv_exam_name.setText("Grammar");
+        tv_question_num.setText(String.valueOf(question) + "/10");
+    }
+    // Hàm onClickListener
+    private void setOnClickListener() throws IllegalAccessException, InstantiationException {
 
-        imV_home.setOnClickListener(new View.OnClickListener() {
+        // Menu dưới màn hình
+        onClickImVMenu(imV_back, ExamMain.class.newInstance());
+        onClickImVMenu(imV_home, ExamMain.class.newInstance());
+        onClickImVMenu(imV_learn, LearnMain.class.newInstance());
+        onClickImVMenu(imV_exercise, ExerciseMain.class.newInstance());
+        onClickImVMenu(imV_support, SupportMain.class.newInstance());
+        onClickImVMenu(imV_profile, Profile.class.newInstance());
+    }
+    // Hàm start Final Activity
+    private void sendToFinal(){
+        setPoint();
+        Result.point = "" + point + "/10";
+        Result.part = tv_part.getText().toString().trim();
+        Result.exam_name = tv_exam_name.getText().toString().trim();
+        Intent intent = new Intent(getApplicationContext(), ExamPartFinal.class);
+        startActivity(intent);
+        finish();
+    }
+    // Hàm lưu điểm lên Uid trên RealtimeDatabase
+    private void setPoint(){
+        String uid = user.getUid();
+        database = FirebaseDatabase.getInstance();
+        DatabaseReference ref = database.getReference("User/" + uid + "/exam/vocabulary"); // thêm đường dẫn của từng người đến chỗ cần ghi điểm
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(intent);
-                finish();
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                ref.setValue(point);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
             }
         });
-        imV_learn.setOnClickListener(new View.OnClickListener() {
+    }
+    // Hàm onClickImageView
+    private void onClickImVMenu(ImageView imV, Context context){
+        imV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), LearnMain.class);
-                startActivity(intent);
-                finish();
+                showDialogOutExam(context);
             }
         });
-        imV_exercise.setOnClickListener(new View.OnClickListener() {
+    }
+    // Hàm hiển thị Dialog xác nhận làm bài
+    private void showDialogConfirm() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Thông báo");
+        builder.setMessage("Bài kiểm tra Vocabulary sẽ bao gồm 10 câu, các câu sẽ lần lượt hiển thị sau khi làm xong và không được quay lại. Chúc bạn hoàn thành tốt bài kiểm tra!");
+
+        // Nếu người dùng chọn Yes
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), ExerciseMain.class);
-                startActivity(intent);
-                finish();
+            public void onClick(DialogInterface dialog, int which) {
+                // Thực hiện hành động khi người dùng chọn Yes
+                dialog.dismiss();
             }
         });
-        imV_support.setOnClickListener(new View.OnClickListener() {
+
+        // Hiển thị Dialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+    // Hàm hiển thị Dialog xác nhận sang câu tiếp theo
+    private void showDialogNextQuestion(String s) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Thông báo");
+        builder.setMessage(s);
+        String str = "Tiếp theo";
+        if(question == 10) str = "Kết thúc";
+
+        // Nếu người dùng chọn Yes
+        builder.setPositiveButton(str, new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), SupportMain.class);
-                startActivity(intent);
-                finish();
+            public void onClick(DialogInterface dialog, int which) {
+                // Thực hiện hành động khi người dùng chọn Yes
+                dialog.dismiss();
+                if(question == 10){
+                    sendToFinal();
+                }
+                else{
+
+                }
             }
         });
-        imV_profile.setOnClickListener(new View.OnClickListener() {
+        // Nếu người dùng chọn Cancel hoặc nhấn back
+        builder.setNegativeButton("Xem lại", new DialogInterface.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), Profile.class);
-                startActivity(intent);
-                finish();
+            public void onClick(DialogInterface dialog, int which) {
+                // Thực hiện đóng Dialog khi người dùng chọn Cancel
+                dialog.dismiss();
             }
         });
+
+        // Hiển thị Dialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+    // Hàm hiển thị Dialog xác nhận chuyển màn hình
+    private void showDialogOutExam(Context context){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Thông báo");
+        builder.setMessage("Bạn chưa hoàn thành bài kiểm tra. Bài làm sẽ bị huỷ nếu bạn chuyển sang chức năng khác. Bạn có chắc chắn muốn tiếp tục?");
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                // Xử lý khi người dùng nhấn Yes
+                Intent intent = new Intent(getApplicationContext(), context.getClass());
+                startActivity(intent);
+            }
+        });
+
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                // Xử lý khi người dùng nhấn Cancel
+                dialogInterface.dismiss();
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }

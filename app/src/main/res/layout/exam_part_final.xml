@@ -27,15 +27,17 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/tv_heading"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingHorizontal="40dp"
                     android:layout_marginBottom="10dp"
                     android:gravity="center"
-                    android:text="Chúc mừng bạn đã hoàn thành bài kiểm tra Part A1 - Vocabulary với số điểm là"
+                    android:text=""
                     android:textSize="16sp" />
 
                 <TextView
+                    android:id="@+id/tv_point"
                     android:layout_width="300dp"
                     android:layout_height="300dp"
                     android:paddingHorizontal="40dp"
@@ -43,7 +45,7 @@
                     android:layout_marginBottom="10dp"
                     android:background="@drawable/exam_part_final_congratulation"
                     android:gravity="center"
-                    android:text="9/10"
+                    android:text=""
                     android:textSize="36sp"
                     android:textColor="@color/white"/>
 
