@@ -10,7 +10,14 @@
     <string name="phone">Số điện thoại</string>
     <string name="click_here_to_login">Click here to login</string>
     <string name="forgot">Quên mật khẩu?</string>
+    <string name="get_password">Đặt lại mật khẩu</string>
     <string name="suggest">Bạn chưa có tài khoản?</string>
     <string name="register_now">Đăng ký ngay</string>
     <string name="logout">Đăng xuất</string>
+    <string name="update_profile">Sửa Profile</string>
+    <string name="change_password">Đổi mật khẩu</string>
+    <string name="old_password">Mật khẩu cũ</string>
+    <string name="new_password">Mật khẩu mới</string>
+    <string name="new_password_again">Nhập lại mật khẩu mới</string>
+    <string name="save_profile">Lưu thông tin</string>
 </resources>
