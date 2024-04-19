@@ -98,6 +98,12 @@
             android:exported="false" />
         <activity
             android:name=".core.support.SupportMain$SupportMain"
+            android:exported="true">
+        </activity>
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
             android:exported="true" />
     </application>
 

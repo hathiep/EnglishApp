@@ -206,6 +206,7 @@ public class ExerciseUnit1BasicActivity extends AppCompatActivity implements Vie
         if(currentQuestion == 10){
             Intent intent = new Intent(this, ExerciseResultActivity.class);
             intent.putExtra("result", result);
+            intent.putExtra("unit", "basic/" + unit.getUnit().toLowerCase());
             startActivity(intent);
         } else {
             currentQuestion++;
