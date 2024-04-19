@@ -40,7 +40,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-
+        <EditText
+            android:id="@+id/editTextTitle"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/edittext_background"
+            android:gravity="top"
+            android:hint="Hãy nhập tiêu đề của kế hoạch vào đây..."
+            android:inputType="textMultiLine"
+            android:padding="10dp"
+            android:textSize="16sp" />
         <EditText
             android:id="@+id/editTextNote"
             android:layout_width="match_parent"
