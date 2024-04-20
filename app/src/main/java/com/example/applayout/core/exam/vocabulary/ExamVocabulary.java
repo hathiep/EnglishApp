@@ -86,6 +86,7 @@ public class ExamVocabulary extends AppCompatActivity {
         }
         setUi();
         getWordFromDataBase();
+        // Gọi hàm xác nhận thể lệ bài test
         showDialogConfirm();
     }
     // Hàm ánh xạ view

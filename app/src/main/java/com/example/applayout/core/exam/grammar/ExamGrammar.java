@@ -27,10 +27,10 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.applayout.R;
 import com.example.applayout.core.Profile;
+import com.example.applayout.core.RandomArray;
 import com.example.applayout.core.exam.ExamMain;
 import com.example.applayout.core.exam.ExamPartFinal;
 import com.example.applayout.core.exam.Result;
-import com.example.applayout.core.exam.vocabulary.ExamVocabulary;
 import com.example.applayout.core.exercise.ExerciseMain;
 import com.example.applayout.core.learn.LearnMain;
 import com.example.applayout.core.support.SupportMain;
@@ -48,7 +48,6 @@ import java.util.List;
 import java.util.Random;
 
 public class ExamGrammar extends AppCompatActivity {
-    Button btn_reset, btn_answer;
     FirebaseAuth auth = FirebaseAuth.getInstance();
     FirebaseUser user = auth.getCurrentUser();
     FirebaseDatabase database;
@@ -59,6 +58,7 @@ public class ExamGrammar extends AppCompatActivity {
     int[] numbers, words_random;
     private List<String> answers;
     int[] arr;
+    Button btn_reset, btn_answer;
     int click_answer, click_reset;
     ImageView imV_back, imV_home, imV_learn, imV_exercise, imV_exam, imV_support, imV_profile;
     int point = 0;
@@ -101,10 +101,11 @@ public class ExamGrammar extends AppCompatActivity {
                 initVariable();
                 // Hiển thị danh sách các từ
                 setText();
-                // Gọi hàm onClick
             }
         }, 2000);
+        // Gọi hàm xác nhận thể lệ bài test
         showDialogConfirm();
+        // Gọi hàm onClick
         try {
             setOnClickListener();
         } catch (IllegalAccessException e) {
