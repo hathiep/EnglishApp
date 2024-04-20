@@ -336,7 +336,7 @@ public class ExamVocabulary extends AppCompatActivity {
     private void setPoint(){
         String uid = user.getUid();
         database = FirebaseDatabase.getInstance();
-        DatabaseReference ref = database.getReference("User/" + uid + "/exam/vocabulary"); // thêm đường dẫn của từng người đến chỗ cần ghi điểm
+        DatabaseReference ref = database.getReference("User/" + uid + "/exam/vocabulary");
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -408,7 +408,7 @@ public class ExamVocabulary extends AppCompatActivity {
     private void showDialogConfirm() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Thông báo");
-        builder.setMessage("Bài kiểm tra Vocabulary sẽ bao gồm 10 câu, các câu sẽ lần lượt hiển thị sau khi làm xong và không được quay lại. Chúc bạn hoàn thành tốt bài kiểm tra!");
+        builder.setMessage("Bài kiểm tra Vocabulary sẽ bao gồm 10 câu, mỗi câu có thể xem đáp án và xem lại câu trả lời của mình. Các câu sẽ lần lượt hiển thị sau khi click vào Tiếp theo và không được quay lại câu trước đó. Chúc bạn hoàn thành tốt bài kiểm tra!");
 
         // Nếu người dùng chọn Yes
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {

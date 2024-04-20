@@ -1,13 +1,19 @@
 package com.example.applayout.core.exam.grammar;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.PorterDuff;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
@@ -20,7 +26,6 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.applayout.R;
-import com.example.applayout.core.MainActivity;
 import com.example.applayout.core.Profile;
 import com.example.applayout.core.exam.ExamMain;
 import com.example.applayout.core.exam.ExamPartFinal;
@@ -38,22 +43,25 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
 public class ExamGrammar extends AppCompatActivity {
-
-    ImageView imV_back, imV_home, imV_learn, imV_exercise, imV_exam, imV_support, imV_profile;
-    TextView tv_grammar, tv_part, tv_exam_name, tv_question_num, tv_status;
     Button btn_reset, btn_answer;
     FirebaseAuth auth = FirebaseAuth.getInstance();
     FirebaseUser user = auth.getCurrentUser();
     FirebaseDatabase database;
     int question = 1;
+    TextView tv_grammar, tv_part, tv_exam_name, tv_question_num, tv_status;
+    List<String> sentence;
+    private String question_sentence;
+    int[] numbers, words_random;
+    private List<String> answers;
+    int[] arr;
+    int click_answer, click_reset;
+    ImageView imV_back, imV_home, imV_learn, imV_exercise, imV_exam, imV_support, imV_profile;
     int point = 0;
-
-    String[] list_question = {"We are doing a project for this subject","We are doing a super big project for this subject", "We are doing a super big Java Mobile project for this subject", "I am", "He is an engineer", "She is a teacher", "They are happy", "We had finish the project", "We got 10 points for this project", "We got an A in this subject "};
-    String[] answers = {};
 
     public static int[] random(int[] numbers) {
         int n = numbers.length;
@@ -82,7 +90,21 @@ public class ExamGrammar extends AppCompatActivity {
 
         // Ánh xạ view
         initUi();
-        // Gọi hàm onClick
+        // Gán giá trị textview
+        setUi();
+        // Get dữ liệu câu từ Database
+        getSentenceFromDataBase();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Khởi tạo giá trị các biến toàn cục
+                initVariable();
+                // Hiển thị danh sách các từ
+                setText();
+                // Gọi hàm onClick
+            }
+        }, 2000);
+        showDialogConfirm();
         try {
             setOnClickListener();
         } catch (IllegalAccessException e) {
@@ -90,183 +112,6 @@ public class ExamGrammar extends AppCompatActivity {
         } catch (InstantiationException e) {
             throw new RuntimeException(e);
         }
-        setUi();
-
-        answers = list_question[question-1].split(" ");
-
-        int[] arr = new int[14];
-        List<TextView> list_word = new ArrayList<>();
-        list_word.add(findViewById(R.id.tv_q1));
-        list_word.add(findViewById(R.id.tv_q2));
-        list_word.add(findViewById(R.id.tv_q3));
-        list_word.add(findViewById(R.id.tv_q4));
-        list_word.add(findViewById(R.id.tv_q5));
-        list_word.add(findViewById(R.id.tv_q6));
-        list_word.add(findViewById(R.id.tv_q7));
-        list_word.add(findViewById(R.id.tv_q8));
-        list_word.add(findViewById(R.id.tv_q9));
-        list_word.add(findViewById(R.id.tv_q10));
-        list_word.add(findViewById(R.id.tv_q11));
-        list_word.add(findViewById(R.id.tv_q12));
-
-        int[] numbers = new int[answers.length];
-        for(int i=0; i<answers.length; i++) numbers[i] = i;
-        int[] words_random = random(numbers);
-        for(int i=0; i<12; i++){
-            if(i<answers.length) list_word.get(i).setText(answers[words_random[i]]);
-            else list_word.get(i).setVisibility(View.INVISIBLE);
-        }
-
-        List<TextView> list_ans = new ArrayList<>();
-        list_ans.add(findViewById(R.id.tv_a1));
-        list_ans.add(findViewById(R.id.tv_a2));
-        list_ans.add(findViewById(R.id.tv_a3));
-        list_ans.add(findViewById(R.id.tv_a4));
-        list_ans.add(findViewById(R.id.tv_a5));
-        list_ans.add(findViewById(R.id.tv_a6));
-        list_ans.add(findViewById(R.id.tv_a7));
-        list_ans.add(findViewById(R.id.tv_a8));
-        list_ans.add(findViewById(R.id.tv_a9));
-        list_ans.add(findViewById(R.id.tv_a10));
-        list_ans.add(findViewById(R.id.tv_a11));
-        list_ans.add(findViewById(R.id.tv_a12));
-
-        ArrayList<String> sentence = new ArrayList<>();
-
-        for(int i=0; i<list_word.size(); i++){
-            TextView tv_x = list_word.get(i);
-            int k = i;
-            tv_x.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    String word = tv_x.getText().toString();
-                    if(arr[k] == 0){
-                        sentence.add(word);
-                        tv_x.setBackgroundTintList(ContextCompat.getColorStateList(ExamGrammar.this, R.color.exam_yellow_light));
-                        list_ans.get(sentence.size()-1).setText(word);
-                        list_ans.get(sentence.size()-1).setBackgroundTintMode(PorterDuff.Mode.MULTIPLY);
-                        arr[k] = 1;
-                    }
-                    else if(arr[k] == 1){
-                        tv_x.setBackgroundTintList(ContextCompat.getColorStateList(ExamGrammar.this, R.color.white));
-                        for(int j=sentence.size()-1; j>=0; j--){
-                            if(sentence.get(j).equals(word)){
-                                sentence.remove(j);
-                                break;
-                            }
-                        }
-                        for(int j=0; j<12; j++){
-                            TextView tv_a = list_ans.get(j);
-                            if(j<sentence.size()) tv_a.setText(sentence.get(j));
-                            else{
-                                tv_a.setBackgroundTintMode(PorterDuff.Mode.ADD);
-                                tv_a.setText("");
-                            }
-                        }
-                        arr[k] = 0;
-                    }
-                }
-            });
-        }
-
-        btn_reset.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                answers = list_question[question-1].split("\\s+");
-                if(arr[12]==0){
-                    for(int i=0; i<12; i++){
-                        TextView tv_a = list_ans.get(i);
-                        TextView tv_q = list_word.get(i);
-                        tv_a.setBackgroundTintMode(PorterDuff.Mode.ADD);
-                        tv_a.setText("");
-                        tv_q.setBackgroundTintList(ContextCompat.getColorStateList(ExamGrammar.this, R.color.white));
-                        arr[i] = 0;
-                        sentence.clear();
-                    }
-                }
-                else {
-                    for(int i=0; i<12; i++){
-                        TextView tv_a = list_ans.get(i);
-                        if(i<sentence.size()){
-                            tv_a.setText(sentence.get(i));
-                            tv_a.setBackgroundTintMode(PorterDuff.Mode.MULTIPLY);
-                            if(!sentence.get(i).equals(answers[i]))
-                                tv_a.setBackgroundTintList(ContextCompat.getColorStateList(ExamGrammar.this, R.color.exam_red_light));
-                            else{
-                                tv_a.setBackgroundTintList(ContextCompat.getColorStateList(ExamGrammar.this, R.color.exam_green_light));
-                            }
-                            for(int t=0; t<12; t++){
-                                TextView tv_q = list_word.get(t);
-                                if(tv_q.getText()==tv_a.getText()){
-                                    tv_q.setBackgroundTintList(ContextCompat.getColorStateList(ExamGrammar.this, R.color.exam_yellow_light));
-                                    break;
-                                }
-                            }
-                        }
-                        else{
-                            tv_a.setBackgroundTintMode(PorterDuff.Mode.ADD);
-                            tv_a.setText("");
-                        }
-                        arr[i] = 2;
-                    }
-                }
-            }
-        });
-
-        btn_answer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                answers = list_question[question-1].split("\\s+");
-                if(arr[13]==0){
-                    for(int i=0; i<12; i++){
-                        TextView tv_a = list_ans.get(i);
-                        TextView tv_q = list_word.get(i);
-                        if(i<answers.length){
-                            tv_a.setBackgroundTintMode(PorterDuff.Mode.MULTIPLY);
-                            tv_a.setBackgroundTintList(ContextCompat.getColorStateList(ExamGrammar.this, R.color.white));
-                            tv_a.setText(answers[i]);
-                            tv_q.setBackgroundTintList(ContextCompat.getColorStateList(ExamGrammar.this, R.color.white));
-                        }
-                        btn_reset.setText("Xem lại");
-                        if(question==10) btn_answer.setText("Kết thúc");
-                        else btn_answer.setText("Tiếp theo");
-                    }
-                    arr[12] = arr[13] = 1;
-                }
-                else {
-                    if (question == 10) {
-                        Intent intent = new Intent(getApplicationContext(), ExamPartFinal.class);
-                        startActivity(intent);
-                        finish();
-                    } else {
-                        for(int i=0; i<12; i++){
-                            list_ans.get(i).setText("");
-                            list_ans.get(i).setBackgroundTintMode(PorterDuff.Mode.ADD);
-                            list_ans.get(i).setBackgroundTintList(ContextCompat.getColorStateList(ExamGrammar.this, R.color.white));
-                            list_word.get(i).setBackgroundTintList(ContextCompat.getColorStateList(ExamGrammar.this, R.color.white));
-                            arr[i] = 0;
-                        }
-                        btn_reset.setText("Reset");
-                        btn_answer.setText("Đáp án");
-                        arr[12] = arr[13] = 0;
-                        question++;
-                        answers = list_question[question-1].split(" ");
-                        int[] numbers = new int[answers.length];
-                        for(int i=0; i<answers.length; i++) numbers[i] = i;
-                        int[] words_random = random(numbers);
-                        for(int i=0; i<12; i++){
-                            if(i<answers.length) {
-                                list_word.get(i).setText(answers[words_random[i]]);
-                                list_word.get(i).setVisibility(View.VISIBLE);
-                            }
-                            else list_word.get(i).setVisibility(View.INVISIBLE);
-                        }
-                        sentence.clear();
-                        tv_question_num.setText(String.valueOf(question) + "/10");
-                    }
-                }
-            }
-        });
     }
     // Hàm ánh xạ view
     private void initUi() {
@@ -274,7 +119,7 @@ public class ExamGrammar extends AppCompatActivity {
         tv_part = findViewById(R.id.tv_part);
         tv_exam_name = findViewById(R.id.tv_exam_name);
         tv_question_num = findViewById(R.id.tv_question_num);
-        tv_status = findViewById(R.id.tv_status);
+        tv_status = findViewById(R.id.tv_status_gramar);
         // Ánh xạ view menu
         imV_back = findViewById(R.id.imV_back);
         imV_home = findViewById(R.id.imV_home);
@@ -299,8 +144,185 @@ public class ExamGrammar extends AppCompatActivity {
         tv_exam_name.setText("Grammar");
         tv_question_num.setText(String.valueOf(question) + "/10");
     }
+    // Hàm lấy dữ liệu word từ RealtimeDatabase
+    private void getSentenceFromDataBase(){
+        database = FirebaseDatabase.getInstance();
+        Random random = new Random();
+        DatabaseReference ref_vocabulary = database.getReference("Exam/Grammar/" + random.nextInt(100));
+        ref_vocabulary.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                question_sentence = snapshot.getValue(String.class);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+    }
+    private void initVariable(){
+        answers = Arrays.asList(question_sentence.split(" "));
+        arr = new int[answers.size()];
+        numbers = new int[answers.size()];
+        for(int i = 0; i < answers.size(); i++) numbers[i] = i;
+        words_random = random(numbers);
+        click_answer = click_reset = 0;
+    }
+    private void setText() {
+        sentence = new ArrayList<>();
+        int quantity_word = answers.size();;
+        LinearLayout parentLinearLayout = findViewById(R.id.parentLinearLayout);
+        parentLinearLayout.removeAllViews(); // Xoá tất cả các TextView trong parentLinearLayout
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+
+        int marginHorizontal = (int) getResources().getDimensionPixelSize(R.dimen.margin_horizontal);
+        int marginVertical = (int) getResources().getDimensionPixelSize(R.dimen.margin_vertical);
+        layoutParams.setMargins(0, marginVertical, 0, marginVertical);
+        int totalMargin = marginHorizontal * (quantity_word - 1); // Tổng margin giữa các TextView
+
+        LinearLayout currentLinearLayout = new LinearLayout(this);
+        currentLinearLayout.setLayoutParams(layoutParams);
+        currentLinearLayout.setOrientation(LinearLayout.HORIZONTAL);
+
+        int parentWidth = parentLinearLayout.getWidth(); // Lấy chiều rộng ước lượng của LinearLayout cha
+
+        int currentLineWidth = 0; // Biến này để lưu tổng ước lượng chiều rộng của dòng hiện tại
+
+        for (int i = 0; i < quantity_word; i++) {
+            TextView textView = new TextView(this);
+            String idName = "tv_q" + (i + 1);
+            int id = getResources().getIdentifier(idName, "id", getPackageName());
+            textView.setId(id);
+            textView.setText(answers.get(words_random[i]));
+            LinearLayout.LayoutParams textViewParams = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+            );
+            textViewParams.setMargins(marginHorizontal, 0, marginHorizontal, 0);
+            textView.setLayoutParams(textViewParams);
+            textView.setPadding(
+                    (int) getResources().getDimensionPixelSize(R.dimen.padding_horizontal),
+                    (int) getResources().getDimensionPixelSize(R.dimen.padding_vertical),
+                    (int) getResources().getDimensionPixelSize(R.dimen.padding_horizontal),
+                    (int) getResources().getDimensionPixelSize(R.dimen.padding_vertical)
+            );
+            textView.setGravity(Gravity.CENTER);
+            textView.setBackground(ContextCompat.getDrawable(this, R.drawable.border_white));
+            textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
+            textView.setTextColor(Color.BLACK);
+
+            onClickWord(textView, i);
+
+            // Thêm TextView vào LinearLayout hiện tại
+            currentLinearLayout.addView(textView);
+
+            // Cập nhật tổng ước lượng chiều rộng của dòng hiện tại
+            currentLinearLayout.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+            currentLineWidth = currentLinearLayout.getMeasuredWidth();
+
+            if (currentLineWidth + totalMargin - 10 > parentWidth) {
+                // Nếu tổng ước lượng chiều rộng của dòng hiện tại vượt quá chiều rộng của LinearLayout cha, tạo một dòng mới
+                parentLinearLayout.addView(currentLinearLayout);
+
+                // Tạo LinearLayout mới cho dòng tiếp theo
+                currentLinearLayout = new LinearLayout(this);
+                currentLinearLayout.setLayoutParams(layoutParams);
+                currentLinearLayout.setOrientation(LinearLayout.HORIZONTAL);
+
+                if (textView.getParent() != null) {
+                    ((ViewGroup) textView.getParent()).removeView(textView);
+                }
+                currentLinearLayout.addView(textView);
+
+            }
+        }
+
+        // Cuối cùng, thêm LinearLayout cuối cùng vào LinearLayout cha
+        parentLinearLayout.addView(currentLinearLayout);
+    }
+    private void setTextAnswer(List<String> list_word, List<Integer> list_index_correct,  List<Integer> list_index_wrong, int status){
+        LinearLayout parentLinearLayout = findViewById(R.id.parentLinearLayout1);
+        parentLinearLayout.removeAllViews(); // Xoá tất cả các TextView trong parentLinearLayout
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+
+        int marginHorizontal = (int) getResources().getDimensionPixelSize(R.dimen.margin_horizontal);
+        int marginVertical = (int) getResources().getDimensionPixelSize(R.dimen.margin_vertical);
+        layoutParams.setMargins(0, marginVertical, 0, marginVertical);
+        int totalMargin = marginHorizontal * (list_word.size() - 1); // Tổng margin giữa các TextView
+
+        LinearLayout currentLinearLayout = new LinearLayout(this);
+        currentLinearLayout.setLayoutParams(layoutParams);
+        currentLinearLayout.setOrientation(LinearLayout.HORIZONTAL);
+
+        int parentWidth = parentLinearLayout.getWidth(); // Lấy chiều rộng ước lượng của LinearLayout cha
+
+        int currentLineWidth = 0; // Biến này để lưu tổng ước lượng chiều rộng của dòng hiện tại
+
+        for (int i = 0; i < list_word.size(); i++) {
+            TextView textView = new TextView(this);
+            String idName = "tv_a" + (i + 1);
+            int id = getResources().getIdentifier(idName, "id", getPackageName());
+            textView.setId(id);
+            textView.setText(list_word.get(i));
+
+            LinearLayout.LayoutParams textViewParams = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+            );
+            textViewParams.setMargins(marginHorizontal, 0, marginHorizontal, 0);
+            textView.setLayoutParams(textViewParams);
+            textView.setPadding(
+                    (int) getResources().getDimensionPixelSize(R.dimen.padding_horizontal),
+                    (int) getResources().getDimensionPixelSize(R.dimen.padding_vertical),
+                    (int) getResources().getDimensionPixelSize(R.dimen.padding_horizontal),
+                    (int) getResources().getDimensionPixelSize(R.dimen.padding_vertical)
+            );
+            textView.setGravity(Gravity.CENTER);
+            int border = R.drawable.border_yellow;
+            if(status == 1) border = R.drawable.border_green;
+            if(list_index_correct.contains(i)) border = R.drawable.border_green;
+            if(list_index_wrong.contains(i)) border = R.drawable.border_red;
+            textView.setBackground(ContextCompat.getDrawable(this, border));
+            textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 20);
+            textView.setTextColor(Color.BLACK);
+
+            // Thêm TextView vào LinearLayout hiện tại
+            currentLinearLayout.addView(textView);
+
+            // Cập nhật tổng ước lượng chiều rộng của dòng hiện tại
+            currentLinearLayout.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
+            currentLineWidth = currentLinearLayout.getMeasuredWidth();
+
+            if (currentLineWidth + totalMargin > parentWidth) {
+                // Nếu tổng ước lượng chiều rộng của dòng hiện tại vượt quá chiều rộng của LinearLayout cha, tạo một dòng mới
+                parentLinearLayout.addView(currentLinearLayout);
+
+                // Tạo LinearLayout mới cho dòng tiếp theo
+                currentLinearLayout = new LinearLayout(this);
+                currentLinearLayout.setLayoutParams(layoutParams);
+                currentLinearLayout.setOrientation(LinearLayout.HORIZONTAL);
+
+                if (textView.getParent() != null) {
+                    ((ViewGroup) textView.getParent()).removeView(textView);
+                }
+                currentLinearLayout.addView(textView);
+
+            }
+        }
+
+        // Cuối cùng, thêm LinearLayout cuối cùng vào LinearLayout cha
+        parentLinearLayout.addView(currentLinearLayout);
+    }
+
     // Hàm onClickListener
     private void setOnClickListener() throws IllegalAccessException, InstantiationException {
+        onClickButtonAnswer();
+        onClickButtonReset();
 
         // Menu dưới màn hình
         onClickImVMenu(imV_back, ExamMain.class.newInstance());
@@ -309,6 +331,134 @@ public class ExamGrammar extends AppCompatActivity {
         onClickImVMenu(imV_exercise, ExerciseMain.class.newInstance());
         onClickImVMenu(imV_support, SupportMain.class.newInstance());
         onClickImVMenu(imV_profile, Profile.class.newInstance());
+    }
+    private void onClickWord(TextView tv_x, int i){
+        int k = i;
+        tv_x.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String word = tv_x.getText().toString();
+                if(arr[k] == 0){
+                    sentence.add(word);
+                    tv_x.setBackgroundResource(R.drawable.border_yellow);
+                    setTextAnswer(sentence, new ArrayList<>(), new ArrayList<>(), 0);
+                    arr[k] = 1;
+                }
+                else if(arr[k] == 1){
+                    tv_x.setBackgroundResource(R.drawable.border_white);
+                    for(int j=sentence.size()-1; j>=0; j--){
+                        if(sentence.get(j).equals(word)){
+                            sentence.remove(j);
+                            break;
+                        }
+                    }
+                    setTextAnswer(sentence, new ArrayList<>(), new ArrayList<>(), 0);
+                    arr[k] = 0;
+                }
+            }
+        });
+    }
+    // Hàm onClick button Đáp án
+    private void onClickButtonAnswer(){
+        btn_answer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(click_answer == 0){
+                    for(int i=0; i<arr.length; i++){
+                        if(arr[i] == 0){
+                            show_dialog("Bạn chưa hoàn thành câu. Vui lòng chọn tất cả các từ!", 2);
+                            return;
+                        }
+                    }
+                    setTextAnswer(answers, new ArrayList<>(), new ArrayList<>(), 1);
+                    List<Integer> list_index_correct = new ArrayList<>();
+                    List<Integer> list_index_wrong = new ArrayList<>();
+                    for(int i=0; i<sentence.size(); i++){
+                        if(sentence.get(i).equals(answers.get(i))) list_index_correct.add(i);
+                        else list_index_wrong.add(i);
+                    }
+                    if(list_index_wrong.size() == 0){
+                        point+= 1;
+                        showDialogNextQuestion("Câu trả lời của bạn hoàn toàn chính xác. Bạn được cộng 1 điểm!");
+                    }
+                    else showDialogNextQuestion("Bạn đã sắp xếp " + list_index_correct.size() + "/" + answers.size() + " từ đúng vị trí!");
+                    // Set lại text và trạng thái click cho button
+                    btn_reset.setText("Xem lại");
+                    if(question==10) btn_answer.setText("Kết thúc");
+                    else btn_answer.setText("Tiếp theo");
+                    click_answer = click_reset = 1;
+                }
+                else {
+                    if (question == 10) {
+                        sendToFinal();
+                    } else {
+                        setTextNextQuestion();
+                    }
+                }
+            }
+        });
+    }
+    // Hàm onClick button Reset
+    private void onClickButtonReset(){
+        btn_reset.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(click_reset==0){
+                    // Set lại danh sách câu trả lời trống
+                    setTextAnswer(new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), 0);
+                    // Set lại danh sách từ
+                    setText();
+                }
+                else if(click_reset==1){
+                    // Đánh dấu các từ đúng và sai vị trí
+                    List<Integer> list_index_correct = new ArrayList<>();
+                    List<Integer> list_index_wrong = new ArrayList<>();
+                    for(int i=0; i<sentence.size(); i++){
+                        if(sentence.get(i).equals(answers.get(i))) list_index_correct.add(i);
+                        else list_index_wrong.add(i);
+                    }
+                    // Set lại màu cho các từ đúng và sai
+                    setTextAnswer(sentence, list_index_correct, list_index_wrong, 0);
+                    // Set lại text cho status và button
+                    tv_status.setText("Câu trả lời của bạn");
+                    btn_reset.setText("Đáp án");
+                    btn_reset.setBackgroundTintList(ContextCompat.getColorStateList(ExamGrammar.this, R.color.green));
+                    click_reset = 2;
+                }
+                else{
+                    // Set lại màu danh sách câu trả lời đúng
+                    setTextAnswer(answers, new ArrayList<>(), new ArrayList<>(), 1);
+                    // Set lại text cho status và button
+                    tv_status.setText("Đáp án");
+                    btn_reset.setText("Xem lại");
+                    btn_reset.setBackgroundTintList(ContextCompat.getColorStateList(ExamGrammar.this, R.color.red));
+                    click_reset = 1;
+                }
+            }
+        });
+    }
+    // Hàm set giá trị cho câu hỏi tiếp theo
+    private void setTextNextQuestion(){
+        // Sang câu hỏi tiếp theo
+        question++;
+        // Hiển thị số thứ tự câu hỏi
+        tv_question_num.setText(String.valueOf(question) + "/10");
+        // Set lại text status
+        tv_status.setText("Click vào từ ở danh sách bên dưới để sắp xếp");
+        // Set ô câu trả lời rỗng
+        setTextAnswer(new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), 0);
+        // Get dữ liệu câu từ Database
+        getSentenceFromDataBase();
+        // Khởi tạo giá trị các biến toàn cục
+        initVariable();
+        // Hiển thị danh sách các từ
+        setText();
+        // Set lại text và trạng thái click cho button
+        btn_reset.setText("Reset");
+        btn_reset.setBackgroundTintList(ContextCompat.getColorStateList(ExamGrammar.this, R.color.red));
+        btn_answer.setText("Đáp án");
+        // Xoá câu trả lời của câu hỏi trước
+        sentence.clear();
     }
     // Hàm start Final Activity
     private void sendToFinal(){
@@ -324,7 +474,7 @@ public class ExamGrammar extends AppCompatActivity {
     private void setPoint(){
         String uid = user.getUid();
         database = FirebaseDatabase.getInstance();
-        DatabaseReference ref = database.getReference("User/" + uid + "/exam/vocabulary"); // thêm đường dẫn của từng người đến chỗ cần ghi điểm
+        DatabaseReference ref = database.getReference("User/" + uid + "/exam/grammar");
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -348,7 +498,7 @@ public class ExamGrammar extends AppCompatActivity {
     private void showDialogConfirm() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Thông báo");
-        builder.setMessage("Bài kiểm tra Vocabulary sẽ bao gồm 10 câu, các câu sẽ lần lượt hiển thị sau khi làm xong và không được quay lại. Chúc bạn hoàn thành tốt bài kiểm tra!");
+        builder.setMessage("Bài kiểm tra Grammar sẽ bao gồm 10 câu, mỗi câu có thể xem đáp án và xem lại câu trả lời của mình. Các câu sẽ lần lượt hiển thị sau khi click vào Tiếp theo và không được quay lại câu trước đó. Chúc bạn hoàn thành tốt bài kiểm tra!");
 
         // Nếu người dùng chọn Yes
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
@@ -381,7 +531,7 @@ public class ExamGrammar extends AppCompatActivity {
                     sendToFinal();
                 }
                 else{
-
+                    setTextNextQuestion();
                 }
             }
         });
@@ -422,5 +572,20 @@ public class ExamGrammar extends AppCompatActivity {
 
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+    private void show_dialog(String s, int time){
+        ProgressDialog progressDialog = new ProgressDialog(ExamGrammar.this);
+        progressDialog.setTitle("Thông báo");
+        progressDialog.setMessage(s);
+        progressDialog.show();
+
+        // Sử dụng Handler để gửi một tin nhắn hoạt động sau một khoảng thời gian
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Ẩn Dialog sau khi đã qua một khoảng thời gian nhất định
+                progressDialog.dismiss();
+            }
+        }, time * 1000); // Số milliseconds bạn muốn Dialog biến mất sau đó
     }
 }
