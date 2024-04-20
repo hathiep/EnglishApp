@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="textview_height">58dp</dimen>
+    <dimen name="padding_horizontal">5dp</dimen>
+    <dimen name="padding_vertical">8dp</dimen>
+    <dimen name="margin_horizontal">5dp</dimen>
+    <dimen name="margin_vertical">5dp</dimen>
+</resources>
