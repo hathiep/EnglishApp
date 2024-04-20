@@ -1,5 +1,6 @@
 package com.example.applayout.core.exercise;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -18,6 +19,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.applayout.R;
 import com.example.applayout.core.MainActivity;
+import com.example.applayout.core.Profile;
+import com.example.applayout.core.exam.ExamMain;
+import com.example.applayout.core.learn.LearnMain;
+import com.example.applayout.core.support.SupportMain;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -29,6 +34,9 @@ import java.util.List;
 
 public class ExerciseMain extends AppCompatActivity {
 
+    private ImageView imV_home, imV_learn, imV_exercise, imV_exam, imV_support, imV_profile;
+    private TextView tvUnit1, tvNangCao, tv_exercise;
+    private ImageView ic_back;
     private RecyclerView rcvUnits;
     private UnitAdapterBasic mUnitAdapterBasic;
 
@@ -45,9 +53,7 @@ public class ExerciseMain extends AppCompatActivity {
             return insets;
         });
 
-        TextView tvUnit1 = findViewById(R.id.tv_unit);
-        TextView tvNangCao = findViewById(R.id.tv_nangcao);
-        ImageView ic_back = findViewById(R.id.ic_back);
+        initUi();
 
         //RCV
         rcvUnits = findViewById(R.id.rcv_units);
@@ -61,9 +67,15 @@ public class ExerciseMain extends AppCompatActivity {
 
         getListUnitsFromRealtimeDatabase(tvUnit1);
 
+        //next Menu
+        try {
+            setOnClickListener();
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        } catch (InstantiationException e) {
+            throw new RuntimeException(e);
+        }
         //Đánh dấu activity hiện tại trên thanh menu
-        ImageView imV_exercise = findViewById(R.id.imV_exercise);
-        TextView tv_exercise = findViewById(R.id.tv_exercise);
         imV_exercise.setScaleType(ImageView.ScaleType.CENTER_CROP);
         imV_exercise.setImageResource(R.drawable.icon_exercise2);
         tv_exercise.setTextAppearance(R.style.menu_text);
@@ -85,6 +97,36 @@ public class ExerciseMain extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
                 finish();
+            }
+        });
+    }
+
+    private void initUi(){
+        tvUnit1 = findViewById(R.id.tv_unit);
+        tvNangCao = findViewById(R.id.tv_nangcao);
+        ic_back = findViewById(R.id.ic_back);
+        tv_exercise = findViewById(R.id.tv_exercise);
+        imV_home = findViewById(R.id.imV_home);
+        imV_learn = findViewById(R.id.imV_learn);
+        imV_exercise = findViewById(R.id.imV_exercise);
+        imV_exam = findViewById(R.id.imV_exam);
+        imV_support = findViewById(R.id.imV_support);
+        imV_profile = findViewById(R.id.imV_profile);
+    }
+    private void setOnClickListener() throws IllegalAccessException, InstantiationException {
+        // Menu dưới màn hình
+        onClickImVMenu(imV_learn, LearnMain.class.newInstance());
+        onClickImVMenu(imV_exercise, ExerciseMain.class.newInstance());
+        onClickImVMenu(imV_exam, ExamMain.class.newInstance());
+        onClickImVMenu(imV_support, SupportMain.class.newInstance());
+        onClickImVMenu(imV_profile, Profile.class.newInstance());
+    }
+    private void onClickImVMenu(ImageView imV, Context context){
+        imV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), context.getClass());
+                startActivity(intent);
             }
         });
     }
