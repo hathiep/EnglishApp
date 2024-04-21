@@ -68,7 +68,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="#86FC9D"
+                android:background="#84DEF0"
                 android:fontFamily="@font/ex_adamina"
                 android:gravity="center"
                 android:paddingTop="10dp"

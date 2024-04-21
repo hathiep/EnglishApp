@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.applayout"
     xmlns:tools="http://schemas.android.com/tools">
-
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -12,6 +12,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppLayout"
         tools:targetApi="31">
+        <activity
+            android:name=".core.ChangePassword"
+            android:exported="false" />
+        <activity
+            android:name=".core.ForgotPassword"
+            android:exported="false" />
         <activity
             android:name=".core.learn.FlashCardActivity"
             android:exported="false" />
@@ -46,10 +52,10 @@
             android:name=".core.exam.ExamMain"
             android:exported="false" />
         <activity
-            android:name=".core.exam.ExamVocabulary"
+            android:name=".core.exam.vocabulary.ExamVocabulary"
             android:exported="false" />
         <activity
-            android:name=".core.exam.ExamGrammar"
+            android:name=".core.exam.grammar.ExamGrammar"
             android:exported="false" />
         <activity
             android:name=".core.exam.listening.ExamListening"
@@ -65,7 +71,6 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -74,10 +79,11 @@
             android:exported="false" />
         <activity
             android:name=".core.MainActivity"
-            android:exported="false" />
+            android:exported="false" >
+        </activity>
         <activity
             android:name=".core.support.Activities.PlanSupport"
-            android:exported="false" />
+            android:exported="false"/>
         <activity
             android:name=".core.support.Activities.TaskSupport"
             android:exported="false" />
@@ -94,6 +100,11 @@
             android:name=".core.support.SupportMain$SupportMain"
             android:exported="true">
         </activity>
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
+            android:exported="true" />
     </application>
 
 </manifest>

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -26,16 +27,6 @@ public class UnitAdapterAdvanced extends RecyclerView.Adapter<UnitAdapterAdvance
         this.mContext = mContext;
     }
 
-//    private List<Unit> mListUnits;
-//    private Context mContext;
-//    private int[] mColorIds;
-//
-//    // Constructor
-//    public UnitAdapter(Context context, List<Unit> listUnits) {
-//        this.mContext = context;
-//        this.mListUnits = listUnits;
-//        this.mColorIds = new int[]{R.drawable.ex_bg_blue_1_corner_30, R.drawable.ex_bg_yellow_1_corner_30, R.drawable.ex_bg_red_1_corner_30, R.drawable.ex_bg_purple_1_corner_30, R.drawable.ex_bg_green_1_corner_30}; // Chỉnh sửa với màu trong colors.xml
-//    }
     @NonNull
     @Override
     public UnitViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -81,11 +72,12 @@ public class UnitAdapterAdvanced extends RecyclerView.Adapter<UnitAdapterAdvance
 
     public class UnitViewHolder extends RecyclerView.ViewHolder{
         private TextView tvUnit;
+        private ImageView imgItem;
         private LinearLayout layoutUnit;
         public UnitViewHolder(@NonNull View itemView) {
             super(itemView);
             tvUnit = itemView.findViewById(R.id.tv_unit);
-            tvUnit.setBackgroundResource(R.drawable.ex_bg_purple_1_corner_30);
+            tvUnit.setBackgroundResource(R.drawable.ex_bg_blue_2_corner_30);
             layoutUnit = itemView.findViewById(R.id.layout_unit);
         }
     }

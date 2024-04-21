@@ -1,7 +1,11 @@
 package com.example.applayout.core.exam.synthetic;
 
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -10,6 +14,7 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.Insets;
@@ -17,10 +22,12 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.applayout.R;
-import com.example.applayout.core.MainActivity;
 import com.example.applayout.core.Profile;
+import com.example.applayout.core.RandomArray;
 import com.example.applayout.core.exam.ExamMain;
 import com.example.applayout.core.exam.ExamPartFinal;
+import com.example.applayout.core.exam.Result;
+import com.example.applayout.core.exam.grammar.ExamGrammar;
 import com.example.applayout.core.exercise.ExerciseMain;
 import com.example.applayout.core.learn.LearnMain;
 import com.example.applayout.core.support.SupportMain;
@@ -37,13 +44,21 @@ import java.util.List;
 import java.util.Random;
 
 public class ExamSynthetic extends AppCompatActivity {
-    int question = 1;
-    TextView tv_question,  tv_answer1, tv_answer2, tv_answer3, tv_answer4;
-    List<TextView> list_tv_ans = new ArrayList<>();
-    Button btn_answer;
-
-    List<String> list_answer = new ArrayList<>();
+    FirebaseAuth auth = FirebaseAuth.getInstance();
+    FirebaseUser user = auth.getCurrentUser();
     FirebaseDatabase database;
+    int question = 1;
+    TextView tv_grammar, tv_part, tv_exam_name, tv_question_num, tv_question;
+    List<TextView> list_tv_ans = new ArrayList<>();
+    private Question current_question = new Question();
+    Button btn_answer;
+    int choice, result, click_answer;
+    ImageView imV_back, imV_home, imV_learn, imV_exercise, imV_exam, imV_support, imV_profile;
+    //Tạo ma trận ngẫu nhiên các chỉnh hợp chập 4 của 4 đáp án
+    RandomArray random_array = new RandomArray(4);
+    List<List<Integer>> random_matrix = random_array.generateRandomPermutations();
+    int snapshot_size;
+    int point = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,230 +70,343 @@ public class ExamSynthetic extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
-        // Bắt sự kiện cho nút back và gán giá trị cho header
-        ImageView imV_back = findViewById(R.id.imV_back);
-        TextView tv_part = findViewById(R.id.tv_part);
-        TextView tv_exam_name = findViewById(R.id.tv_exam_name);
-        TextView tv_question_num = findViewById(R.id.tv_question_num);
-        imV_back.setOnClickListener(new View.OnClickListener() {
+        // Ánh xạ view
+        initUi();
+        // Get dữ liệu từ Database
+        getQuestionFromDatabase();
+        new Handler().postDelayed(new Runnable() {
             @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), ExamMain.class);
-                startActivity(intent);
-                finish();
+            public void run() {
+                // Khởi tạo giá trị các biến toàn cục
+                initVariable();
+                // Gán giá trị textview
+                setUi();
             }
-        });
-        tv_part.setText("Part A5");
-        tv_exam_name.setText("Synthetic");
-        tv_question_num.setText(String.valueOf(question) + "/10");
+        }, 1000);
+        // Gọi hàm xác nhận thể lệ bài test
+        showDialogConfirm();
+        // Gọi hàm onClick
+        try {
+            setOnClickListener();
+        } catch (IllegalAccessException e) {
+            throw new RuntimeException(e);
+        } catch (InstantiationException e) {
+            throw new RuntimeException(e);
+        }
 
+    }
+    // Hàm ánh xạ view
+    private void initUi() {
+        // Ánh xạ view header
+        tv_part = findViewById(R.id.tv_part);
+        tv_exam_name = findViewById(R.id.tv_exam_name);
+        tv_question_num = findViewById(R.id.tv_question_num);
+        // Ánh xạ view menu
+        imV_back = findViewById(R.id.imV_back);
+        imV_home = findViewById(R.id.imV_home);
+        imV_learn = findViewById(R.id.imV_learn);
+        imV_exercise = findViewById(R.id.imV_exercise);
+        imV_support = findViewById(R.id.imV_support);
+        imV_profile = findViewById(R.id.imV_profile);
         //Đánh dấu activity hiện tại trên thanh menu
-        ImageView imV_exam = findViewById(R.id.imV_exam);
-        TextView tv_exam = findViewById(R.id.tv_exam);
+        imV_exam = findViewById(R.id.imV_exam);
+        tv_grammar = findViewById(R.id.tv_exam);
         imV_exam.setScaleType(ImageView.ScaleType.CENTER_CROP);
         imV_exam.setImageResource(R.drawable.icon_exam2);
-        tv_exam.setTextAppearance(R.style.menu_text);
+        tv_grammar.setTextAppearance(R.style.menu_text);
 
-        init_UI();
-        get_question(question);
+        tv_question = findViewById(R.id.tv_question);
+        list_tv_ans.add(findViewById(R.id.tv_a1));
+        list_tv_ans.add(findViewById(R.id.tv_a2));
+        list_tv_ans.add(findViewById(R.id.tv_a3));
+        list_tv_ans.add(findViewById(R.id.tv_a4));
 
-        String[] list_question = new String[20];
-//        list_question[0] = "We _____ the homework for this subject last weekend the homework";
-//        for(int i=1; i<20; i++) {
-//            list_question[i] = "This is question " + String.valueOf(i+1);
-//        }
-        List<String[]> list_answer = new ArrayList<>();
-//        list_answer.add(new String[]{"finish", "are finishing", "finished", "were finished", "3"});
-//        for(int i=1; i<20; i++){
-//            list_answer.add(new String[]{"Answer1", "Answer2" , "Answer3", "Answer4", "" + String.valueOf(new Random().nextInt(4) + 1)});
-//        }
+        // Ánh xạ view button
+        btn_answer = findViewById(R.id.btn_answer);
+    }
+    // Khởi tạo giá trị các biến
+    private void initVariable(){
+        click_answer = 0;
+        choice = -1;
+        result = -1;
+    }
+    // Gán giá trị cho view
+    private void setUi(){
+        tv_part.setText("Part A5");
+        tv_exam_name.setText("Synthetic");
+        tv_question_num.setText(String.valueOf(question) + "/20");
+        tv_question.setText(String.valueOf(question) + ". " + current_question.getContext());
+        List<String> list_answer = new ArrayList<>();
+        list_answer.add(current_question.getAnswer1());
+        list_answer.add(current_question.getAnswer2());
+        list_answer.add(current_question.getAnswer3());
+        list_answer.add(current_question.getAnswer4());
+        for(int i=0; i<4; i++){
+            int x = random_matrix.get(question).get(i);
+            if(current_question.getCorrect_answer().equals(list_answer.get(i))) result = x;
+            list_tv_ans.get(x).setText((char)('A' + x) + ". " + list_answer.get(i));
+            list_tv_ans.get(x).setBackgroundTintList(ContextCompat.getColorStateList(ExamSynthetic.this, R.color.exam_blue3));
+        }
+    }
+    private void getQuestionFromDatabase(){
+        database = FirebaseDatabase.getInstance();
+//        getSapshotSize();
+//        new Handler().postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                Random random = new Random();
+//                DatabaseReference ref = database.getReference("Exam/Synthetic/" + random.nextInt(8));
 //
-//
-        int[] result = {0};
-        int[] choice = {-1};
-//
-//        tv_question.setText(String.valueOf(question) + ". " + list_question[question-1]);
-//        for(int i=0; i<4; i++){
-//            int index = i;
-//            TextView tv_a = list_tv_ans.get(i);
-//            tv_a.setText((char) ('A' + i) + ". " + list_answer.get(question-1)[i]);
-//            tv_a.setBackgroundTintList(ContextCompat.getColorStateList(ExamSynthetic.this, R.color.exam_blue3));
-//            tv_a.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    if(result[0] == 0 ){
-//                        for(int i=0; i<4; i++){
-//                            TextView tv_a2 = list_tv_ans.get(i);
-//                            tv_a2.setBackgroundTintList(ContextCompat.getColorStateList(ExamSynthetic.this, R.color.exam_blue3));
-//                        }
-//                        choice[0] = index;
-//                        tv_a.setBackgroundTintList(ContextCompat.getColorStateList(ExamSynthetic.this, R.color.exam_yellow_light));
+//                ref.addValueEventListener(new ValueEventListener() {
+//                    @Override
+//                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                        current_question = snapshot.getValue(Question.class);
 //                    }
-//                }
-//            });
-//        }
+//                    @Override
+//                    public void onCancelled(@NonNull DatabaseError error) {
+//                    }
+//                });
+//            }
+//        }, 2000);
+        Random random = new Random();
+        DatabaseReference ref = database.getReference("Exam/Synthetic/" + random.nextInt(70));
 
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                current_question = snapshot.getValue(Question.class);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+    }
+    // Hàm onClickListener
+    private void setOnClickListener() throws IllegalAccessException, InstantiationException {
+        onClickButtonAnswer();
+        for(int i=0; i<4; i++) onClickAnswer(list_tv_ans.get(i), i);
+
+        // Menu dưới màn hình
+        onClickImVMenu(imV_back, ExamMain.class.newInstance());
+        onClickImVMenu(imV_home, ExamMain.class.newInstance());
+        onClickImVMenu(imV_learn, LearnMain.class.newInstance());
+        onClickImVMenu(imV_exercise, ExerciseMain.class.newInstance());
+        onClickImVMenu(imV_support, SupportMain.class.newInstance());
+        onClickImVMenu(imV_profile, Profile.class.newInstance());
+    }
+    // Hàm onClick từng đáp án
+    private void onClickAnswer(TextView tv, int i){
+        tv.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(click_answer == 0 ){
+                    choice = i;
+                    for(int i=0; i<4; i++){
+                        list_tv_ans.get(i).setBackgroundTintList(ContextCompat.getColorStateList(ExamSynthetic.this, R.color.exam_blue3));
+                    }
+                    tv.setBackgroundTintList(ContextCompat.getColorStateList(ExamSynthetic.this, R.color.exam_yellow_light));
+                }
+            }
+        });
+    }
+    // Hàm onClick button Đáp án
+    private void onClickButtonAnswer(){
         btn_answer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(result[0] == 0){
-                    if(choice[0] > -1){
-                        int ans = Integer.parseInt(list_answer.get(question-1)[4]);
-                        list_tv_ans.get(ans-1).setBackgroundTintList(ContextCompat.getColorStateList(ExamSynthetic.this, R.color.exam_green_light));
-                        if(choice[0] + 1 != ans)
-                            list_tv_ans.get(choice[0]).setBackgroundTintList(ContextCompat.getColorStateList(ExamSynthetic.this, R.color.exam_red_light));
+                if(click_answer == 0){
+                    if(choice != -1){
+                        if(choice != result){
+                            for(int i=0; i<4; i++){
+                                TextView tv = list_tv_ans.get(i);
+                                if(choice == i)
+                                    tv.setBackgroundTintList(ContextCompat.getColorStateList(ExamSynthetic.this, R.color.exam_red_light));
+                                if(result == i)
+                                    tv.setBackgroundTintList(ContextCompat.getColorStateList(ExamSynthetic.this, R.color.exam_green_light));
+                            }
+                            showDialogNextQuestion("Câu trả lời của bạn không chính xác!");
+                        }
+                        else{
+                            for(int i=0; i<4; i++){
+                                if(result == i){
+                                    list_tv_ans.get(i).setBackgroundTintList(ContextCompat.getColorStateList(ExamSynthetic.this, R.color.exam_green_light));
+                                    point+= 1;
+                                    showDialogNextQuestion("Câu trả lời của bạn hoàn toàn chính xác. Bạn được cộng 1 điểm!");
+                                }
+                            }
+                        }
                         if(question == 20) btn_answer.setText("Kết thúc");
                         else btn_answer.setText("Tiếp theo");
-                        result[0] = 1;
+                        click_answer = 1;
                     }
                     else {
-                        Toast toast = Toast.makeText(getApplicationContext(), "Bạn chưa chọn câu trả lời!", Toast.LENGTH_SHORT);
-                        toast.show();
+                        show_dialog("Bạn chưa chọn câu trả lời!", 2);
                     }
                 }
                 else {
                     if(question == 20){
-                        Intent intent = new Intent(getApplicationContext(), ExamPartFinal.class);
-                        startActivity(intent);
-                        finish();
+                        sendToFinal();
                     }
                     else{
-                        question++;
-                        tv_question_num.setText(question + "/20");
-                        tv_question.setText(String.valueOf(question) + ". " + list_question[question-1]);
-                        choice[0] = -1;
-                        for(int i=0; i<4; i++) {
-                            TextView tv_a = list_tv_ans.get(i);
-                            tv_a.setText((char) ('A' + i) + ". " + list_answer.get(question-1)[i]);
-                            tv_a.setBackgroundTintList(ContextCompat.getColorStateList(ExamSynthetic.this, R.color.exam_blue3));
-                        }
-                        result[0] = 0;
-                        btn_answer.setText("Đáp án");
+                        setTextNextQuestion();
                     }
                 }
             }
         });
-
-        //Bắt sự kiện thanh menu
-        ImageView imV_home = findViewById(R.id.imV_home);
-        ImageView imV_learn = findViewById(R.id.imV_learn);
-        ImageView imV_exercise = findViewById(R.id.imV_exercise);
-        ImageView imV_support = findViewById(R.id.imV_support);
-        ImageView imV_profile = findViewById(R.id.imV_profile);
-
-        imV_home.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        });
-        imV_learn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), LearnMain.class);
-                startActivity(intent);
-                finish();
-            }
-        });
-        imV_exercise.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), ExerciseMain.class);
-                startActivity(intent);
-                finish();
-            }
-        });
-        imV_support.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), SupportMain.class);
-                startActivity(intent);
-                finish();
-            }
-        });
-        imV_profile.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), Profile.class);
-                startActivity(intent);
-                finish();
-            }
-        });
-
     }
-
-    private void init_UI(){
-        tv_question = findViewById(R.id.tv_question);
-        tv_answer1 = findViewById(R.id.tv_a1);
-        tv_answer2 = findViewById(R.id.tv_a2);
-        tv_answer3 = findViewById(R.id.tv_a3);
-        tv_answer4 = findViewById(R.id.tv_a4);
-        btn_answer = findViewById(R.id.btn_answer);
+    // Hàm set giá trị cho câu hỏi tiếp theo
+    private void setTextNextQuestion(){
+        // Sang câu hỏi tiếp theo
+        question++;
+        // Get dữ liệu câu từ Database
+        getQuestionFromDatabase();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Khởi tạo giá trị các biến toàn cục
+                initVariable();
+                // Set giá trị
+                setUi();
+                // Set lại text cho button
+                btn_answer.setText("Đáp án");
+            }
+        }, 1000);
     }
-
-    private void show_question(Question question){
-        tv_question.setText(question.getContext());
-        tv_answer1.setText(question.getAnswer1());
-        tv_answer2.setText(question.getAnswer2());
-        tv_answer3.setText(question.getAnswer3());
-        tv_answer4.setText(question.getAnswer4());
+    // Hàm start Final Activity
+    private void sendToFinal(){
+        setPoint();
+        Result.point = "" + point + "/20";
+        Result.part = tv_part.getText().toString().trim();
+        Result.exam_name = tv_exam_name.getText().toString().trim();
+        Intent intent = new Intent(getApplicationContext(), ExamPartFinal.class);
+        startActivity(intent);
+        finish();
     }
-
-    private void create_database(int size){
+    // Hàm lưu điểm lên Uid trên RealtimeDatabase
+    private void setPoint(){
+        String uid = user.getUid();
         database = FirebaseDatabase.getInstance();
-        DatabaseReference ref = database.getReference("Exam/Synthetic/");
+        DatabaseReference ref = database.getReference("User/" + uid + "/exam/synthetic");
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                // Tìm ID của `Question` mới nhất
-                long latestId = snapshot.getChildrenCount();
-                // Thêm `size` `Question` mới với ID là `latestId + 1`, `latestId + 2`,...
-                for (int i = 1; i <= size; i++) {
-                    long nextId = latestId + i;
-                    Question question = new Question("This is question " + i + "?", "This is answer1", "This is answer2", "This is answer3", "This is answer4", "This is answer1");
-                    ref.child(String.valueOf(nextId)).setValue(question);
-                }
+                ref.setValue(point);
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
             }
         });
     }
-    private void get_question(int question_num){
+    // Hàm onClickImageView
+    private void onClickImVMenu(ImageView imV, Context context){
+        imV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showDialogOutExam(context);
+            }
+        });
+    }
+    // Hàm hiển thị Dialog xác nhận làm bài
+    private void showDialogConfirm() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Thông báo");
+        builder.setMessage("Bài kiểm tra Synthetic sẽ bao gồm 20 câu với chủ đề ngẫu nhiên, mỗi câu có 1 đáp án đúng và 3 đáp án sai. Các câu sẽ lần lượt hiển thị sau khi click vào Tiếp theo và không được quay lại câu trước đó. Chúc bạn hoàn thành tốt bài kiểm tra!");
+
+        // Nếu người dùng chọn Yes
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Thực hiện hành động khi người dùng chọn Yes
+                dialog.dismiss();
+            }
+        });
+
+        // Hiển thị Dialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+    // Hàm hiển thị Dialog xác nhận sang câu tiếp theo
+    private void showDialogNextQuestion(String s) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Thông báo");
+        builder.setMessage(s);
+        String str = "Tiếp theo";
+        if(question == 20) str = "Kết thúc";
+
+        // Nếu người dùng chọn Yes
+        builder.setPositiveButton(str, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Thực hiện hành động khi người dùng chọn Yes
+                dialog.dismiss();
+                if(question == 20){
+                    sendToFinal();
+                }
+                else{
+                    setTextNextQuestion();
+                }
+            }
+        });
+        // Nếu người dùng chọn Cancel hoặc nhấn back
+        builder.setNegativeButton("Xem lại", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Thực hiện đóng Dialog khi người dùng chọn Cancel
+                dialog.dismiss();
+            }
+        });
+
+        // Hiển thị Dialog
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+    // Hàm hiển thị Dialog xác nhận chuyển màn hình
+    private void showDialogOutExam(Context context){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Thông báo");
+        builder.setMessage("Bạn chưa hoàn thành bài kiểm tra. Bài làm sẽ bị huỷ nếu bạn chuyển sang chức năng khác. Bạn có chắc chắn muốn tiếp tục?");
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                // Xử lý khi người dùng nhấn Yes
+                Intent intent = new Intent(getApplicationContext(), context.getClass());
+                startActivity(intent);
+            }
+        });
+
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                // Xử lý khi người dùng nhấn Cancel
+                dialogInterface.dismiss();
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+    private void show_dialog(String s, int time){
+        ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle("Thông báo");
+        progressDialog.setMessage(s);
+        progressDialog.show();
+
+        // Sử dụng Handler để gửi một tin nhắn hoạt động sau một khoảng thời gian
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Ẩn Dialog sau khi đã qua một khoảng thời gian nhất định
+                progressDialog.dismiss();
+            }
+        }, time * 1000); // Số milliseconds bạn muốn Dialog biến mất sau đó
+    }
+    private void getSapshotSize(){
         database = FirebaseDatabase.getInstance();
-        DatabaseReference ref = database.getReference("Exam/Synthetic/" + question);
-//
-//        Question question = new Question("a", "x", "y" , "z", "t", "x");
-//        ref.setValue(question);
+        DatabaseReference ref = database.getReference("Exam/Synthetic");
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
-                Question question = snapshot.getValue(Question.class);
-                show_question(question);
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-            }
-        });
-    }
-    private String getUid(){
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        return user.getUid();
-    }
-    private void setPoint(){
-        String uid = getUid();
-        database = FirebaseDatabase.getInstance();
-        DatabaseReference ref = database.getReference("User/" + uid + "/..."); // thêm đường dẫn của từng người đến chỗ cần ghi điểm
-        ref.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                int point = 0; // Đây là điểm sau khi làm bài xong
-                ref.setValue(point);
+                snapshot_size = (int) snapshot.getChildrenCount();
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
