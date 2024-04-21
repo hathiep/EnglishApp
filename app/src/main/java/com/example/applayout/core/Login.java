@@ -43,7 +43,7 @@ public class Login extends AppCompatActivity {
         super.onStart();
 
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser != null && currentUser.isEmailVerified()){
+        if(currentUser != null /*&& currentUser.isEmailVerified()*/){
             Intent intent = new Intent(getApplicationContext(), MainActivity.class);
             startActivity(intent);
             finish();
@@ -143,7 +143,10 @@ public class Login extends AppCompatActivity {
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 progressBar.setVisibility(View.GONE);
                                 if (task.isSuccessful()) {
-                                    checkVerified();
+                                    /*checkVerified();*/
+                                    Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                                    startActivity(intent);
+                                    finish();
                                 } else {
                                     // If sign in fails, display a message to the user.
                                     show_dialog("Thông tin không đúng, vui lòng thử lại!", 2);
@@ -155,7 +158,7 @@ public class Login extends AppCompatActivity {
         });
     }
     // Hàm kiểm tra đã xác thực email chưa
-    private void checkVerified(){
+    /*private void checkVerified(){
         FirebaseUser user = mAuth.getCurrentUser();
         if (user != null) {
             if (user.isEmailVerified()) {
@@ -175,7 +178,7 @@ public class Login extends AppCompatActivity {
                 show_dialog("Vui lòng xác thực email của bạn trước khi đăng nhập!", 3);
             }
         }
-    }
+    }*/
     // Hàm hiển thị thông báo
     private void show_dialog(String s, int time){
         ProgressDialog progressDialog = new ProgressDialog(Login.this);

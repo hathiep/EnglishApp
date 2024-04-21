@@ -58,12 +58,18 @@
             android:background="#FFDBA4">
 
         </TextView>
+        <ImageView
+            android:id="@+id/sound"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="@drawable/exam_part_l_volume">
+
+        </ImageView>
         <ViewFlipper
             android:id="@+id/view_flipper"
             android:layout_width="match_parent"
             android:layout_height="430dp">
-            <include layout="@layout/learn_viewflipper1" />
-            <include layout="@layout/learn_viewflipper2" />
+            <include layout="@layout/learn_viewflipper1"></include>
         </ViewFlipper>
 
 

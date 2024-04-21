@@ -7,6 +7,7 @@ android {
     namespace = "com.example.applayout"
     compileSdk = 34
 
+
     defaultConfig {
         applicationId = "com.example.applayout"
         minSdk = 29
@@ -40,11 +41,16 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics")
     implementation(libs.appcompat)
     implementation("com.wajahatkarim:EasyFlipView:3.0.3")
+    implementation ("com.squareup.picasso:picasso:2.71828")
+    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation ("com.squareup.retrofit2:converter-scalars:2.9.0")
     implementation(libs.material)
     implementation(libs.activity)
     implementation(libs.constraintlayout)
     implementation(libs.firebase.auth)
     implementation(libs.firebase.database)
+    implementation(libs.firebase.storage)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
