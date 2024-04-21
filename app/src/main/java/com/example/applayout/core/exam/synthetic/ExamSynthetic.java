@@ -27,7 +27,6 @@ import com.example.applayout.core.RandomArray;
 import com.example.applayout.core.exam.ExamMain;
 import com.example.applayout.core.exam.ExamPartFinal;
 import com.example.applayout.core.exam.Result;
-import com.example.applayout.core.exam.grammar.ExamGrammar;
 import com.example.applayout.core.exercise.ExerciseMain;
 import com.example.applayout.core.learn.LearnMain;
 import com.example.applayout.core.support.SupportMain;
@@ -124,30 +123,6 @@ public class ExamSynthetic extends AppCompatActivity {
         // Ánh xạ view button
         btn_answer = findViewById(R.id.btn_answer);
     }
-    // Khởi tạo giá trị các biến
-    private void initVariable(){
-        click_answer = 0;
-        choice = -1;
-        result = -1;
-    }
-    // Gán giá trị cho view
-    private void setUi(){
-        tv_part.setText("Part A5");
-        tv_exam_name.setText("Synthetic");
-        tv_question_num.setText(String.valueOf(question) + "/20");
-        tv_question.setText(String.valueOf(question) + ". " + current_question.getContext());
-        List<String> list_answer = new ArrayList<>();
-        list_answer.add(current_question.getAnswer1());
-        list_answer.add(current_question.getAnswer2());
-        list_answer.add(current_question.getAnswer3());
-        list_answer.add(current_question.getAnswer4());
-        for(int i=0; i<4; i++){
-            int x = random_matrix.get(question).get(i);
-            if(current_question.getCorrect_answer().equals(list_answer.get(i))) result = x;
-            list_tv_ans.get(x).setText((char)('A' + x) + ". " + list_answer.get(i));
-            list_tv_ans.get(x).setBackgroundTintList(ContextCompat.getColorStateList(ExamSynthetic.this, R.color.exam_blue3));
-        }
-    }
     private void getQuestionFromDatabase(){
         database = FirebaseDatabase.getInstance();
 //        getSapshotSize();
@@ -180,6 +155,30 @@ public class ExamSynthetic extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError error) {
             }
         });
+    }
+    // Khởi tạo giá trị các biến
+    private void initVariable(){
+        click_answer = 0;
+        choice = -1;
+        result = -1;
+    }
+    // Gán giá trị cho view
+    private void setUi(){
+        tv_part.setText("Part A5");
+        tv_exam_name.setText("Synthetic");
+        tv_question_num.setText(String.valueOf(question) + "/20");
+        tv_question.setText(String.valueOf(question) + ". " + current_question.getContext());
+        List<String> list_answer = new ArrayList<>();
+        list_answer.add(current_question.getAnswer1());
+        list_answer.add(current_question.getAnswer2());
+        list_answer.add(current_question.getAnswer3());
+        list_answer.add(current_question.getAnswer4());
+        for(int i=0; i<4; i++){
+            int x = random_matrix.get(question).get(i);
+            if(current_question.getCorrect_answer().equals(list_answer.get(i))) result = x;
+            list_tv_ans.get(x).setText((char)('A' + x) + ". " + list_answer.get(i));
+            list_tv_ans.get(x).setBackgroundTintList(ContextCompat.getColorStateList(ExamSynthetic.this, R.color.exam_blue3));
+        }
     }
     // Hàm onClickListener
     private void setOnClickListener() throws IllegalAccessException, InstantiationException {
