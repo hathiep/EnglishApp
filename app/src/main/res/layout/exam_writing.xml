@@ -25,13 +25,22 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingHorizontal="10dp"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Điền các từ/cụm từ/câu vào chỗ trống để hoàn thành đoạn văn sau"
+                    android:text="Điền các từ/cụm từ/câu vào các thanh input dưới đoạn văn theo số thứ tự chỗ trống để hoàn thành đoạn văn sau"
+                    android:gravity="start|left"
                     android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/tv_status"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:text=""
+                    android:textSize="18sp" />
 
             </LinearLayout>
 
@@ -44,20 +53,22 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="5dp"
                     android:orientation="horizontal"
                     android:gravity="bottom">
 
 
                     <TextView
-                        android:id="@+id/tv1"
+                        android:id="@+id/tv_question"
                         android:layout_width="match_parent"
-                        android:layout_height="400dp"
-                        android:paddingHorizontal="35dp"
-                        android:paddingVertical="40dp"
-                        android:text="Hi, Nam. I've registered for a upcycling workshop on ___________. There are two workshop but the second one I was busy so __________. The workshop will be held at The Center for Sustainable Art, 204 Nurberry Road. In _____, Jackie will explain the basics of mosaic-making and then let participants' imaginations do the rest! To ____________, Jackie will display some of her own work as ____________. We need to bring glass jars, glass or ceramic items you no longer need, buttons, beads, _______, _______, etc. This will be my first _________, I'm really looking forward to it! Would you like to _____________? I'm sure you'll ______________"
+                        android:layout_height="wrap_content"
+                        android:paddingHorizontal="20dp"
+                        android:paddingVertical="20dp"
+                        android:text=""
                         android:textSize="18dp"
                         android:justificationMode="inter_word"
-                        android:background="@drawable/exam_part_w_bg_white">
+                        android:background="@drawable/exam_part_w_border">
 
                     </TextView>
 
@@ -65,10 +76,48 @@
 
             </LinearLayout>
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:gravity="left"
+                android:text="Nhập các câu trả lời của bạn tại đây"
+                android:textSize="18sp" />
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="5dp"
+                android:layout_marginHorizontal="10dp"
+                android:layout_weight="1"
+                android:background="@color/white"
+                app:cardCornerRadius="20dp">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                    <ScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:fillViewport="true">
+                        <LinearLayout
+                            android:id="@+id/layout_input"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:paddingHorizontal="10dp"
+                            android:paddingVertical="10dp">
+
+                        </LinearLayout>
+                    </ScrollView>
+                </RelativeLayout>
+
+            </androidx.cardview.widget.CardView>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="10dp"
                 android:paddingBottom="80dp"
                 android:orientation="horizontal"
                 android:gravity="center">

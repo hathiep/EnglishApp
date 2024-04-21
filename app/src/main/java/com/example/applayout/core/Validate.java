@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.text.TextUtils;
 import android.widget.Toast;
 
+import java.util.List;
 import java.util.regex.Pattern;
 
 public class Validate {
@@ -52,6 +53,26 @@ public class Validate {
         if(validateEmpty(a) || validateEmpty(b)  || validateEmpty(c)  || validateEmpty(d)  || validateEmpty(e) ){
             show_dialog("Vui lòng nhập đầy đủ thông tin!", 1);
             return false;
+        }
+        return true;
+    }
+    // Hàm thông báo validate xâu rỗng n tham số qua mảng
+    public boolean checkValidateEmpty(String[] list){
+        for(int i=0; i<list.length; i++){
+            if(validateEmpty(list[i])){
+                show_dialog("Vui lòng nhập đầy đủ thông tin!", 1);
+                return false;
+            }
+        }
+        return true;
+    }
+    // Hàm thông báo validate xâu rỗng n tham số qua list
+    public boolean checkValidateEmpty(List<String> list){
+        for(int i=0; i<list.size(); i++){
+            if(validateEmpty(list.get(i))){
+                show_dialog("Vui lòng nhập đầy đủ thông tin!", 1);
+                return false;
+            }
         }
         return true;
     }
