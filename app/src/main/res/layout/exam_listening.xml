@@ -29,17 +29,15 @@
 
                 <ImageView
                     android:id="@+id/imV_volume"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:background="@drawable/exam_part_l_volume"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:backgroundTint="@color/exam_blue_1"/>
-
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:paddingTop="5dp"
-                    android:layout_marginLeft="0dp"
-                    android:text="Xem bức ảnh sau và chọn câu trả lời đúng"
+                    android:layout_marginLeft="10dp"
+                    android:text="Lắng nghe và chọn câu trả lời đúng cho ảnh dưới đây"
                     android:textSize="16sp" />
 
             </LinearLayout>

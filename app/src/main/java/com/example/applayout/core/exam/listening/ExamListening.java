@@ -1,5 +1,6 @@
 package com.example.applayout.core.exam.listening;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -56,9 +57,8 @@ public class ExamListening extends AppCompatActivity {
     private Question current_question;
     List<LinearLayout> list_layout_ans;
     List<TextView> list_tv_ans;
-    List<Integer> list_index_correct, list_index_wrong;
     Button btn_answer;
-    int click_audio, choice, click_answer;
+    int choice, click_answer;
     ImageView imV_back, imV_home, imV_learn, imV_exercise, imV_exam, imV_support, imV_profile, imV_volume, imV_image;
     int point = 0;
     @Override
@@ -148,13 +148,14 @@ public class ExamListening extends AppCompatActivity {
     }
     // Khởi tạo giá trị các biến
     private void initVariable(){
-        click_audio = choice = click_answer = 0;
+        choice = click_answer = 0;
     }
     // Gán giá trị cho view
     private void setUi(){
         tv_part.setText("Part A3");
         tv_exam_name.setText("Listening");
         tv_question_num.setText(String.valueOf(question) + "/10");
+        imV_volume.setImageDrawable(getResources().getDrawable(R.drawable.icon_audio2));
         audio = new MediaPlayer();
         try {
             audio.setDataSource(current_question.getAudio());
@@ -197,15 +198,11 @@ public class ExamListening extends AppCompatActivity {
          imV_volume.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View v) {
-                 if(click_audio == 0){
-                     if(audio.isPlaying()){
-                         audio.pause();
-                     } else {
-                         audio.start();
-                     }
-                 }
-                 else{
-                     click_audio = 0;
+                 if(audio.isPlaying()){
+                     imV_volume.setImageDrawable(getResources().getDrawable(R.drawable.icon_audio2));
+                     audio.pause();
+                 } else {
+                     imV_volume.setImageDrawable(getResources().getDrawable(R.drawable.icon_audio));
                      audio.start();
                  }
              }
@@ -228,6 +225,7 @@ public class ExamListening extends AppCompatActivity {
     // Hàm onClick button Đáp án
     private void onClickButtonAnswer(){
         btn_answer.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("UseCompatLoadingForDrawables")
             @Override
             public void onClick(View view) {
                 if(click_answer == 0){
@@ -238,12 +236,14 @@ public class ExamListening extends AppCompatActivity {
                     }
                     // Tắt âm thanh hiện tại nếu đang bật
                     audio.stop();
+                    // Đổi icon loa thành tắt
+                    imV_volume.setImageDrawable(getResources().getDrawable(R.drawable.icon_audio2));
+                    // Chuẩn bị audio sẵn sàng phát lại
                     try {
                         audio.prepare();
                     } catch (IOException e) {
                         throw new RuntimeException(e);
-                    }
-                    click_audio = 1;
+                    };
                     // Hiển thị thông báo kết quả
                     showDialogResult();
                     // Hiển thị dữ liệu câu hỏi
