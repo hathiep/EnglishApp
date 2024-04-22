@@ -50,10 +50,10 @@
             android:name=".core.exam.ExamMain"
             android:exported="false" />
         <activity
-            android:name=".core.exam.ExamVocabulary"
+            android:name=".core.exam.vocabulary.ExamVocabulary"
             android:exported="false" />
         <activity
-            android:name=".core.exam.ExamGrammar"
+            android:name=".core.exam.grammar.ExamGrammar"
             android:exported="false" />
         <activity
             android:name=".core.exam.listening.ExamListening"

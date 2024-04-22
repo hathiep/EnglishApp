@@ -25,7 +25,7 @@
                 android:layout_height="100dp"
                 android:layout_marginTop="20dp"
                 android:background="@drawable/exam_main_bg_green"
-                android:text="Vocabulary"
+                android:text="A1. Vocabulary"
                 android:textSize="24sp"
                 android:textColor="@color/white"
                 android:gravity="center"/>
@@ -36,7 +36,7 @@
                 android:layout_height="100dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/exam_main_bg_yellow"
-                android:text="Grammar"
+                android:text="A2. Grammar"
                 android:textSize="24sp"
                 android:textColor="@color/black"
                 android:gravity="center"/>
@@ -47,7 +47,7 @@
                 android:layout_height="100dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/exam_main_bg_orange"
-                android:text="Listening"
+                android:text="A3. Listening"
                 android:textSize="24sp"
                 android:textColor="@color/white"
                 android:gravity="center"/>
@@ -58,7 +58,7 @@
                 android:layout_height="100dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/exam_main_bg_purple"
-                android:text="Writing"
+                android:text="A4. Writing"
                 android:textSize="24sp"
                 android:textColor="@color/black"
                 android:gravity="center"/>
@@ -70,7 +70,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="80dp"
                 android:background="@drawable/exam_main_bg_blue"
-                android:text="Synthetic"
+                android:text="A4. Synthetic"
                 android:textSize="24sp"
                 android:textColor="@color/white"
                 android:gravity="center"/>

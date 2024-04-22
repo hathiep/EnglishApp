@@ -21,6 +21,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.applayout.R;
+import com.example.applayout.core.MainActivity;
 import com.example.applayout.core.Profile;
 import com.example.applayout.core.RandomArray;
 import com.example.applayout.core.exam.ExamMain;
@@ -174,7 +175,7 @@ public class ExamVocabulary extends AppCompatActivity {
         onClickButtonReset();
         // Menu dưới màn hình
         onClickImVMenu(imV_back, ExamMain.class.newInstance());
-        onClickImVMenu(imV_home, ExamMain.class.newInstance());
+        onClickImVMenu(imV_home, MainActivity.class.newInstance());
         onClickImVMenu(imV_learn, LearnMain.class.newInstance());
         onClickImVMenu(imV_exercise, ExerciseMain.class.newInstance());
         onClickImVMenu(imV_support, SupportMain.class.newInstance());

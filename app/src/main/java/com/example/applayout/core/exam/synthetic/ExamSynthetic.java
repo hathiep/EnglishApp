@@ -22,6 +22,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.applayout.R;
+import com.example.applayout.core.MainActivity;
 import com.example.applayout.core.Profile;
 import com.example.applayout.core.RandomArray;
 import com.example.applayout.core.exam.ExamMain;
@@ -47,7 +48,7 @@ public class ExamSynthetic extends AppCompatActivity {
     FirebaseUser user = auth.getCurrentUser();
     FirebaseDatabase database;
     int question = 1;
-    TextView tv_grammar, tv_part, tv_exam_name, tv_question_num, tv_question;
+    TextView tv_exam, tv_part, tv_exam_name, tv_question_num, tv_question;
     List<TextView> list_tv_ans = new ArrayList<>();
     private Question current_question = new Question();
     Button btn_answer;
@@ -109,10 +110,10 @@ public class ExamSynthetic extends AppCompatActivity {
         imV_profile = findViewById(R.id.imV_profile);
         //Đánh dấu activity hiện tại trên thanh menu
         imV_exam = findViewById(R.id.imV_exam);
-        tv_grammar = findViewById(R.id.tv_exam);
+        tv_exam = findViewById(R.id.tv_exam);
         imV_exam.setScaleType(ImageView.ScaleType.CENTER_CROP);
         imV_exam.setImageResource(R.drawable.icon_exam2);
-        tv_grammar.setTextAppearance(R.style.menu_text);
+        tv_exam.setTextAppearance(R.style.menu_text);
 
         tv_question = findViewById(R.id.tv_question);
         list_tv_ans.add(findViewById(R.id.tv_a1));
@@ -187,7 +188,7 @@ public class ExamSynthetic extends AppCompatActivity {
 
         // Menu dưới màn hình
         onClickImVMenu(imV_back, ExamMain.class.newInstance());
-        onClickImVMenu(imV_home, ExamMain.class.newInstance());
+        onClickImVMenu(imV_home, MainActivity.class.newInstance());
         onClickImVMenu(imV_learn, LearnMain.class.newInstance());
         onClickImVMenu(imV_exercise, ExerciseMain.class.newInstance());
         onClickImVMenu(imV_support, SupportMain.class.newInstance());
