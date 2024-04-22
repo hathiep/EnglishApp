@@ -79,20 +79,21 @@ public class ExamMain extends AppCompatActivity {
         onClickTVMenu(tv_writing, ExamWriting.class.newInstance());
         onClickTVMenu(tv_synthetic, ExamSynthetic.class.newInstance());
         // Menu dưới màn hình
-        onClickImVMenu(imV_back, MainActivity.class.newInstance());
-        onClickImVMenu(imV_home, MainActivity.class.newInstance());
-        onClickImVMenu(imV_learn, LearnMain.class.newInstance());
-        onClickImVMenu(imV_exercise, ExerciseMain.class.newInstance());
-        onClickImVMenu(imV_support, SupportMain.class.newInstance());
-        onClickImVMenu(imV_profile, Profile.class.newInstance());
+        onClickImVMenu(imV_back, MainActivity.class.newInstance(), false);
+        onClickImVMenu(imV_home, MainActivity.class.newInstance(), false);
+        onClickImVMenu(imV_learn, LearnMain.class.newInstance(), true);
+        onClickImVMenu(imV_exercise, ExerciseMain.class.newInstance(), true);
+        onClickImVMenu(imV_support, SupportMain.class.newInstance(), true);
+        onClickImVMenu(imV_profile, Profile.class.newInstance(), true);
     }
     // Hàm onClickImageView
-    private void onClickImVMenu(ImageView imV, Context context){
+    private void onClickImVMenu(ImageView imV, Context context, boolean ok){
         imV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), context.getClass());
                 startActivity(intent);
+                if(!ok) finish();
             }
         });
     }
@@ -105,5 +106,12 @@ public class ExamMain extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(intent);
+        finish();
+        super.onBackPressed();
     }
 }

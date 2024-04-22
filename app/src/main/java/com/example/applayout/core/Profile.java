@@ -349,4 +349,11 @@ public class Profile extends AppCompatActivity {
             }
         }, time * 1000); // Số milliseconds bạn muốn Dialog biến mất sau đó
     }
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(intent);
+        finish();
+        super.onBackPressed();
+    }
 }
