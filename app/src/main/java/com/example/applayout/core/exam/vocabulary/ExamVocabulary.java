@@ -491,6 +491,7 @@ public class ExamVocabulary extends AppCompatActivity {
                 // Xử lý khi người dùng nhấn Yes
                 Intent intent = new Intent(getApplicationContext(), context.getClass());
                 startActivity(intent);
+                finish();
             }
         });
 
