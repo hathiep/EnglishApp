@@ -15,7 +15,7 @@
         app:flipType="horizontal"
         tools:ignore="MissingConstraints">
 
-        <!--Back go there-->
+        <!-- Back Layout Goes Here -->
         <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="300dp"
             android:layout_height="300dp"
@@ -23,22 +23,12 @@
             >
 
             <ImageView
-                android:id="@+id/image_word"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:src="@drawable/dog"
                 >
 
             </ImageView>
-            <TextView
-                android:id="@+id/example_word"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:textSize="70sp"
-                android:background="@drawable/border"
-                android:backgroundTint="#C695CC"
-                android:textAlignment="center"
-                android:gravity="center"
-                />
 
         </FrameLayout>
 
@@ -48,52 +38,35 @@
             android:layout_height="300dp"
             android:background="@drawable/border"
             android:backgroundTint="#C695CC"
-            android:layout_gravity="center">
+            android:layout_gravity="center"
 
+            >
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/exam_part_l_volume">
+
+            </ImageView>
             <TextView
-                android:id="@+id/word"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Dog"
                 android:textSize="70sp"
                 android:textAlignment="center"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginTop="20dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"/>
-
+                android:layout_margin="20dp"
+                >
+            </TextView>
             <TextView
-                android:id="@+id/spell_word"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="30sp"
-                android:textAlignment="center"
-                app:layout_constraintTop_toBottomOf="@id/word"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
-                android:layout_marginTop="20dp"/>
-
-            <TextView
-                android:id="@+id/meaning_word"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:text="Con chó"
                 android:textSize="30sp"
                 android:textAlignment="center"
                 android:gravity="bottom"
-                app:layout_constraintTop_toBottomOf="@id/spell_word"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="20dp"
-                tools:ignore="RtlCompat"/>
-
+                android:layout_margin="20dp"
+                tools:ignore="RtlCompat">
+            </TextView>
         </androidx.constraintlayout.widget.ConstraintLayout>
-
 
     </com.wajahatkarim3.easyflipview.EasyFlipView>
 
