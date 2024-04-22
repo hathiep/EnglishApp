@@ -25,6 +25,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.applayout.R;
+import com.example.applayout.core.MainActivity;
 import com.example.applayout.core.Profile;
 import com.example.applayout.core.exam.ExamMain;
 import com.example.applayout.core.exam.ExamPartFinal;
@@ -55,7 +56,7 @@ public class ExamWriting extends AppCompatActivity {
     FirebaseUser user = auth.getCurrentUser();
     FirebaseDatabase database;
     int question = 1;
-    TextView tv_writing, tv_part, tv_exam_name, tv_question_num, tv_question, tv_status;
+    TextView tv_exam, tv_part, tv_exam_name, tv_question_num, tv_question, tv_status;
     private Question current_question = new Question();
     private LinearLayout layout_input;
     List<TextInputEditText> list_edt;
@@ -120,8 +121,8 @@ public class ExamWriting extends AppCompatActivity {
         imV_exam = findViewById(R.id.imV_exam);
         imV_exam.setScaleType(ImageView.ScaleType.CENTER_CROP);
         imV_exam.setImageResource(R.drawable.icon_exam2);
-        tv_writing = findViewById(R.id.tv_exam);
-        tv_writing.setTextAppearance(R.style.menu_text);
+        tv_exam = findViewById(R.id.tv_exam);
+        tv_exam.setTextAppearance(R.style.menu_text);
 
         tv_question = findViewById(R.id.tv_question);
         layout_input = findViewById(R.id.layout_input);
@@ -224,7 +225,7 @@ public class ExamWriting extends AppCompatActivity {
 
         // Menu dưới màn hình
         onClickImVMenu(imV_back, ExamMain.class.newInstance());
-        onClickImVMenu(imV_home, ExamMain.class.newInstance());
+        onClickImVMenu(imV_home, MainActivity.class.newInstance());
         onClickImVMenu(imV_learn, LearnMain.class.newInstance());
         onClickImVMenu(imV_exercise, ExerciseMain.class.newInstance());
         onClickImVMenu(imV_support, SupportMain.class.newInstance());
