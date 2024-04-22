@@ -204,6 +204,13 @@ public class ExamListening extends AppCompatActivity {
                  } else {
                      imV_volume.setImageDrawable(getResources().getDrawable(R.drawable.icon_audio));
                      audio.start();
+                     audio.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                         @Override
+                         public void onCompletion(MediaPlayer mp) {
+                             imV_volume.setImageDrawable(getResources().getDrawable(R.drawable.icon_audio2));
+                         }
+                     });
+
                  }
              }
          });
