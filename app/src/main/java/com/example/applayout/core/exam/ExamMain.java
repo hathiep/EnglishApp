@@ -80,7 +80,7 @@ public class ExamMain extends AppCompatActivity {
         onClickTVMenu(tv_synthetic, ExamSynthetic.class.newInstance());
         // Menu dưới màn hình
         onClickImVMenu(imV_back, MainActivity.class.newInstance());
-        onClickImVMenu(imV_home, ExamMain.class.newInstance());
+        onClickImVMenu(imV_home, MainActivity.class.newInstance());
         onClickImVMenu(imV_learn, LearnMain.class.newInstance());
         onClickImVMenu(imV_exercise, ExerciseMain.class.newInstance());
         onClickImVMenu(imV_support, SupportMain.class.newInstance());
