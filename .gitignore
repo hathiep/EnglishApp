@@ -13,8 +13,7 @@
 .externalNativeBuild
 .cxx
 # Gradle files
-.gradle/
-build/
+
 
 
 # Log/OS Files
