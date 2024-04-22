@@ -28,7 +28,6 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.applayout.R;
 import com.example.applayout.core.MainActivity;
 import com.example.applayout.core.Profile;
-import com.example.applayout.core.RandomArray;
 import com.example.applayout.core.exam.ExamMain;
 import com.example.applayout.core.exam.ExamPartFinal;
 import com.example.applayout.core.exam.Result;
