@@ -9,9 +9,9 @@ import retrofit2.http.POST;
 
 public interface TextToSpeechApi {
     @Headers({
-            "content-type: application/json",
-            "X-RapidAPI-Key: fb162dd0f3msh5846e815fcd2ad6p129fc6jsn1dad6c0b4fa1",
-            "X-RapidAPI-Host: ai-powered-text-to-speech1.p.rapidapi.com"
+            "content-type': 'application/json",
+            "X-RapidAPI-Key': '92fa9c0d25mshbe6f0d82c25b687p14f130jsn62a7e2fa8ae6",
+            "X-RapidAPI-Host': 'ai-powered-text-to-speech1.p.rapidapi.com"
     })
     @POST("synthesize-speech")
     Call<TextToSpeechResponse> synthesizeSpeech(@Body TextToSpeechRequestBody requestBody);
