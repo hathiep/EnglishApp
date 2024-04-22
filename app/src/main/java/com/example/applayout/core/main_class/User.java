@@ -1,4 +1,4 @@
-package com.example.applayout.core;
+package com.example.applayout.core.main_class;
 
 public class User {
     private String name;

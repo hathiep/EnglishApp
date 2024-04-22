@@ -1,10 +1,9 @@
-package com.example.applayout.core;
+package com.example.applayout.core.main_class;
 
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Handler;
 import android.text.TextUtils;
-import android.widget.Toast;
 
 import java.util.List;
 import java.util.regex.Pattern;

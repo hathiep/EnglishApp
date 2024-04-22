@@ -23,6 +23,12 @@
             android:name=".core.Profile"
             android:exported="false" />
         <activity
+            android:name=".core.ChangePassword"
+            android:exported="false" />
+        <activity
+            android:name=".core.ForgotPassword"
+            android:exported="false" />
+        <activity
             android:name=".core.exam.ExamPartFinal"
             android:exported="false" />
         <activity

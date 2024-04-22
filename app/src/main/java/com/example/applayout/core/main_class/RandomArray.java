@@ -1,4 +1,4 @@
-package com.example.applayout.core;
+package com.example.applayout.core.main_class;
 
 import java.util.ArrayList;
 import java.util.HashSet;
