@@ -42,11 +42,11 @@ public class FlashCardActivity extends AppCompatActivity {
     private MediaPlayer mediaPlayer;
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
-
     private String topic;
     private List<FlashCardEntity> flashCardEntityList;
     private ImageView back_button;
     private ImageView sound;
+    private TextView headerView;
 
     private ViewFlipper viewFlipper;
     private Button nextFlipperButton;
@@ -69,6 +69,8 @@ public class FlashCardActivity extends AppCompatActivity {
 
         databaseReference = firebaseDatabase.getReference("NewWords" + "/" + topic);
         flashCardEntityList = new ArrayList<>();
+        headerView = findViewById(R.id.header_name);
+        headerView.setText(topic);
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -76,6 +78,7 @@ public class FlashCardActivity extends AppCompatActivity {
                 viewFlipper.removeAllViews();
 
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+
                     if (dataSnapshot.getValue() != null) {
                         FlashCardEntity flashCard = dataSnapshot.getValue(FlashCardEntity.class);
                         flashCardEntityList.add(flashCard);
@@ -163,7 +166,8 @@ public class FlashCardActivity extends AppCompatActivity {
         });
     }
 
-    private void callAPISound(String word) {
+    private  void callAPISound(String word) {
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://ai-powered-text-to-speech1.p.rapidapi.com/")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -180,9 +184,8 @@ public class FlashCardActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     TextToSpeechResponse responseBody = response.body();
                     if (responseBody != null) {
-                        String audioUrl = responseBody.getFileDownloadUrl();
-                        System.out.println(audioUrl);
-                        playSoundFromUrl(audioUrl);
+                        String url = responseBody.getFileDownloadUrl();
+                        playSoundFromUrl(url);
                     } else {
                     }
                 } else {
@@ -202,8 +205,6 @@ public class FlashCardActivity extends AppCompatActivity {
 
             mediaPlayer.setDataSource(url);
 
-            mediaPlayer.prepareAsync();
-            Toast.makeText(this, "prepared", Toast.LENGTH_SHORT).show();
 
             mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                 @Override

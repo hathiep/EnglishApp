@@ -14,11 +14,16 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 
 import com.example.applayout.R;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,6 +32,7 @@ import com.google.firebase.database.ValueEventListener;
  *
  */
 public class LearnFragment extends Fragment {
+    FirebaseAuth firebaseAuth;
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
     LinearLayout learnFragLayout;
@@ -49,6 +55,7 @@ public class LearnFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         firebaseDatabase = FirebaseDatabase.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
 
         databaseReference = firebaseDatabase.getReference("NewWords");
 
@@ -85,6 +92,17 @@ public class LearnFragment extends Fragment {
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    String uid = firebaseAuth.getUid();
+                    System.out.println(uid);
+                    if (uid != null) {
+                        DatabaseReference userReference = firebaseDatabase.getReference("User")
+                                .child(uid)
+                                .child("newword")
+                                .child(topicName); // Sử dụng topic name làm key
+                        String currentDate = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(new Date());
+                        userReference.setValue(currentDate); // Đặt giá trị là ngày hiện tại
+                    }
+
                     Intent intent = new Intent(requireContext(), FlashCardActivity.class);
                     intent.putExtra("topicName", topicName);
                     startActivity(intent);

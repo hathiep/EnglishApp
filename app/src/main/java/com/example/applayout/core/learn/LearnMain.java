@@ -1,13 +1,35 @@
 package com.example.applayout.core.learn;
 
+import android.Manifest;
+import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -21,11 +43,18 @@ import com.example.applayout.core.exercise.ExerciseMain;
 import com.example.applayout.core.support.SupportMain;
 import com.google.android.material.tabs.TabLayout;
 
+import org.checkerframework.checker.units.qual.C;
+
+import java.util.Calendar;
+
 public class LearnMain extends AppCompatActivity {
+    private Button startServiceBtn;
+
+
     private ImageView imV_back;
     private ImageView imV_learn;
-    private ImageView imV_exercise ;
-    private ImageView imV_support ;
+    private ImageView imV_exercise;
+    private ImageView imV_support;
     private ImageView imV_profile;
     private ImageView imV_home;
     private TabLayout tabLayout;
@@ -41,6 +70,7 @@ public class LearnMain extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
+        startServiceBtn = findViewById(R.id.start_Service);
 
         //Đánh dấu activity hiện tại trên thanh menu
         imV_learn = findViewById(R.id.imV_learn);
@@ -107,8 +137,15 @@ public class LearnMain extends AppCompatActivity {
                 finish();
             }
         });
+        startServiceBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+            }
+        });
 
     }
+
+
 
 }

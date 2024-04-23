@@ -65,7 +65,14 @@
 
     </LinearLayout>
 
+    <Button
+        android:id="@+id/start_Service"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/menu_bottom"
+        android:layout_centerHorizontal="true">
 
+    </Button>
 
     <include layout="@layout/menu_bottom"/>
 
