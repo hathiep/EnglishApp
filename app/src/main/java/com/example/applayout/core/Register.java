@@ -1,20 +1,15 @@
 package com.example.applayout.core;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.InputType;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
@@ -24,14 +19,13 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.applayout.R;
-import com.example.applayout.core.exam.synthetic.Question;
-import com.example.applayout.core.main.Exam;
-import com.example.applayout.core.main.Exercise;
-import com.example.applayout.core.main.Unit;
+import com.example.applayout.core.main_class.Exam;
+import com.example.applayout.core.main_class.Exercise;
+import com.example.applayout.core.main_class.Unit;
+import com.example.applayout.core.main_class.Validate;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.firebase.auth.ActionCodeSettings;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -40,8 +34,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import java.util.regex.Pattern;
 
 public class Register extends AppCompatActivity {
     TextInputEditText editTextName, editTextEmail, editTextPhone, editTextPassword, editTextPasswordAgain;

@@ -54,7 +54,7 @@
             android:layout_height="80dp"
             android:background="@drawable/exam_part_bg_head_green"
             android:gravity="center"
-            android:text=""
+            android:text="End"
             android:textColor="@color/white"
             android:textSize="20sp" />
 

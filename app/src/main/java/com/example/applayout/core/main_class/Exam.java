@@ -1,4 +1,4 @@
-package com.example.applayout.core.main;
+package com.example.applayout.core.main_class;
 
 public class Exam {
     private int vocabulary;

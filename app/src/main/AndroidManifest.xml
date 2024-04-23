@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.applayout"
     xmlns:tools="http://schemas.android.com/tools">
-
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -13,6 +12,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppLayout"
         tools:targetApi="31">
+        <activity
+            android:name=".core.ChangePassword"
+            android:exported="false" />
+        <activity
+            android:name=".core.ForgotPassword"
+            android:exported="false" />
         <activity
             android:name=".core.learn.FlashCardActivity"
             android:exported="false" />
@@ -53,20 +58,19 @@
             android:name=".core.exam.ExamGrammar"
             android:exported="false" />
         <activity
-            android:name=".core.exam.ExamListening"
+            android:name=".core.exam.listening.ExamListening"
             android:exported="false" />
         <activity
-            android:name=".core.exam.ExamWriting"
+            android:name=".core.exam.writing.ExamWriting"
             android:exported="false" />
         <activity
-            android:name=".core.exam.ExamSynthetic"
+            android:name=".core.exam.synthetic.ExamSynthetic"
             android:exported="false" />
         <activity
             android:name=".core.Login"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -75,10 +79,11 @@
             android:exported="false" />
         <activity
             android:name=".core.MainActivity"
-            android:exported="false" />
+            android:exported="false" >
+        </activity>
         <activity
             android:name=".core.support.Activities.PlanSupport"
-            android:exported="false" />
+            android:exported="false"/>
         <activity
             android:name=".core.support.Activities.TaskSupport"
             android:exported="false" />
@@ -91,10 +96,18 @@
         <activity
             android:name=".core.support.Activities.AnnouncementSupport"
             android:exported="false" />
+<<<<<<<<< Temporary merge branch 1
         <activity
             android:name=".core.support.SupportMain$SupportMain"
             android:exported="true">
         </activity>
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
+            android:exported="true" />
+=========
+>>>>>>>>> Temporary merge branch 2
     </application>
 
 </manifest>
