@@ -33,6 +33,7 @@ import com.example.applayout.core.exam.ExamPartFinal;
 import com.example.applayout.core.exam.Result;
 import com.example.applayout.core.exercise.ExerciseMain;
 import com.example.applayout.core.learn.LearnMain;
+import com.example.applayout.core.main_class.RandomArray;
 import com.example.applayout.core.support.SupportMain;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -61,6 +62,8 @@ public class ExamListening extends AppCompatActivity {
     int choice, click_answer;
     ImageView imV_back, imV_home, imV_learn, imV_exercise, imV_exam, imV_support, imV_profile, imV_volume, imV_image;
     int point = 0;
+    RandomArray randomArray = new RandomArray(20);
+    List<Integer> randomPermutation = randomArray.generateRandomCombination(10);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -134,7 +137,7 @@ public class ExamListening extends AppCompatActivity {
     private void getQuestionFromDatabase(){
         database = FirebaseDatabase.getInstance();
         Random random = new Random();
-        DatabaseReference ref = database.getReference("Exam/Listening/" + random.nextInt(6));
+        DatabaseReference ref = database.getReference("Exam/Listening/" + randomPermutation.get(question-1));
 
         ref.addValueEventListener(new ValueEventListener() {
             @Override
