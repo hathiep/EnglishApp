@@ -27,16 +27,16 @@
 
         <TextView
             android:id="@+id/titleTxt"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
             android:layout_width="wrap_content"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:textColor="@color/text"
             android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="8dp"
             android:layout_weight="1"
-            android:text="Cài đặt thông báo" />
+            android:text="Cài đặt thông báo"
+            android:textColor="@color/text"
+            android:textSize="18sp"
+            android:textStyle="bold" />
     </LinearLayout>
 
     <ScrollView

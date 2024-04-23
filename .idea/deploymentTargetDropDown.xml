@@ -2,28 +2,21 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
-<<<<<<<<< Temporary merge branch 1
-      <entry key="app">
-=========
-      <entry key="PlanSupport">
+      <entry key="Unnamed">
         <State>
-          <targetSelectedWithDropDown>
+          <runningDeviceTargetSelectedWithDropDown>
             <Target>
-              <type value="QUICK_BOOT_TARGET" />
+              <type value="RUNNING_DEVICE_TARGET" />
               <deviceKey>
                 <Key>
-                  <type value="VIRTUAL_DEVICE_PATH" />
-                  <value value="C:\Users\Nguyen Hoang Viet\.android\avd\Pixel_3a_API_34_extension_level_7_x86_64.avd" />
+                  <type value="SERIAL_NUMBER" />
+                  <value value="tk4l4p6pxkgmge5h" />
                 </Key>
               </deviceKey>
             </Target>
-          </targetSelectedWithDropDown>
-          <timeTargetWasSelectedWithDropDown value="2024-04-09T07:41:53.431275300Z" />
+          </runningDeviceTargetSelectedWithDropDown>
+          <timeTargetWasSelectedWithDropDown value="2024-04-23T08:43:59.216214300Z" />
         </State>
-      </entry>
-      <entry key="Unnamed">
->>>>>>>>> Temporary merge branch 2
-        <State />
       </entry>
     </value>
   </component>

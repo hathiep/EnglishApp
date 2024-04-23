@@ -13,8 +13,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.bumptech.glide.load.resource.bitmap.GranularRoundedCorners;
 import com.example.applayout.R;
-import com.example.applayout.core.main.Exam;
 import com.example.applayout.core.support.Domains.ExamDomain;
 import com.example.applayout.core.support.Domains.ExerciseDomain;
 import com.example.applayout.core.support.Domains.TaskDomain;
@@ -29,6 +30,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder>{
     private List<Pair<String, Integer>> tasks;
     private String taskType;
 
+    private List<String> resources;
+
     public TaskAdapter() {
     }
 
@@ -40,6 +43,14 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder>{
     public TaskAdapter(ArrayList<WordDomain> words, String taskType) {
         this.words = words;
         this.taskType = taskType;
+    }
+
+    public List<String> getResources() {
+        return resources;
+    }
+
+    public void setResources(List<String> resources) {
+        this.resources = resources;
     }
 
     public ArrayList<ExamDomain> getExams() {
@@ -82,7 +93,19 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder>{
                 System.out.println("Exercise");
                 holder.subjectTxt.setText(tasks.get(position).first);
                 System.out.println(tasks.get(position).first);
-                holder.subjectProgressTxt.setText(tasks.get(position).second + "points");
+                holder.subjectProgressTxt.setText(tasks.get(position).second + "%");
+                holder.subjectProgressBar.setProgress(tasks.get(position).second);
+
+                int drawableResId = holder.itemView.getResources().getIdentifier(
+                        resources.get(position),
+                        "drawable",
+                        holder.itemView.getContext().getOpPackageName()
+                );
+
+                Glide.with(holder.itemView.getContext()).load(drawableResId).transform(
+                        new CenterCrop(),
+                        new GranularRoundedCorners(40, 40, 40, 40)
+                ).into(holder.subjectImage);
                 break;
             case "Exam":
                 holder.subjectTxt.setText(exams.get(position).getTitle());
@@ -113,6 +136,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder>{
             subjectImage = itemView.findViewById(R.id.subjectImage);
             subjectTxt = itemView.findViewById(R.id.subjectTxt);
             subjectProgressBar = itemView.findViewById(R.id.subjectProgressBar);
+
             subjectProgressTxt = itemView.findViewById(R.id.subjectProgressTxt);
         }
     }

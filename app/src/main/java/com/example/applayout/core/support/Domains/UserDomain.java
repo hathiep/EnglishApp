@@ -1,6 +1,6 @@
 package com.example.applayout.core.support.Domains;
 
-import com.example.applayout.core.main.Exam;
+import com.example.applayout.core.main_class.Exam;
 import com.example.applayout.core.support.Domains.ExerciseDomain;
 import com.google.firebase.database.Exclude;
 

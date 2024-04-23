@@ -52,10 +52,10 @@
             android:name=".core.exam.ExamMain"
             android:exported="false" />
         <activity
-            android:name=".core.exam.ExamVocabulary"
+            android:name=".core.exam.vocabulary.ExamVocabulary"
             android:exported="false" />
         <activity
-            android:name=".core.exam.ExamGrammar"
+            android:name=".core.exam.grammar.ExamGrammar"
             android:exported="false" />
         <activity
             android:name=".core.exam.listening.ExamListening"
@@ -96,18 +96,11 @@
         <activity
             android:name=".core.support.Activities.AnnouncementSupport"
             android:exported="false" />
-<<<<<<<<< Temporary merge branch 1
-        <activity
-            android:name=".core.support.SupportMain$SupportMain"
-            android:exported="true">
-        </activity>
+<!--        <activity-->
+<!--            android:name=".core.support.SupportMain$SupportMain"-->
+<!--            android:exported="true">-->
+<!--        </activity>-->
 
-        <meta-data
-            android:name="preloaded_fonts"
-            android:resource="@array/preloaded_fonts" />
-            android:exported="true" />
-=========
->>>>>>>>> Temporary merge branch 2
     </application>
 
 </manifest>

@@ -49,7 +49,7 @@ public class TaskSupport extends AppCompatActivity {
 
     private final DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("User");
     private final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-    private RecyclerView.Adapter adapterTask;
+    private TaskAdapter adapterTask;
     private RecyclerView taskRecycler;
     private String taskType;
     private BarChart barChart;
@@ -161,29 +161,43 @@ public class TaskSupport extends AppCompatActivity {
 
                                         List<Pair<String, Integer>> taskProgress = new ArrayList<>();
 
-                                        Pair<String, Integer> pair = new Pair<>("Art", (tasks.get(0).getArt() + tasks.get(1).getArt()) / 2);
+                                        Pair<String, Integer> pair = new Pair<>("Animals", (tasks.get(0).getAnimals() + tasks.get(1).getAnimals()) / 2 * 10);
                                         taskProgress.add(pair);
-                                        pair = new Pair<>("Animals", (tasks.get(0).getAnimals() + tasks.get(1).getAnimals()) / 2);
+                                        pair = new Pair<>("Art", (tasks.get(0).getArt() + tasks.get(1).getArt()) / 2 * 10);
                                         taskProgress.add(pair);
-                                        pair = new Pair<>("Construction", (tasks.get(0).getConstruction() + tasks.get(1).getConstruction()) / 2);
+                                        pair = new Pair<>("Construction", (tasks.get(0).getConstruction() + tasks.get(1).getConstruction()) / 2 * 10);
                                         taskProgress.add(pair);
-                                        pair = new Pair<>("Correspondence", (tasks.get(0).getCorrespondence() + tasks.get(1).getCorrespondence()) / 2);
+                                        pair = new Pair<>("Correspondence", (tasks.get(0).getCorrespondence() + tasks.get(1).getCorrespondence()) / 2 * 10);
                                         taskProgress.add(pair);
-                                        pair = new Pair<>("Economic", (tasks.get(0).getEconomic() + tasks.get(1).getEconomic()) / 2);
+                                        pair = new Pair<>("Economic", (tasks.get(0).getEconomic() + tasks.get(1).getEconomic()) / 2 * 10);
                                         taskProgress.add(pair);
-                                        pair = new Pair<>("Entertainment", (tasks.get(0).getEntertainment() + tasks.get(1).getEntertainment()) / 2);
+                                        pair = new Pair<>("Entertainment", (tasks.get(0).getEntertainment() + tasks.get(1).getEntertainment()) / 2 * 10);
                                         taskProgress.add(pair);
-                                        pair = new Pair<>("Environment", (tasks.get(0).getEnvironment() + tasks.get(1).getEnvironment()) / 2);
+                                        pair = new Pair<>("Environment", (tasks.get(0).getEnvironment() + tasks.get(1).getEnvironment()) / 2 * 10);
                                         taskProgress.add(pair);
-                                        pair = new Pair<>("Health", (tasks.get(0).getHealth() + tasks.get(1).getHealth()) / 2);
+                                        pair = new Pair<>("Health", (tasks.get(0).getHealth() + tasks.get(1).getHealth()) / 2 * 10);
                                         taskProgress.add(pair);
-                                        pair = new Pair<>("History", (tasks.get(0).getHistory() + tasks.get(1).getHistory()) / 2);
+                                        pair = new Pair<>("History", (tasks.get(0).getHistory() + tasks.get(1).getHistory()) / 2 * 10);
                                         taskProgress.add(pair);
-                                        pair = new Pair<>("Sport", (tasks.get(0).getSport() + tasks.get(1).getSport()) / 2);
+                                        pair = new Pair<>("Sport", (tasks.get(0).getSport() + tasks.get(1).getSport()) / 2 * 10);
                                         taskProgress.add(pair);
+
+                                        // Resource
+                                        ArrayList<String> resources = new ArrayList<>();
+                                        resources.add("support_animals");
+                                        resources.add("support_art");
+                                        resources.add("support_construction");
+                                        resources.add("support_correctpondance");
+                                        resources.add("support_economy");
+                                        resources.add("support_entertaiment");
+                                        resources.add("support_environment");
+                                        resources.add("support_health");
+                                        resources.add("support_history");
+                                        resources.add("support_sport");
 
                                         // Set adapter
                                         adapterTask = new TaskAdapter(taskProgress, taskType);
+                                        adapterTask.setResources(resources);
                                         taskRecycler.setAdapter(adapterTask);
 
                                         // Building chart
@@ -200,7 +214,7 @@ public class TaskSupport extends AppCompatActivity {
 
                                         YAxis yAxis = barChart.getAxisLeft();
                                         yAxis.setAxisMinimum(0f);
-                                        yAxis.setAxisMaximum(10f);
+                                        yAxis.setAxisMaximum(100f);
                                         yAxis.setAxisLineWidth(2f);
                                         yAxis.setAxisLineColor(Color.BLACK);
                                         yAxis.setLabelCount(10);

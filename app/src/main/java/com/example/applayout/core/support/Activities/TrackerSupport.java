@@ -18,7 +18,7 @@ import com.example.applayout.core.Profile;
 import com.example.applayout.core.exam.ExamMain;
 import com.example.applayout.core.exercise.ExerciseMain;
 import com.example.applayout.core.learn.LearnMain;
-import com.example.applayout.core.main.Exam;
+import com.example.applayout.core.main_class.Exam;
 import com.example.applayout.core.support.Domains.ExerciseDomain;
 import com.example.applayout.core.support.SupportMain;
 import com.github.mikephil.charting.charts.BarChart;

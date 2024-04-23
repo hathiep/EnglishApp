@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="100dp"
     android:layout_margin="14dp"
-    app:cardBackgroundColor="@color/orange"
+    app:cardBackgroundColor="@color/teal_200"
     app:cardCornerRadius="12dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -25,13 +25,13 @@
             android:id="@+id/subjectTxt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="152dp"
+            android:layout_marginStart="132dp"
+            android:layout_marginTop="16dp"
             android:text="Exercise"
-            android:textSize="18dp"
             android:textColor="@color/white"
+            android:textSize="18dp"
             android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ProgressBar
@@ -40,8 +40,8 @@
             android:layout_width="132dp"
             android:layout_height="43dp"
             android:layout_marginStart="36dp"
-            android:progressTint="@color/teal_200"
             android:layout_marginBottom="4dp"
+            android:progressTint="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/subjectImage"
             app:layout_constraintTop_toBottomOf="@+id/subjectTxt"
@@ -52,15 +52,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="12%"
-            android:textSize="18dp"
             android:textColor="@color/white"
+            android:textSize="20dp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.63"
+            app:layout_constraintHorizontal_bias="0.623"
             app:layout_constraintStart_toEndOf="@+id/subjectProgressBar"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.629" />
+            app:layout_constraintVertical_bias="0.618" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>
