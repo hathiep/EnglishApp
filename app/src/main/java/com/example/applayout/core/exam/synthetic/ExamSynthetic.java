@@ -58,6 +58,8 @@ public class ExamSynthetic extends AppCompatActivity {
     List<List<Integer>> random_matrix = random_array.generateRandomPermutations();
     int snapshot_size;
     int point = 0;
+    RandomArray randomArray = new RandomArray(20);
+    List<Integer> randomPermutation = randomArray.generateRandomCombination(10);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,26 +127,7 @@ public class ExamSynthetic extends AppCompatActivity {
     }
     private void getQuestionFromDatabase(){
         database = FirebaseDatabase.getInstance();
-//        getSapshotSize();
-//        new Handler().postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                Random random = new Random();
-//                DatabaseReference ref = database.getReference("Exam/Synthetic/" + random.nextInt(8));
-//
-//                ref.addValueEventListener(new ValueEventListener() {
-//                    @Override
-//                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                        current_question = snapshot.getValue(Question.class);
-//                    }
-//                    @Override
-//                    public void onCancelled(@NonNull DatabaseError error) {
-//                    }
-//                });
-//            }
-//        }, 2000);
-        Random random = new Random();
-        DatabaseReference ref = database.getReference("Exam/Synthetic/" + random.nextInt(70));
+        DatabaseReference ref = database.getReference("Exam/Synthetic/" + randomPermutation.get(question-1));
 
         ref.addValueEventListener(new ValueEventListener() {
             @Override

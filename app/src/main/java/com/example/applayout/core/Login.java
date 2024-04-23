@@ -142,9 +142,6 @@ public class Login extends AppCompatActivity {
                                 progressBar.setVisibility(View.GONE);
                                 if (task.isSuccessful()) {
                                     checkVerified();
-                                    Intent intent = new Intent(getApplicationContext(),MainActivity.class);
-                                    startActivity(intent);
-                                    finish();
                                 } else {
                                     // If sign in fails, display a message to the user.
                                     show_dialog("Thông tin không đúng, vui lòng thử lại!", 2);

@@ -1,6 +1,7 @@
 package com.example.applayout.core.main_class;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
@@ -35,6 +36,16 @@ public class RandomArray {
 
         return permutations;
     }
+
+    public List<Integer> generateRandomCombination(int x) {
+        List<Integer> combination = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            combination.add(i);
+        }
+        Collections.shuffle(combination);
+        return combination.subList(0, x);
+    }
+
 
     public List<List<Integer>> generatePermutations() {
         List<List<Integer>> permutations = new ArrayList<>();
