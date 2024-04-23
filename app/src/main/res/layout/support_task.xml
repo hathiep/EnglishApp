@@ -41,6 +41,22 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 
+    <androidx.cardview.widget.CardView
+        android:id="@+id/taskChart"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_weight="2.5"
+        app:cardCornerRadius="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
+
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/barTaskChart"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </androidx.cardview.widget.CardView>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -48,7 +64,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
+        app:layout_constraintTop_toBottomOf="@+id/taskChart">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/view_task"

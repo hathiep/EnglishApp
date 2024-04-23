@@ -1,10 +1,12 @@
 package com.example.applayout.core.support.Activities;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.ViewFlipper;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,6 +17,7 @@ import com.example.applayout.core.exam.ExamMain;
 import com.example.applayout.core.exercise.ExerciseMain;
 import com.example.applayout.core.learn.LearnMain;
 import com.example.applayout.core.support.SupportMain;
+import com.example.applayout.core.support.utils.NotificationHelper;
 
 
 public class AnnouncementSupport extends AppCompatActivity {
@@ -22,6 +25,7 @@ public class AnnouncementSupport extends AppCompatActivity {
     private ViewFlipper viewFlipper;
     private Button nextFlipperButton;
     private Button backFlipperButton;
+    @SuppressLint("UseSwitchCompatOrMaterialCode")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,7 +39,29 @@ public class AnnouncementSupport extends AppCompatActivity {
             );
             startActivity(intent);
         });
-        
+
+        Switch switch1 = findViewById(R.id.switch1);
+        switch1.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("UseCompatLoadingForDrawables")
+            @Override
+            public void onClick(View view) {
+                if (switch1.isChecked()) {
+                    NotificationHelper.showNotification(
+                            getApplicationContext(),
+                            "New Announcement",
+                            "New announcement from the support team",
+                            2002,
+                            "https://pbs.twimg.com/media/GLtoRg5WYAAvJtQ?format=jpg&name=large"
+                    );
+                } else {
+                    NotificationHelper.cancelNotification(
+                            getApplicationContext(),
+                            2002
+                    );
+                }
+            }
+        });
+
         ImageView imV_home = findViewById(R.id.imV_home);
         ImageView imV_learn = findViewById(R.id.imV_learn);
         ImageView imV_exercise = findViewById(R.id.imV_exercise);

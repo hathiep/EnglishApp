@@ -33,10 +33,12 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 
 public class PlanSupport extends AppCompatActivity {
     private DatabaseReference mDatabase;
-    private UserDomain user;
+    private UserDomain user = new UserDomain();
     private UserDomain.Note note;
     private RecyclerView.Adapter adapterPlan;
     private RecyclerView recyclerViewPlan;
@@ -129,32 +131,25 @@ public class PlanSupport extends AppCompatActivity {
             }
         });
 
-        FirebaseUser user1 = FirebaseAuth.getInstance().getCurrentUser();
-        System.out.println(user1.getUid());
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        user.setId(currentUser.getUid());
 
-        // Datebase connection
-        mDatabase = FirebaseDatabase.getInstance().getReference("User");
+        System.out.println(user.getId());
 
-        Query query = mDatabase.orderByChild("username").equalTo("user1");
+        mDatabase = FirebaseDatabase.getInstance().getReference("User").child(user.getId()).child("notes");
 
-        query.addListenerForSingleValueEvent(
+        mDatabase.addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                            user = dataSnapshot.getValue(UserDomain.class);
-                            user.setId(dataSnapshot.getKey());
-                            System.out.println(user.getNotes());
-
-                            for(DataSnapshot noteSnapshot : dataSnapshot.child("notes").getChildren()) {
-                                note = noteSnapshot.getValue(UserDomain.Note.class);
-                                note.setId(noteSnapshot.getKey());
-                                System.out.println(note.getId());
-                                items.add(note);
-                            }
-
+                            UserDomain.Note note = dataSnapshot.getValue(UserDomain.Note.class);
+                            note.setId(dataSnapshot.getKey());
+                            System.out.println(note.getCreatedDateReal());
+                            items.add(note);
                         }
-                        adapterPlan = new PlanAdapter(items);
+                        Collections.sort(items);
+                        adapterPlan = new PlanAdapter(items, currentUser);
                         recyclerViewPlan.setAdapter(adapterPlan);
                     }
 
