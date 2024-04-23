@@ -57,4 +57,15 @@ public class Exam {
     public void setSynthetic(int synthetic) {
         this.synthetic = synthetic;
     }
+
+    @Override
+    public String toString() {
+        return "Exam{" +
+                "vocabulary=" + vocabulary +
+                ", grammar=" + grammar +
+                ", listening=" + listening +
+                ", writing=" + writing +
+                ", synthetic=" + synthetic +
+                '}';
+    }
 }

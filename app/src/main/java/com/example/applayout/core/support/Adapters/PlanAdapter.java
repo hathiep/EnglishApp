@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.applayout.R;
 import com.example.applayout.core.support.Domains.PlanDomain;
 import com.example.applayout.core.support.Domains.UserDomain;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -22,11 +23,13 @@ import java.util.ArrayList;
 
 public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.ViewHolder> {
     private ArrayList<UserDomain.Note> notes;
+    private FirebaseUser user;
 
-    DatabaseReference mDataBase = FirebaseDatabase.getInstance().getReference("users");
+    DatabaseReference mDataBase = FirebaseDatabase.getInstance().getReference("User");
 
-    public PlanAdapter(ArrayList<UserDomain.Note> notes) {
+    public PlanAdapter(ArrayList<UserDomain.Note> notes, FirebaseUser user) {
         this.notes = notes;
+        this.user = user;
     }
 
     @NonNull
@@ -63,7 +66,7 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.ViewHolder> {
             } else {
                 notes.get(position).setStatus("inactive");
             }
-            mDataBase.child("0").child("notes").child( "" + notes.get(position).getId()).setValue(notes.get(position))
+            mDataBase.child(user.getUid()).child("notes").child(notes.get(position).getId()).setValue(notes.get(position))
                     .addOnSuccessListener(aVoid -> {
                         System.out.println("Updated");
                         Toast.makeText(buttonView.getContext(), "Updated", Toast.LENGTH_SHORT).show();
@@ -75,7 +78,7 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.ViewHolder> {
 
         // Delete the note
         holder.imageButton.setOnClickListener(v -> {
-            mDataBase.child("0").child("notes").child( "" + notes.get(position).getId()).removeValue()
+            mDataBase.child(user.getUid()).child("notes").child(notes.get(position).getId()).removeValue()
                     .addOnSuccessListener(aVoid -> {
                         System.out.println("Deleted");
                         notes.remove(position);

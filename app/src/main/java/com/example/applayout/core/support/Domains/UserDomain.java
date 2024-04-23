@@ -1,26 +1,83 @@
 package com.example.applayout.core.support.Domains;
 
+import com.example.applayout.core.main_class.Exam;
+import com.example.applayout.core.support.Domains.ExerciseDomain;
 import com.google.firebase.database.Exclude;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class UserDomain {
     private String id;
-    private String username;
+    private Exam exam;
     private List<Note> notes;
+    private ExerciseDomain exercise;
+    private List<String> newword;
+    private String phone;
 
     public UserDomain() {
     }
 
-    public UserDomain(String username, List<Note> notes) {
-        this.username = username;
+    public UserDomain(
+            String id,
+            Exam exam,
+            List<Note> notes,
+            ExerciseDomain exercise,
+            List<String> newword,
+            String phone
+    ) {
+        this.id = id;
+        this.exam = exam;
         this.notes = notes;
+        this.exercise = exercise;
+        this.newword = newword;
+        this.phone = phone;
     }
 
-    public UserDomain(String id, String username, List<Note> notes) {
-        this.id = id;
-        this.username = username;
-        this.notes = notes;
+    @Override
+    public String toString() {
+        return "UserDomain{" +
+                "id='" + id + '\'' +
+                ", exam=" + exam +
+                ", notes=" + notes +
+                ", exercise=" + exercise +
+                ", newword=" + newword +
+                ", phone='" + phone + '\'' +
+                '}';
+    }
+
+    public Exam getExam() {
+        return exam;
+    }
+
+    public void setExam(Exam exam) {
+        this.exam = exam;
+    }
+
+    @Exclude
+    public ExerciseDomain getExercise() {
+        return exercise;
+    }
+
+    public void setExercise(ExerciseDomain exercise) {
+        this.exercise = exercise;
+    }
+
+    public List<String> getNewword() {
+        return newword;
+    }
+
+    public void setNewword(List<String> newword) {
+        this.newword = newword;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     @Exclude
@@ -32,14 +89,6 @@ public class UserDomain {
         this.id = id;
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
     public List<Note> getNotes() {
         return notes;
     }
@@ -48,13 +97,23 @@ public class UserDomain {
         this.notes = notes;
     }
 
-    public static class Note {
+    public static class Note implements Comparable<Note> {
+        private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+        private LocalDateTime createdDateReal;
         private String id;
+        private String name;
         private String createdDate;
         private String title;
         private String body;
         private String status;
 
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
         @Exclude
         public String getId() {
             return id;
@@ -70,6 +129,11 @@ public class UserDomain {
 
         public void setCreatedDate(String createdDate) {
             this.createdDate = createdDate;
+            this.createdDateReal = LocalDateTime.parse(createdDate, formatter);
+        }
+        @Exclude
+        public LocalDateTime getCreatedDateReal() {
+            return createdDateReal;
         }
 
         public String getTitle() {
@@ -106,14 +170,11 @@ public class UserDomain {
                     ", status='" + status + '\'' +
                     '}';
         }
+
+        @Override
+        public int compareTo(Note o) {
+            return o.getCreatedDateReal().compareTo(this.getCreatedDateReal());
+        }
     }
 
-    @Override
-    public String toString() {
-        return "UserDomain{" +
-                "id=" + id +
-                ", username='" + username + '\'' +
-                ", notes=" + notes +
-                '}';
-    }
 }

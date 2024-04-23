@@ -12,12 +12,17 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.applayout.R;
 import com.example.applayout.core.support.Domains.UserDomain;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 
 public class CreatePlanSupport extends AppCompatActivity {
-    DatabaseReference mDataBase = FirebaseDatabase.getInstance().getReference("users");
+    DatabaseReference mDataBase = FirebaseDatabase.getInstance().getReference("User");
     private ImageView back_button;
     private ViewFlipper viewFlipper;
     private Button nextFlipperButton;
@@ -26,6 +31,7 @@ public class CreatePlanSupport extends AppCompatActivity {
 
     private EditText title;
     private EditText body;
+    private final FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,8 +65,19 @@ public class CreatePlanSupport extends AppCompatActivity {
         note.setTitle(titleText);
         note.setBody(bodyText);
         note.setStatus("inactive");
+        note.setCreatedDate(getCurrent());
 
-        mDataBase.child("0").child("notes").push().setValue(note);
+        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        mDataBase.child(currentUser.getUid()).child("notes").push().setValue(note);
         Toast.makeText(this, "Note created", Toast.LENGTH_SHORT).show();
     }
+
+    private String getCurrent() {
+        LocalDateTime now = LocalDateTime.now();
+        String pattern = "yyyy-MM-dd'T'HH:mm:ss";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
+        return now.format(formatter);
+    }
+
 }
