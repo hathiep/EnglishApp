@@ -136,15 +136,15 @@ public class TaskSupport extends AppCompatActivity {
             case "Exercise":
                 ArrayList<ExerciseDomain.Task> tasks = new ArrayList<>();
                 xValues = Arrays.asList(
-                        "Animals",
-                        "Art",
-                        "Construction",
-                        "Correspondence",
-                        "Economic",
-                        "Entertainment",
-                        "Environment",
-                        "Health",
-                        "History"
+                        "An",
+                        "Ar",
+                        "Const",
+                        "Cor",
+                        "Eco",
+                        "Ente",
+                        "Envi",
+                        "Hea",
+                        "His"
                 );
 
                 mDatabase.child(user.getUid())
@@ -259,17 +259,32 @@ public class TaskSupport extends AppCompatActivity {
                                             ExamDomain exam = new ExamDomain(title, score);
                                             exams.add(exam);
 
+                                            // Set resources
+                                            ArrayList<String> resources = new ArrayList<>();
+                                            resources.add("support_grammar_exam");
+                                            resources.add("support_listening_exam");
+                                            resources.add("support_synthetic_exam");
+                                            resources.add("support_vocabulary_exam");
+                                            resources.add("support_writing_exam");
+
                                             // Set adapter
                                             TaskAdapter adapterTask = new TaskAdapter();
                                             adapterTask.setExams(exams);
                                             adapterTask.setTaskType(taskType);
+                                            adapterTask.setResources(resources);
                                             taskRecycler.setAdapter(adapterTask);
 
+                                            // Building chart
+                                            // Set columns
                                             xValues = new ArrayList<>();
                                             for (ExamDomain examDomain : exams) {
-                                                xValues.add(examDomain.getTitle());
+                                                xValues.add(
+                                                        Character.toUpperCase(examDomain.getTitle().charAt(0))
+                                                                + examDomain.getTitle().substring(1)
+                                                );
                                             }
-                                            // Building chart
+
+                                            // Set data entries
                                             ArrayList<BarEntry> entries = new ArrayList<>();
                                             for(int i = 0; i < exams.size(); i++) {
                                                 entries.add(new BarEntry(i, exams.get(i).getScore()));

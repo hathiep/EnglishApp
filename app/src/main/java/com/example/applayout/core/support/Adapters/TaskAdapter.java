@@ -80,23 +80,26 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder>{
         return new ViewHolder(inflate);
     }
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint({"SetTextI18n", "DiscouragedApi"})
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-
+        // Declare drawableResId for image resource
+        int drawableResId;
         switch (taskType) {
             case "Learn":
                 holder.subjectTxt.setText(words.get(position).getSubject());
                 holder.subjectProgressTxt.setText(words.get(position).getTime());
                 break;
+
             case "Exercise":
                 System.out.println("Exercise");
                 holder.subjectTxt.setText(tasks.get(position).first);
                 System.out.println(tasks.get(position).first);
                 holder.subjectProgressTxt.setText(tasks.get(position).second + "%");
                 holder.subjectProgressBar.setProgress(tasks.get(position).second);
+                holder.subjectProgressBar.setScaleY(3f);
 
-                int drawableResId = holder.itemView.getResources().getIdentifier(
+                drawableResId = holder.itemView.getResources().getIdentifier(
                         resources.get(position),
                         "drawable",
                         holder.itemView.getContext().getOpPackageName()
@@ -107,10 +110,27 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder>{
                         new GranularRoundedCorners(40, 40, 40, 40)
                 ).into(holder.subjectImage);
                 break;
+
             case "Exam":
-                holder.subjectTxt.setText(exams.get(position).getTitle());
-                holder.subjectProgressTxt.setText(exams.get(position).getScore() + "points");
+                String title = Character.toUpperCase(exams.get(position).getTitle().charAt(0))
+                        + exams.get(position).getTitle().substring(1);
+                holder.subjectTxt.setText(title);
+                holder.subjectProgressTxt.setText(exams.get(position).getScore() + "");
+                holder.subjectProgressBar.setProgress(exams.get(position).getScore());
+                holder.subjectProgressBar.setScaleY(3f);
+
+                drawableResId = holder.itemView.getResources().getIdentifier(
+                        resources.get(position),
+                        "drawable",
+                        holder.itemView.getContext().getOpPackageName()
+                );
+
+                Glide.with(holder.itemView.getContext()).load(drawableResId).transform(
+                        new CenterCrop(),
+                        new GranularRoundedCorners(40, 40, 40, 40)
+                ).into(holder.subjectImage);
                 break;
+
         }
 
     }
