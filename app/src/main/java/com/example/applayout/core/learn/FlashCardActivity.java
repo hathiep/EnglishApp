@@ -76,7 +76,6 @@ public class FlashCardActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 flashCardEntityList.clear();
                 viewFlipper.removeAllViews();
-
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
 
                     if (dataSnapshot.getValue() != null) {
@@ -185,6 +184,8 @@ public class FlashCardActivity extends AppCompatActivity {
                     TextToSpeechResponse responseBody = response.body();
                     if (responseBody != null) {
                         String url = responseBody.getFileDownloadUrl();
+                        System.out.println(url);
+
                         playSoundFromUrl(url);
                     } else {
                     }
@@ -204,15 +205,16 @@ public class FlashCardActivity extends AppCompatActivity {
             mediaPlayer = new MediaPlayer();
 
             mediaPlayer.setDataSource(url);
+            mediaPlayer.prepare();
+            mediaPlayer.start();
 
-
-            mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            /*mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
                 @Override
                 public void onPrepared(MediaPlayer mp) {
                     mediaPlayer.start();
                     Toast.makeText(FlashCardActivity.this, "start", Toast.LENGTH_SHORT).show();
                 }
-            });
+            });*/
 
             mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
