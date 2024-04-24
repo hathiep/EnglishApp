@@ -116,7 +116,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder>{
                         + exams.get(position).getTitle().substring(1);
                 holder.subjectTxt.setText(title);
                 holder.subjectProgressTxt.setText(exams.get(position).getScore() + "");
-                holder.subjectProgressBar.setProgress(exams.get(position).getScore());
+                holder.subjectProgressBar.setProgress(exams.get(position).getScore() * 10);
                 holder.subjectProgressBar.setScaleY(3f);
 
                 drawableResId = holder.itemView.getResources().getIdentifier(
