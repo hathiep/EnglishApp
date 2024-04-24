@@ -73,9 +73,9 @@ public class TrackerSupport extends AppCompatActivity {
         progressBar.setProgress((int) averageScore.get() / 3);
         progressText.setText(String.format("%.1f", (averageScore.get() / 3)));
         ArrayList<BarEntry> entries = new ArrayList<>();
-        entries.add(new BarEntry(0, learnScore));
-        entries.add(new BarEntry(1, exerciseScore));
-        entries.add(new BarEntry(2, examScore));
+        entries.add(new BarEntry((float) 0, (float) learnScore));
+        entries.add(new BarEntry((float) 1, (float) exerciseScore));
+        entries.add(new BarEntry((float) 2, (float) examScore));
 
         YAxis yAxis = barChart.getAxisLeft();
         yAxis.setAxisMinimum(0f);

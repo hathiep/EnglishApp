@@ -54,6 +54,8 @@ public class TaskSupport extends AppCompatActivity {
     private String taskType;
     private BarChart barChart;
     private CardView taskChart;
+    private TextView textChart;
+    private TextView textSubject;
 
     private List<String> xValues;
 
@@ -71,6 +73,10 @@ public class TaskSupport extends AppCompatActivity {
         taskChart = findViewById(R.id.taskChart);
         barChart = findViewById(R.id.barTaskChart);
         barChart.getAxisRight().setDrawLabels(false);
+
+        // Find text chart and subject
+        textChart = findViewById(R.id.textChart);
+        textSubject = findViewById(R.id.textSubject);
 
         // Set task type
         TextView taskTypeText = findViewById(R.id.taskType);
@@ -108,6 +114,7 @@ public class TaskSupport extends AppCompatActivity {
                         .child("newword")
                         .addListenerForSingleValueEvent(
                                 new ValueEventListener() {
+                                    @SuppressLint("SetTextI18n")
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                                         for(DataSnapshot dataSnapshot : snapshot.getChildren()) {
@@ -117,11 +124,26 @@ public class TaskSupport extends AppCompatActivity {
                                             words.add(word);
                                         }
                                         words.remove(0);
-                                        adapterTask = new TaskAdapter(words, taskType);
-                                        System.out.println(words.get(0));
-                                        taskRecycler.setAdapter(adapterTask);
-
                                         taskChart.setVisibility(View.GONE);
+                                        textSubject.setText("Completed subjects");
+                                        adapterTask = new TaskAdapter(words, taskType);
+
+                                        textChart.setVisibility(View.GONE);
+
+                                        // Resources
+                                        ArrayList<String> resources = new ArrayList<>();
+                                        resources.add("support_animals");
+                                        resources.add("support_art");
+                                        resources.add("support_construction");
+                                        resources.add("support_correctpondance");
+                                        resources.add("support_economy");
+                                        resources.add("support_entertaiment");
+                                        resources.add("support_environment");
+                                        resources.add("support_health");
+                                        resources.add("support_history");
+                                        resources.add("support_sport");
+                                        adapterTask.setResources(resources);
+                                        taskRecycler.setAdapter(adapterTask);
 
                                     }
 
@@ -151,7 +173,7 @@ public class TaskSupport extends AppCompatActivity {
                         .child("exercise")
                         .addListenerForSingleValueEvent(
                                 new ValueEventListener() {
-                                    @SuppressLint("DefaultLocale")
+                                    @SuppressLint({"DefaultLocale", "SetTextI18n"})
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                                         for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
@@ -159,27 +181,27 @@ public class TaskSupport extends AppCompatActivity {
                                             tasks.add(task);
                                         }
 
-                                        List<Pair<String, Integer>> taskProgress = new ArrayList<>();
+                                        List<Pair<String, Float>> taskProgress = new ArrayList<>();
 
-                                        Pair<String, Integer> pair = new Pair<>("Animals", (tasks.get(0).getAnimals() + tasks.get(1).getAnimals()) / 2 * 10);
+                                        Pair<String, Float> pair = new Pair<>("Animals", (float) (tasks.get(0).getAnimals() + tasks.get(1).getAnimals()) / 2 * 10);
                                         taskProgress.add(pair);
-                                        pair = new Pair<>("Art", (tasks.get(0).getArt() + tasks.get(1).getArt()) / 2 * 10);
+                                        pair = new Pair<>("Art",(float) (tasks.get(0).getArt() + tasks.get(1).getArt()) / 2 * 10);
                                         taskProgress.add(pair);
-                                        pair = new Pair<>("Construction", (tasks.get(0).getConstruction() + tasks.get(1).getConstruction()) / 2 * 10);
+                                        pair = new Pair<>("Construction",(float) (tasks.get(0).getConstruction() + tasks.get(1).getConstruction()) / 2 * 10);
                                         taskProgress.add(pair);
-                                        pair = new Pair<>("Correspondence", (tasks.get(0).getCorrespondence() + tasks.get(1).getCorrespondence()) / 2 * 10);
+                                        pair = new Pair<>("Correspondence",(float) (tasks.get(0).getCorrespondence() + tasks.get(1).getCorrespondence()) / 2 * 10);
                                         taskProgress.add(pair);
-                                        pair = new Pair<>("Economic", (tasks.get(0).getEconomic() + tasks.get(1).getEconomic()) / 2 * 10);
+                                        pair = new Pair<>("Economic",(float) (tasks.get(0).getEconomic() + tasks.get(1).getEconomic()) / 2 * 10);
                                         taskProgress.add(pair);
-                                        pair = new Pair<>("Entertainment", (tasks.get(0).getEntertainment() + tasks.get(1).getEntertainment()) / 2 * 10);
+                                        pair = new Pair<>("Entertainment",(float) (tasks.get(0).getEntertainment() + tasks.get(1).getEntertainment()) / 2 * 10);
                                         taskProgress.add(pair);
-                                        pair = new Pair<>("Environment", (tasks.get(0).getEnvironment() + tasks.get(1).getEnvironment()) / 2 * 10);
+                                        pair = new Pair<>("Environment",(float) (tasks.get(0).getEnvironment() + tasks.get(1).getEnvironment()) / 2 * 10);
                                         taskProgress.add(pair);
-                                        pair = new Pair<>("Health", (tasks.get(0).getHealth() + tasks.get(1).getHealth()) / 2 * 10);
+                                        pair = new Pair<>("Health",(float) (tasks.get(0).getHealth() + tasks.get(1).getHealth()) / 2 * 10);
                                         taskProgress.add(pair);
-                                        pair = new Pair<>("History", (tasks.get(0).getHistory() + tasks.get(1).getHistory()) / 2 * 10);
+                                        pair = new Pair<>("History",(float) (tasks.get(0).getHistory() + tasks.get(1).getHistory()) / 2 * 10);
                                         taskProgress.add(pair);
-                                        pair = new Pair<>("Sport", (tasks.get(0).getSport() + tasks.get(1).getSport()) / 2 * 10);
+                                        pair = new Pair<>("Sport",(float) (tasks.get(0).getSport() + tasks.get(1).getSport()) / 2 * 10);
                                         taskProgress.add(pair);
 
                                         // Resource
@@ -199,6 +221,7 @@ public class TaskSupport extends AppCompatActivity {
                                         adapterTask = new TaskAdapter(taskProgress, taskType);
                                         adapterTask.setResources(resources);
                                         taskRecycler.setAdapter(adapterTask);
+                                        textChart.setText("Progress chart");
 
                                         // Building chart
                                         ArrayList<BarEntry> entries = new ArrayList<>();
@@ -251,6 +274,7 @@ public class TaskSupport extends AppCompatActivity {
                         .child("exam")
                         .addListenerForSingleValueEvent(
                                 new ValueEventListener() {
+                                    @SuppressLint("SetTextI18n")
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                                         for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
@@ -273,6 +297,7 @@ public class TaskSupport extends AppCompatActivity {
                                             adapterTask.setTaskType(taskType);
                                             adapterTask.setResources(resources);
                                             taskRecycler.setAdapter(adapterTask);
+                                            textChart.setText("Score chart");
 
                                             // Building chart
                                             // Set columns
