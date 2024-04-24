@@ -116,7 +116,7 @@ public class ExerciseMain extends AppCompatActivity {
     private void setOnClickListener() throws IllegalAccessException, InstantiationException {
         // Menu dưới màn hình
         onClickImVMenu(imV_learn, LearnMain.class.newInstance());
-        onClickImVMenu(imV_exercise, ExerciseMain.class.newInstance());
+        onClickImVMenu(imV_home, MainActivity.class.newInstance());
         onClickImVMenu(imV_exam, ExamMain.class.newInstance());
         onClickImVMenu(imV_support, SupportMain.class.newInstance());
         onClickImVMenu(imV_profile, Profile.class.newInstance());
@@ -157,6 +157,13 @@ public class ExerciseMain extends AppCompatActivity {
                 Toast.makeText(ExerciseMain.this, "Get list Units faild", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(intent);
+        finish();
+        super.onBackPressed();
     }
     //next trang unit1 co ban
 //        tvUnit1.setOnClickListener(new View.OnClickListener() {

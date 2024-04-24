@@ -15,6 +15,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.applayout.R;
+import com.example.applayout.core.MainActivity;
 import com.example.applayout.core.Profile;
 import com.example.applayout.core.exam.ExamMain;
 import com.example.applayout.core.learn.LearnMain;
@@ -85,7 +86,7 @@ public class ExerciseResultActivity extends AppCompatActivity {
     private void setOnClickListener() throws IllegalAccessException, InstantiationException {
         // Menu dưới màn hình
         onClickImVMenu(imV_learn, LearnMain.class.newInstance());
-        onClickImVMenu(imV_exercise, ExerciseMain.class.newInstance());
+        onClickImVMenu(imV_home, MainActivity.class.newInstance());
         onClickImVMenu(imV_exam, ExamMain.class.newInstance());
         onClickImVMenu(imV_support, SupportMain.class.newInstance());
         onClickImVMenu(imV_profile, Profile.class.newInstance());
