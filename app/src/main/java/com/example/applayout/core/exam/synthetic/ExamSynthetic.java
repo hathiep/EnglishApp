@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
@@ -60,6 +61,8 @@ public class ExamSynthetic extends AppCompatActivity {
     int point = 0;
     RandomArray randomArray = new RandomArray(20);
     List<Integer> randomPermutation = randomArray.generateRandomCombination(10);
+    private ProgressDialog progressDialog;
+    private CountDownTimer countDownTimer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,15 +78,6 @@ public class ExamSynthetic extends AppCompatActivity {
         initUi();
         // Get dữ liệu từ Database
         getQuestionFromDatabase();
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                // Khởi tạo giá trị các biến toàn cục
-                initVariable();
-                // Gán giá trị textview
-                setUi();
-            }
-        }, 1000);
         // Gọi hàm xác nhận thể lệ bài test
         showDialogConfirm();
         // Gọi hàm onClick
@@ -126,13 +120,23 @@ public class ExamSynthetic extends AppCompatActivity {
         btn_answer = findViewById(R.id.btn_answer);
     }
     private void getQuestionFromDatabase(){
+        // Hiển thị thông báo trong khi get dữ liệu
+        showDialogLoading();
+
         database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference("Exam/Synthetic/" + randomPermutation.get(question-1));
 
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                // Tắt thông báo khi đã lấy được dữ liệu
+                progressDialog.dismiss();
+                // Gán giá trị cho câu hỏi
                 current_question = snapshot.getValue(Question.class);
+                // Khởi tạo giá trị các biến toàn cục
+                initVariable();
+                // Gán giá trị textview
+                setUi();
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
@@ -149,7 +153,7 @@ public class ExamSynthetic extends AppCompatActivity {
     private void setUi(){
         tv_part.setText("Part A5");
         tv_exam_name.setText("Synthetic");
-        tv_question_num.setText(String.valueOf(question) + "/20");
+        tv_question_num.setText(String.valueOf(question) + "/10");
         tv_question.setText(String.valueOf(question) + ". " + current_question.getContext());
         List<String> list_answer = new ArrayList<>();
         list_answer.add(current_question.getAnswer1());
@@ -217,7 +221,7 @@ public class ExamSynthetic extends AppCompatActivity {
                                 }
                             }
                         }
-                        if(question == 20) btn_answer.setText("Kết thúc");
+                        if(question == 10) btn_answer.setText("Kết thúc");
                         else btn_answer.setText("Tiếp theo");
                         click_answer = 1;
                     }
@@ -226,7 +230,7 @@ public class ExamSynthetic extends AppCompatActivity {
                     }
                 }
                 else {
-                    if(question == 20){
+                    if(question == 10){
                         sendToFinal();
                     }
                     else{
@@ -242,22 +246,13 @@ public class ExamSynthetic extends AppCompatActivity {
         question++;
         // Get dữ liệu câu từ Database
         getQuestionFromDatabase();
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                // Khởi tạo giá trị các biến toàn cục
-                initVariable();
-                // Set giá trị
-                setUi();
-                // Set lại text cho button
-                btn_answer.setText("Đáp án");
-            }
-        }, 1000);
+        // Set lại text cho button
+        btn_answer.setText("Đáp án");
     }
     // Hàm start Final Activity
     private void sendToFinal(){
         setPoint();
-        Result.point = "" + point + "/20";
+        Result.point = "" + point + "/10";
         Result.part = tv_part.getText().toString().trim();
         Result.exam_name = tv_exam_name.getText().toString().trim();
         Intent intent = new Intent(getApplicationContext(), ExamPartFinal.class);
@@ -292,7 +287,7 @@ public class ExamSynthetic extends AppCompatActivity {
     private void showDialogConfirm() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Thông báo");
-        builder.setMessage("Bài kiểm tra Synthetic sẽ bao gồm 20 câu với chủ đề ngẫu nhiên, mỗi câu có 1 đáp án đúng và 3 đáp án sai. Các câu sẽ lần lượt hiển thị sau khi click vào Tiếp theo và không được quay lại câu trước đó. Chúc bạn hoàn thành tốt bài kiểm tra!");
+        builder.setMessage("Bài kiểm tra Synthetic sẽ bao gồm 10 câu với chủ đề ngẫu nhiên, mỗi câu có 1 đáp án đúng và 3 đáp án sai. Các câu sẽ lần lượt hiển thị sau khi click vào Tiếp theo và không được quay lại câu trước đó. Chúc bạn hoàn thành tốt bài kiểm tra!");
 
         // Nếu người dùng chọn Yes
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
@@ -313,7 +308,7 @@ public class ExamSynthetic extends AppCompatActivity {
         builder.setTitle("Thông báo");
         builder.setMessage(s);
         String str = "Tiếp theo";
-        if(question == 20) str = "Kết thúc";
+        if(question == 10) str = "Kết thúc";
 
         // Nếu người dùng chọn Yes
         builder.setPositiveButton(str, new DialogInterface.OnClickListener() {
@@ -321,7 +316,7 @@ public class ExamSynthetic extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 // Thực hiện hành động khi người dùng chọn Yes
                 dialog.dismiss();
-                if(question == 20){
+                if(question == 10){
                     sendToFinal();
                 }
                 else{
@@ -395,5 +390,59 @@ public class ExamSynthetic extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError error) {
             }
         });
+    }
+    public void showDialogLoading(){
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle("Loading...");
+        progressDialog.setMessage("Đang tải...");
+        progressDialog.setCancelable(false);
+        progressDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss(); // Đóng dialog khi người dùng nhấn cancel
+                // Xử lý khi người dùng nhấn cancel
+                Intent intent = new Intent(getApplicationContext(), ExamMain.class);
+                startActivity(intent);
+                finish();
+                if (countDownTimer != null) {
+                    countDownTimer.cancel(); // Hủy bộ đếm ngược nếu đang chạy
+                }
+            }
+        });
+        progressDialog.show();
+        countDownTimer = new CountDownTimer(2000, 2000) { // 1 giây
+            public void onTick(long millisUntilFinished) {
+                // Không làm gì trong onTick
+            }
+
+            public void onFinish() {
+                if (progressDialog != null && progressDialog.isShowing()) {
+                    progressDialog.setTitle("Loading...");
+                    progressDialog.setMessage("Đường truyền không ổn định. Vui lòng chờ trong giây lát!"); // Thay đổi message sau 1 giây
+                }
+            }
+        }.start();
+    }
+    public void onBackPressed(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Thông báo");
+        builder.setMessage("Bạn chưa hoàn thành bài kiểm tra. Bài làm sẽ bị huỷ nếu bạn chuyển sang chức năng khác. Bạn có chắc chắn muốn tiếp tục?");
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                finish();
+            }
+        });
+
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                // Xử lý khi người dùng nhấn Cancel
+                dialogInterface.dismiss();
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }

@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -62,6 +63,8 @@ public class ExamGrammar extends AppCompatActivity {
     int click_answer, click_reset;
     ImageView imV_back, imV_home, imV_learn, imV_exercise, imV_exam, imV_support, imV_profile;
     int point = 0;
+    private ProgressDialog progressDialog;
+    private CountDownTimer countDownTimer;
 
     public static int[] random(int[] numbers) {
         int n = numbers.length;
@@ -94,15 +97,6 @@ public class ExamGrammar extends AppCompatActivity {
         setUi();
         // Get dữ liệu câu từ Database
         getSentenceFromDataBase();
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                // Khởi tạo giá trị các biến toàn cục
-                initVariable();
-                // Hiển thị danh sách các từ
-                setText();
-            }
-        }, 2000);
         // Gọi hàm xác nhận thể lệ bài test
         showDialogConfirm();
         // Gọi hàm onClick
@@ -147,13 +141,23 @@ public class ExamGrammar extends AppCompatActivity {
     }
     // Hàm lấy dữ liệu word từ RealtimeDatabase
     private void getSentenceFromDataBase(){
+        // Hiển thị thông báo trong khi get dữ liệu
+        showDialogLoading();
+
         database = FirebaseDatabase.getInstance();
         Random random = new Random();
         DatabaseReference ref_vocabulary = database.getReference("Exam/Grammar/" + random.nextInt(100));
         ref_vocabulary.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                // Tắt thông báo khi đã lấy được dữ liệu
+                progressDialog.dismiss();
+                // Gán giá trị cho câu hỏi
                 question_sentence = snapshot.getValue(String.class);
+                // Khởi tạo giá trị các biến toàn cục
+                initVariable();
+                // Hiển thị danh sách các từ
+                setText();
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
@@ -450,10 +454,6 @@ public class ExamGrammar extends AppCompatActivity {
         setTextAnswer(new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), 0);
         // Get dữ liệu câu từ Database
         getSentenceFromDataBase();
-        // Khởi tạo giá trị các biến toàn cục
-        initVariable();
-        // Hiển thị danh sách các từ
-        setText();
         // Set lại text và trạng thái click cho button
         btn_reset.setText("Reset");
         btn_reset.setBackgroundTintList(ContextCompat.getColorStateList(ExamGrammar.this, R.color.red));
@@ -589,5 +589,59 @@ public class ExamGrammar extends AppCompatActivity {
                 progressDialog.dismiss();
             }
         }, time * 1000); // Số milliseconds bạn muốn Dialog biến mất sau đó
+    }
+    public void showDialogLoading(){
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setTitle("Loading...");
+        progressDialog.setMessage("Đang tải...");
+        progressDialog.setCancelable(false);
+        progressDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss(); // Đóng dialog khi người dùng nhấn cancel
+                // Xử lý khi người dùng nhấn cancel
+                Intent intent = new Intent(getApplicationContext(), ExamMain.class);
+                startActivity(intent);
+                finish();
+                if (countDownTimer != null) {
+                    countDownTimer.cancel(); // Hủy bộ đếm ngược nếu đang chạy
+                }
+            }
+        });
+        progressDialog.show();
+        countDownTimer = new CountDownTimer(2000, 2000) { // 1 giây
+            public void onTick(long millisUntilFinished) {
+                // Không làm gì trong onTick
+            }
+
+            public void onFinish() {
+                if (progressDialog != null && progressDialog.isShowing()) {
+                    progressDialog.setTitle("Loading...");
+                    progressDialog.setMessage("Đường truyền không ổn định. Vui lòng chờ trong giây lát!"); // Thay đổi message sau 1 giây
+                }
+            }
+        }.start();
+    }
+    public void onBackPressed(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Thông báo");
+        builder.setMessage("Bạn chưa hoàn thành bài kiểm tra. Bài làm sẽ bị huỷ nếu bạn chuyển sang chức năng khác. Bạn có chắc chắn muốn tiếp tục?");
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                finish();
+            }
+        });
+
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                // Xử lý khi người dùng nhấn Cancel
+                dialogInterface.dismiss();
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 }
