@@ -18,6 +18,7 @@ import com.example.applayout.core.exercise.ExerciseMain;
 import com.example.applayout.core.learn.LearnMain;
 import com.example.applayout.core.support.SupportMain;
 import com.example.applayout.core.support.utils.NotificationHelper;
+import com.example.applayout.core.support.utils.TimeService;
 
 
 public class AnnouncementSupport extends AppCompatActivity {
@@ -41,18 +42,20 @@ public class AnnouncementSupport extends AppCompatActivity {
         });
 
         Switch switch1 = findViewById(R.id.switch1);
+        Intent intent = new Intent(this, TimeService.class);
+        startService(intent);
         switch1.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("UseCompatLoadingForDrawables")
             @Override
             public void onClick(View view) {
                 if (switch1.isChecked()) {
-                    NotificationHelper.showNotification(
-                            getApplicationContext(),
-                            "New Announcement",
-                            "New announcement from the support team",
-                            2002,
-                            "https://pbs.twimg.com/media/GLtoRg5WYAAvJtQ?format=jpg&name=large"
-                    );
+//                    NotificationHelper.showNotification(
+//                            getApplicationContext(),
+//                            "New Announcement",
+//                            "New announcement from the support team",
+//                            2002,
+//                            "https://pbs.twimg.com/media/GLtoRg5WYAAvJtQ?format=jpg&name=large"
+//                    );
                 } else {
                     NotificationHelper.cancelNotification(
                             getApplicationContext(),

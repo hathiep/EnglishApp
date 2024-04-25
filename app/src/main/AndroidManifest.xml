@@ -109,7 +109,7 @@
             android:exported="true">
         </activity>
 
-
+        <service android:name=".core.support.utils.TimeService"/>
         <receiver android:name="com.example.applayout.core.learn.NoticeReviewService" />
     </application>
 
