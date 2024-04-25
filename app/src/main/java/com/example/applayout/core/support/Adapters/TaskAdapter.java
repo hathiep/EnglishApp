@@ -27,7 +27,7 @@ import java.util.List;
 public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder>{
     private ArrayList<WordDomain> words;
     private ArrayList<ExamDomain> exams;
-    private List<Pair<String, Integer>> tasks;
+    private List<Pair<String, Float>> tasks;
     private String taskType;
 
     private List<String> resources;
@@ -35,7 +35,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder>{
     public TaskAdapter() {
     }
 
-    public TaskAdapter(List<Pair<String, Integer>> tasks, String taskType) {
+    public TaskAdapter(List<Pair<String, Float>> tasks, String taskType) {
         this.tasks = tasks;
         this.taskType = taskType;
     }
@@ -80,23 +80,20 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder>{
         return new ViewHolder(inflate);
     }
 
-    @SuppressLint("SetTextI18n")
+    @SuppressLint({"SetTextI18n", "DiscouragedApi"})
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-
+        // Declare drawableResId for image resource
+        int drawableResId;
         switch (taskType) {
             case "Learn":
                 holder.subjectTxt.setText(words.get(position).getSubject());
-                holder.subjectProgressTxt.setText(words.get(position).getTime());
-                break;
-            case "Exercise":
-                System.out.println("Exercise");
-                holder.subjectTxt.setText(tasks.get(position).first);
-                System.out.println(tasks.get(position).first);
-                holder.subjectProgressTxt.setText(tasks.get(position).second + "%");
-                holder.subjectProgressBar.setProgress(tasks.get(position).second);
+                holder.subjectProgressTxt.setVisibility(View.GONE);
+                holder.subjectProgressBar.setVisibility(View.GONE);
+                holder.timeWord.setText("Completion date: " + words.get(position).getTime());
 
-                int drawableResId = holder.itemView.getResources().getIdentifier(
+
+                drawableResId = holder.itemView.getResources().getIdentifier(
                         resources.get(position),
                         "drawable",
                         holder.itemView.getContext().getOpPackageName()
@@ -107,10 +104,49 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder>{
                         new GranularRoundedCorners(40, 40, 40, 40)
                 ).into(holder.subjectImage);
                 break;
-            case "Exam":
-                holder.subjectTxt.setText(exams.get(position).getTitle());
-                holder.subjectProgressTxt.setText(exams.get(position).getScore() + "points");
+
+            case "Exercise":
+                System.out.println("Exercise");
+                holder.subjectTxt.setText(tasks.get(position).first);
+                System.out.println(tasks.get(position).first);
+                holder.subjectProgressTxt.setText(tasks.get(position).second + "%");
+                holder.subjectProgressBar.setProgress((int) (tasks.get(position).second * 1));
+                holder.subjectProgressBar.setScaleY(3f);
+                holder.timeWord.setVisibility(View.GONE);
+
+                drawableResId = holder.itemView.getResources().getIdentifier(
+                        resources.get(position),
+                        "drawable",
+                        holder.itemView.getContext().getOpPackageName()
+                );
+
+                Glide.with(holder.itemView.getContext()).load(drawableResId).transform(
+                        new CenterCrop(),
+                        new GranularRoundedCorners(40, 40, 40, 40)
+                ).into(holder.subjectImage);
                 break;
+
+            case "Exam":
+                String title = Character.toUpperCase(exams.get(position).getTitle().charAt(0))
+                        + exams.get(position).getTitle().substring(1);
+                holder.subjectTxt.setText(title);
+                holder.subjectProgressTxt.setText(exams.get(position).getScore() + "");
+                holder.subjectProgressBar.setProgress(exams.get(position).getScore() * 10);
+                holder.subjectProgressBar.setScaleY(3f);
+                holder.timeWord.setVisibility(View.GONE);
+
+                drawableResId = holder.itemView.getResources().getIdentifier(
+                        resources.get(position),
+                        "drawable",
+                        holder.itemView.getContext().getOpPackageName()
+                );
+
+                Glide.with(holder.itemView.getContext()).load(drawableResId).transform(
+                        new CenterCrop(),
+                        new GranularRoundedCorners(40, 40, 40, 40)
+                ).into(holder.subjectImage);
+                break;
+
         }
 
     }
@@ -131,12 +167,13 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder>{
         private TextView subjectTxt;
         private ProgressBar subjectProgressBar;
         private TextView subjectProgressTxt;
+        private TextView timeWord;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             subjectImage = itemView.findViewById(R.id.subjectImage);
             subjectTxt = itemView.findViewById(R.id.subjectTxt);
             subjectProgressBar = itemView.findViewById(R.id.subjectProgressBar);
-
+            timeWord = itemView.findViewById(R.id.timeWord);
             subjectProgressTxt = itemView.findViewById(R.id.subjectProgressTxt);
         }
     }

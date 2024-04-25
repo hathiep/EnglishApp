@@ -26,16 +26,16 @@
 
         <TextView
             android:id="@+id/titleTxt"
-            android:layout_marginStart="10dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
             android:layout_width="wrap_content"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:textColor="@color/text"
             android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="8dp"
             android:layout_weight="1"
-            android:text="Theo dõi tiến độ" />
+            android:text="Theo dõi tiến độ"
+            android:textColor="@color/text"
+            android:textSize="22sp"
+            android:textStyle="bold" />
     </LinearLayout>
 
     <LinearLayout
@@ -74,7 +74,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:text="Average Score"
-                        android:textSize="16sp"
+                        android:textSize="18sp"
                         android:textStyle="bold"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -86,8 +86,8 @@
                         android:layout_width="128dp"
                         android:layout_height="128dp"
                         android:layout_centerInParent="true"
-                        android:layout_marginStart="24dp"
-                        android:layout_marginTop="28dp"
+                        android:layout_marginStart="28dp"
+                        android:layout_marginTop="16dp"
                         android:indeterminate="false"
                         android:max="100"
                         android:progress="0"
@@ -129,11 +129,12 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:text="Learn"
-                        android:textSize="16sp"
+                        android:textSize="18sp"
                         android:textStyle="bold"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
+
 
                     <ProgressBar
                         android:id="@+id/vocabularyProgressBar"
@@ -141,15 +142,14 @@
                         android:layout_width="128dp"
                         android:layout_height="128dp"
                         android:layout_centerInParent="true"
-                        android:layout_marginStart="24dp"
-                        android:layout_marginTop="28dp"
+                        android:layout_marginStart="28dp"
+                        android:layout_marginTop="16dp"
                         android:indeterminate="false"
                         android:max="100"
                         android:progress="0"
                         android:progressDrawable="@drawable/circular_progress_drawable"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/vocabularyTxt" />
-
 
                     <TextView
                         android:id="@+id/vocabularyTotalTxt"
@@ -195,12 +195,13 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Exercise"
-                        android:textSize="16sp"
+                        android:textSize="18sp"
                         android:textStyle="bold"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.507"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
+
 
                     <ProgressBar
                         android:id="@+id/exerciseProgressBar"
@@ -208,15 +209,14 @@
                         android:layout_width="128dp"
                         android:layout_height="128dp"
                         android:layout_centerInParent="true"
-                        android:layout_marginStart="24dp"
-                        android:layout_marginTop="28dp"
+                        android:layout_marginStart="28dp"
+                        android:layout_marginTop="16dp"
                         android:indeterminate="false"
                         android:max="100"
                         android:progress="0"
                         android:progressDrawable="@drawable/circular_progress_drawable"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/exerciseTxt" />
-
 
                     <TextView
                         android:id="@+id/exerciseTotalTxt"
@@ -252,7 +252,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="4dp"
                         android:text="Exam"
-                        android:textSize="16sp"
+                        android:textSize="18sp"
                         android:textStyle="bold"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.507"
@@ -265,8 +265,8 @@
                         android:layout_width="128dp"
                         android:layout_height="128dp"
                         android:layout_centerInParent="true"
-                        android:layout_marginStart="24dp"
-                        android:layout_marginTop="28dp"
+                        android:layout_marginStart="28dp"
+                        android:layout_marginTop="16dp"
                         android:indeterminate="false"
                         android:max="100"
                         android:progress="0"

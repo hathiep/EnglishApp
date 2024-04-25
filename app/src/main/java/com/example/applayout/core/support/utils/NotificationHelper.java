@@ -20,7 +20,7 @@ public class NotificationHelper {
     private static final String CHANNEL_NAME = "Notification Channel";
     private static final String CHANNEL_DESC = "Receive updates and alerts from My App";
 
-    public static void showNotification(Context context, String title, String body, int notificationId, String imageUrl) {
+    public static void showNotification(Context context, String title, String body, int notificationId, int resourceId) {
         NotificationManager notificationManager =
                 (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
@@ -44,10 +44,7 @@ public class NotificationHelper {
         );
 
         // Load image from URL if available
-        Bitmap bitmap = null;
-        if (imageUrl != null && !imageUrl.isEmpty()) {
-            bitmap = BitmapFactory.decodeFile(imageUrl);
-        }
+        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), resourceId);
 
         // Build the notification
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
