@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -24,8 +26,12 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.Target;
 import com.example.applayout.R;
 import com.example.applayout.core.MainActivity;
 import com.example.applayout.core.Profile;
@@ -133,14 +139,11 @@ public class ExamListening extends AppCompatActivity {
         showDialogLoading();
 
         database = FirebaseDatabase.getInstance();
-        Random random = new Random();
         DatabaseReference ref = database.getReference("Exam/Listening/" + randomPermutation.get(question-1));
 
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                // Tắt thông báo khi đã lấy được dữ liệu
-                progressDialog.dismiss();
                 // Gán giá trị cho câu hỏi
                 current_question = snapshot.getValue(Question.class);
                 // Khởi tạo giá trị các biến toàn cục
@@ -171,14 +174,27 @@ public class ExamListening extends AppCompatActivity {
             e.printStackTrace();
         }
         RequestOptions options = new RequestOptions()
-//                .centerCrop()  // Căn chỉnh hình ảnh trong ImageView
-                .diskCacheStrategy(DiskCacheStrategy.ALL);  // Lưu cache của hình ảnh
+                .diskCacheStrategy(DiskCacheStrategy.ALL);
 
         // Sử dụng Glide để tải hình ảnh và đặt vào ImageView
         Glide.with(this)
-                .load(current_question.getImage())  // Đường dẫn URL của hình ảnh
-                .apply(options)  // Áp dụng RequestOptions đã tạo
+                .load(current_question.getImage())
+                .apply(options)
+                .listener(new RequestListener<Drawable>() {
+                    @Override
+                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                        progressDialog.dismiss();
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                        progressDialog.dismiss(); // Ẩn dialog khi quá trình tải hoàn thành
+                        return false;
+                    }
+                })
                 .into(imV_image);
+
         for(LinearLayout layout : list_layout_ans) layout.setBackgroundColor(getResources().getColor(R.color.white));
         list_tv_ans.get(0).setText("A");
         list_tv_ans.get(1).setText("B");
@@ -405,6 +421,10 @@ public class ExamListening extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 // Xử lý khi người dùng nhấn Yes
+                // Tắt âm thanh hiện tại nếu đang bật
+                if(audio.isPlaying()){
+                    audio.stop();
+                }
                 Intent intent = new Intent(getApplicationContext(), context.getClass());
                 startActivity(intent);
                 finish();
@@ -416,6 +436,7 @@ public class ExamListening extends AppCompatActivity {
             public void onClick(DialogInterface dialogInterface, int i) {
                 // Xử lý khi người dùng nhấn Cancel
                 dialogInterface.dismiss();
+                onRestart();
             }
         });
 
@@ -476,6 +497,11 @@ public class ExamListening extends AppCompatActivity {
         builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
+
+                // Tắt âm thanh hiện tại nếu đang bật
+                if(audio.isPlaying()){
+                    audio.stop();
+                }
                 finish();
             }
         });
