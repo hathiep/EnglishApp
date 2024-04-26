@@ -31,6 +31,7 @@ import com.example.applayout.core.Profile;
 import com.example.applayout.core.exam.ExamMain;
 import com.example.applayout.core.exam.ExamPartFinal;
 import com.example.applayout.core.exam.Result;
+import com.example.applayout.core.exam.grammar.ExamGrammar;
 import com.example.applayout.core.exercise.ExerciseMain;
 import com.example.applayout.core.learn.LearnMain;
 import com.example.applayout.core.support.SupportMain;
@@ -69,6 +70,7 @@ public class ExamWriting extends AppCompatActivity {
     int point = 0;
     private ProgressDialog progressDialog;
     private CountDownTimer countDownTimer;
+    private Integer got, cancel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,8 +127,8 @@ public class ExamWriting extends AppCompatActivity {
         btn_reset = findViewById(R.id.btn_reset);
     }
     private void getQuestionFromDatabase(){
-        // Hiển thị thông báo trong khi get dữ liệu
-        showDialogLoading();
+        // Gọi hàm đếm ngược sau 1 giây nếu không get được dữ liệu thì hiển thị thông báo
+        countDown();
 
         database = FirebaseDatabase.getInstance();
         Random random = new Random();
@@ -135,8 +137,10 @@ public class ExamWriting extends AppCompatActivity {
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                got = 1;
+                countDownTimer.cancel();
                 // Tắt thông báo khi đã lấy được dữ liệu
-                progressDialog.dismiss();
+                if(progressDialog.isShowing()) progressDialog.dismiss();
                 // Gán giá trị cho câu hỏi
                 current_question = snapshot.getValue(Question.class);
                 // Khởi tạo giá trị các biến toàn cục
@@ -368,8 +372,16 @@ public class ExamWriting extends AppCompatActivity {
     private void setTextNextQuestion(){
         // Sang câu hỏi tiếp theo
         question++;
-        // Get dữ liệu câu từ Database
-        getQuestionFromDatabase();
+        // Gọi hàm chờ loading
+        showDialogLoadingNextQuestion();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Get dữ liệu câu từ Database
+                getQuestionFromDatabase();
+            }
+        }, 1000); // Số milliseconds bạn muốn Dialog biến mất sau đó
+
         btn_answer.setText("Đáp án");
         btn_reset.setText("Reset");
         btn_reset.setBackgroundTintList(ContextCompat.getColorStateList(ExamWriting.this, R.color.red));
@@ -462,6 +474,21 @@ public class ExamWriting extends AppCompatActivity {
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+    // Hàm chờ loading
+    private void showDialogLoadingNextQuestion(){
+        ProgressDialog progressDialog = new ProgressDialog(ExamWriting.this);
+        progressDialog.setMessage("Loading...");
+        progressDialog.show();
+
+        // Sử dụng Handler để gửi một tin nhắn hoạt động sau một khoảng thời gian
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Ẩn Dialog sau khi đã qua một khoảng thời gian nhất định
+                progressDialog.dismiss();
+            }
+        }, 1000); // Số milliseconds bạn muốn Dialog biến mất sau đó
+    }
     // Hàm hiển thị Dialog xác nhận chuyển màn hình
     private void showDialogOutExam(Context context){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -476,20 +503,60 @@ public class ExamWriting extends AppCompatActivity {
                 finish();
             }
         });
-
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 // Xử lý khi người dùng nhấn Cancel
                 dialogInterface.dismiss();
+                if(cancel == 1){
+                    progressDialog = new ProgressDialog(ExamWriting.this);
+                    showDialogLoading();
+                }
             }
         });
 
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+    private void countDown(){
+        progressDialog = new ProgressDialog(this);
+        got = 0; cancel = 0;
+        countDownTimer = new CountDownTimer(1000, 1000) {
+            public void onTick(long millisUntilFinished) {
+            }
+            public void onFinish() {
+                if(got == 0){
+                    // Hiển thị thông báo sau 1 giây nếu chưa get được dữ liệu
+                    showDialogLoading();
+                }
+            }
+        }.start();
+    }
+    public void showDialogLoading(){
+        progressDialog.setTitle("Loading...");
+        progressDialog.setMessage("Đường truyền không ổn định. Vui lòng chờ trong giây lát!");
+        progressDialog.setCancelable(false);
+        progressDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Xử lý khi người dùng nhấn cancel
+                if (countDownTimer != null) {
+                    countDownTimer.cancel(); // Hủy bộ đếm ngược nếu đang chạy
+                }
+                try {
+                    cancel = 1;
+                    showDialogOutExam(ExamMain.class.newInstance());
+                } catch (IllegalAccessException e) {
+                    throw new RuntimeException(e);
+                } catch (InstantiationException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+        progressDialog.show();
+    }
     private void show_dialog(String s, int time){
-        ProgressDialog progressDialog = new ProgressDialog(this);
+        ProgressDialog progressDialog = new ProgressDialog(ExamWriting.this);
         progressDialog.setTitle("Thông báo");
         progressDialog.setMessage(s);
         progressDialog.show();
@@ -502,38 +569,6 @@ public class ExamWriting extends AppCompatActivity {
                 progressDialog.dismiss();
             }
         }, time * 1000); // Số milliseconds bạn muốn Dialog biến mất sau đó
-    }
-    public void showDialogLoading(){
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setTitle("Loading...");
-        progressDialog.setMessage("Đang tải...");
-        progressDialog.setCancelable(false);
-        progressDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss(); // Đóng dialog khi người dùng nhấn cancel
-                // Xử lý khi người dùng nhấn cancel
-                Intent intent = new Intent(getApplicationContext(), ExamMain.class);
-                startActivity(intent);
-                finish();
-                if (countDownTimer != null) {
-                    countDownTimer.cancel(); // Hủy bộ đếm ngược nếu đang chạy
-                }
-            }
-        });
-        progressDialog.show();
-        countDownTimer = new CountDownTimer(2000, 2000) { // 1 giây
-            public void onTick(long millisUntilFinished) {
-                // Không làm gì trong onTick
-            }
-
-            public void onFinish() {
-                if (progressDialog != null && progressDialog.isShowing()) {
-                    progressDialog.setTitle("Loading...");
-                    progressDialog.setMessage("Đường truyền không ổn định. Vui lòng chờ trong giây lát!"); // Thay đổi message sau 1 giây
-                }
-            }
-        }.start();
     }
     @Override
     public void onBackPressed(){

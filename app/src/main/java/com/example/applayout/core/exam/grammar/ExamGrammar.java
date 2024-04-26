@@ -55,6 +55,7 @@ public class ExamGrammar extends AppCompatActivity {
     int question = 1;
     TextView tv_exam, tv_part, tv_exam_name, tv_question_num, tv_status;
     List<String> sentence;
+    LinearLayout parentLinearLayoutQuestion, parentLinearLayoutAnswer;
     private String question_sentence;
     int[] numbers, words_random;
     private List<String> answers;
@@ -65,6 +66,7 @@ public class ExamGrammar extends AppCompatActivity {
     int point = 0;
     private ProgressDialog progressDialog;
     private CountDownTimer countDownTimer;
+    private Integer got, cancel;
 
     public static int[] random(int[] numbers) {
         int n = numbers.length;
@@ -93,8 +95,6 @@ public class ExamGrammar extends AppCompatActivity {
 
         // Ánh xạ view
         initUi();
-        // Gán giá trị textview
-        setUi();
         // Get dữ liệu câu từ Database
         getSentenceFromDataBase();
         // Gọi hàm xác nhận thể lệ bài test
@@ -113,6 +113,8 @@ public class ExamGrammar extends AppCompatActivity {
         // Ánh xạ view header
         tv_part = findViewById(R.id.tv_part);
         tv_exam_name = findViewById(R.id.tv_exam_name);
+        tv_part.setText("Part A2");
+        tv_exam_name.setText("Grammar");
         tv_question_num = findViewById(R.id.tv_question_num);
         tv_status = findViewById(R.id.tv_status_gramar);
         // Ánh xạ view menu
@@ -132,17 +134,14 @@ public class ExamGrammar extends AppCompatActivity {
         // Ánh xạ view button
         btn_answer = findViewById(R.id.btn_answer);
         btn_reset = findViewById(R.id.btn_reset);
-    }
-    // Gán giá trị cho view
-    private void setUi(){
-        tv_part.setText("Part A2");
-        tv_exam_name.setText("Grammar");
-        tv_question_num.setText(String.valueOf(question) + "/10");
+        // Ánh xạ view khung câu hỏi
+        parentLinearLayoutQuestion = findViewById(R.id.parentLinearLayout);
+        parentLinearLayoutAnswer = findViewById(R.id.parentLinearLayout1);
     }
     // Hàm lấy dữ liệu word từ RealtimeDatabase
     private void getSentenceFromDataBase(){
-        // Hiển thị thông báo trong khi get dữ liệu
-        showDialogLoading();
+        // Gọi hàm đếm ngược sau 1 giây nếu không get được dữ liệu thì hiển thị thông báo
+        countDown();
 
         database = FirebaseDatabase.getInstance();
         Random random = new Random();
@@ -150,8 +149,10 @@ public class ExamGrammar extends AppCompatActivity {
         ref_vocabulary.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                got = 1;
+                countDownTimer.cancel();
                 // Tắt thông báo khi đã lấy được dữ liệu
-                progressDialog.dismiss();
+                if(progressDialog.isShowing()) progressDialog.dismiss();
                 // Gán giá trị cho câu hỏi
                 question_sentence = snapshot.getValue(String.class);
                 // Khởi tạo giá trị các biến toàn cục
@@ -163,6 +164,7 @@ public class ExamGrammar extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError error) {
             }
         });
+
     }
     private void initVariable(){
         answers = Arrays.asList(question_sentence.split(" "));
@@ -173,10 +175,9 @@ public class ExamGrammar extends AppCompatActivity {
         click_answer = click_reset = 0;
     }
     private void setText() {
+        tv_question_num.setText(String.valueOf(question) + "/10");
         sentence = new ArrayList<>();
         int quantity_word = answers.size();;
-        LinearLayout parentLinearLayout = findViewById(R.id.parentLinearLayout);
-        parentLinearLayout.removeAllViews(); // Xoá tất cả các TextView trong parentLinearLayout
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
@@ -191,7 +192,7 @@ public class ExamGrammar extends AppCompatActivity {
         currentLinearLayout.setLayoutParams(layoutParams);
         currentLinearLayout.setOrientation(LinearLayout.HORIZONTAL);
 
-        int parentWidth = parentLinearLayout.getWidth(); // Lấy chiều rộng ước lượng của LinearLayout cha
+        int parentWidth = parentLinearLayoutQuestion.getWidth(); // Lấy chiều rộng ước lượng của LinearLayout cha
 
         int currentLineWidth = 0; // Biến này để lưu tổng ước lượng chiều rộng của dòng hiện tại
 
@@ -229,7 +230,7 @@ public class ExamGrammar extends AppCompatActivity {
 
             if (currentLineWidth + totalMargin - 10 > parentWidth) {
                 // Nếu tổng ước lượng chiều rộng của dòng hiện tại vượt quá chiều rộng của LinearLayout cha, tạo một dòng mới
-                parentLinearLayout.addView(currentLinearLayout);
+                parentLinearLayoutQuestion.addView(currentLinearLayout);
 
                 // Tạo LinearLayout mới cho dòng tiếp theo
                 currentLinearLayout = new LinearLayout(this);
@@ -245,11 +246,10 @@ public class ExamGrammar extends AppCompatActivity {
         }
 
         // Cuối cùng, thêm LinearLayout cuối cùng vào LinearLayout cha
-        parentLinearLayout.addView(currentLinearLayout);
+        parentLinearLayoutQuestion.addView(currentLinearLayout);
     }
     private void setTextAnswer(List<String> list_word, List<Integer> list_index_correct,  List<Integer> list_index_wrong, int status){
-        LinearLayout parentLinearLayout = findViewById(R.id.parentLinearLayout1);
-        parentLinearLayout.removeAllViews(); // Xoá tất cả các TextView trong parentLinearLayout
+        parentLinearLayoutAnswer.removeAllViews();
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
@@ -264,7 +264,7 @@ public class ExamGrammar extends AppCompatActivity {
         currentLinearLayout.setLayoutParams(layoutParams);
         currentLinearLayout.setOrientation(LinearLayout.HORIZONTAL);
 
-        int parentWidth = parentLinearLayout.getWidth(); // Lấy chiều rộng ước lượng của LinearLayout cha
+        int parentWidth = parentLinearLayoutAnswer.getWidth(); // Lấy chiều rộng ước lượng của LinearLayout cha
 
         int currentLineWidth = 0; // Biến này để lưu tổng ước lượng chiều rộng của dòng hiện tại
 
@@ -305,7 +305,7 @@ public class ExamGrammar extends AppCompatActivity {
 
             if (currentLineWidth + totalMargin > parentWidth) {
                 // Nếu tổng ước lượng chiều rộng của dòng hiện tại vượt quá chiều rộng của LinearLayout cha, tạo một dòng mới
-                parentLinearLayout.addView(currentLinearLayout);
+                parentLinearLayoutAnswer.addView(currentLinearLayout);
 
                 // Tạo LinearLayout mới cho dòng tiếp theo
                 currentLinearLayout = new LinearLayout(this);
@@ -321,7 +321,7 @@ public class ExamGrammar extends AppCompatActivity {
         }
 
         // Cuối cùng, thêm LinearLayout cuối cùng vào LinearLayout cha
-        parentLinearLayout.addView(currentLinearLayout);
+        parentLinearLayoutAnswer.addView(currentLinearLayout);
     }
 
     // Hàm onClickListener
@@ -452,8 +452,18 @@ public class ExamGrammar extends AppCompatActivity {
         tv_status.setText("Click vào từ ở danh sách bên dưới để sắp xếp");
         // Set ô câu trả lời rỗng
         setTextAnswer(new ArrayList<>(), new ArrayList<>(), new ArrayList<>(), 0);
-        // Get dữ liệu câu từ Database
-        getSentenceFromDataBase();
+        // Xoá dữ liệu câu hỏi cũ
+        parentLinearLayoutQuestion.removeAllViews();
+        parentLinearLayoutAnswer.removeAllViews();
+        // Gọi hàm chờ loading
+        showDialogLoadingNextQuestion();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Get dữ liệu câu từ Database
+                getSentenceFromDataBase();
+            }
+        }, 1000); // Số milliseconds bạn muốn Dialog biến mất sau đó
         // Set lại text và trạng thái click cho button
         btn_reset.setText("Reset");
         btn_reset.setBackgroundTintList(ContextCompat.getColorStateList(ExamGrammar.this, R.color.red));
@@ -549,6 +559,21 @@ public class ExamGrammar extends AppCompatActivity {
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+    // Hàm chờ loading
+    private void showDialogLoadingNextQuestion(){
+        ProgressDialog progressDialog = new ProgressDialog(ExamGrammar.this);
+        progressDialog.setMessage("Loading...");
+        progressDialog.show();
+
+        // Sử dụng Handler để gửi một tin nhắn hoạt động sau một khoảng thời gian
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Ẩn Dialog sau khi đã qua một khoảng thời gian nhất định
+                progressDialog.dismiss();
+            }
+        }, 1000); // Số milliseconds bạn muốn Dialog biến mất sau đó
+    }
     // Hàm hiển thị Dialog xác nhận chuyển màn hình
     private void showDialogOutExam(Context context){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -563,17 +588,57 @@ public class ExamGrammar extends AppCompatActivity {
                 finish();
             }
         });
-
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 // Xử lý khi người dùng nhấn Cancel
                 dialogInterface.dismiss();
+                if(cancel == 1){
+                    progressDialog = new ProgressDialog(ExamGrammar.this);
+                    showDialogLoading();
+                }
             }
         });
 
         AlertDialog dialog = builder.create();
         dialog.show();
+    }
+    private void countDown(){
+        progressDialog = new ProgressDialog(this);
+        got = 0; cancel = 0;
+        countDownTimer = new CountDownTimer(1000, 1000) {
+            public void onTick(long millisUntilFinished) {
+            }
+            public void onFinish() {
+                if(got == 0){
+                    // Hiển thị thông báo sau 1 giây nếu chưa get được dữ liệu
+                    showDialogLoading();
+                }
+            }
+        }.start();
+    }
+    public void showDialogLoading(){
+        progressDialog.setTitle("Loading...");
+        progressDialog.setMessage("Đường truyền không ổn định. Vui lòng chờ trong giây lát!");
+        progressDialog.setCancelable(false);
+        progressDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Xử lý khi người dùng nhấn cancel
+                if (countDownTimer != null) {
+                    countDownTimer.cancel(); // Hủy bộ đếm ngược nếu đang chạy
+                }
+                try {
+                    cancel = 1;
+                    showDialogOutExam(ExamMain.class.newInstance());
+                } catch (IllegalAccessException e) {
+                    throw new RuntimeException(e);
+                } catch (InstantiationException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+        progressDialog.show();
     }
     private void show_dialog(String s, int time){
         ProgressDialog progressDialog = new ProgressDialog(ExamGrammar.this);
@@ -589,38 +654,6 @@ public class ExamGrammar extends AppCompatActivity {
                 progressDialog.dismiss();
             }
         }, time * 1000); // Số milliseconds bạn muốn Dialog biến mất sau đó
-    }
-    public void showDialogLoading(){
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setTitle("Loading...");
-        progressDialog.setMessage("Đang tải...");
-        progressDialog.setCancelable(false);
-        progressDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss(); // Đóng dialog khi người dùng nhấn cancel
-                // Xử lý khi người dùng nhấn cancel
-                Intent intent = new Intent(getApplicationContext(), ExamMain.class);
-                startActivity(intent);
-                finish();
-                if (countDownTimer != null) {
-                    countDownTimer.cancel(); // Hủy bộ đếm ngược nếu đang chạy
-                }
-            }
-        });
-        progressDialog.show();
-        countDownTimer = new CountDownTimer(2000, 2000) { // 1 giây
-            public void onTick(long millisUntilFinished) {
-                // Không làm gì trong onTick
-            }
-
-            public void onFinish() {
-                if (progressDialog != null && progressDialog.isShowing()) {
-                    progressDialog.setTitle("Loading...");
-                    progressDialog.setMessage("Đường truyền không ổn định. Vui lòng chờ trong giây lát!"); // Thay đổi message sau 1 giây
-                }
-            }
-        }.start();
     }
     public void onBackPressed(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);

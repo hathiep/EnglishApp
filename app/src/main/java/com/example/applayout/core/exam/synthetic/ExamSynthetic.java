@@ -24,6 +24,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.applayout.R;
 import com.example.applayout.core.MainActivity;
 import com.example.applayout.core.Profile;
+import com.example.applayout.core.exam.grammar.ExamGrammar;
 import com.example.applayout.core.main_class.RandomArray;
 import com.example.applayout.core.exam.ExamMain;
 import com.example.applayout.core.exam.ExamPartFinal;
@@ -63,6 +64,7 @@ public class ExamSynthetic extends AppCompatActivity {
     List<Integer> randomPermutation = randomArray.generateRandomCombination(10);
     private ProgressDialog progressDialog;
     private CountDownTimer countDownTimer;
+    private Integer got, cancel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -120,8 +122,8 @@ public class ExamSynthetic extends AppCompatActivity {
         btn_answer = findViewById(R.id.btn_answer);
     }
     private void getQuestionFromDatabase(){
-        // Hiển thị thông báo trong khi get dữ liệu
-        showDialogLoading();
+        // Gọi hàm đếm ngược sau 1 giây nếu không get được dữ liệu thì hiển thị thông báo
+        countDown();
 
         database = FirebaseDatabase.getInstance();
         DatabaseReference ref = database.getReference("Exam/Synthetic/" + randomPermutation.get(question-1));
@@ -129,8 +131,10 @@ public class ExamSynthetic extends AppCompatActivity {
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                got = 1;
+                countDownTimer.cancel();
                 // Tắt thông báo khi đã lấy được dữ liệu
-                progressDialog.dismiss();
+                if(progressDialog.isShowing()) progressDialog.dismiss();
                 // Gán giá trị cho câu hỏi
                 current_question = snapshot.getValue(Question.class);
                 // Khởi tạo giá trị các biến toàn cục
@@ -244,8 +248,15 @@ public class ExamSynthetic extends AppCompatActivity {
     private void setTextNextQuestion(){
         // Sang câu hỏi tiếp theo
         question++;
-        // Get dữ liệu câu từ Database
-        getQuestionFromDatabase();
+        // Gọi hàm chờ loading
+        showDialogLoadingNextQuestion();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Get dữ liệu câu từ Database
+                getQuestionFromDatabase();
+            }
+        }, 1000); // Số milliseconds bạn muốn Dialog biến mất sau đó
         // Set lại text cho button
         btn_answer.setText("Đáp án");
     }
@@ -337,6 +348,21 @@ public class ExamSynthetic extends AppCompatActivity {
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+    // Hàm chờ loading
+    private void showDialogLoadingNextQuestion(){
+        ProgressDialog progressDialog = new ProgressDialog(ExamSynthetic.this);
+        progressDialog.setMessage("Loading...");
+        progressDialog.show();
+
+        // Sử dụng Handler để gửi một tin nhắn hoạt động sau một khoảng thời gian
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Ẩn Dialog sau khi đã qua một khoảng thời gian nhất định
+                progressDialog.dismiss();
+            }
+        }, 1000); // Số milliseconds bạn muốn Dialog biến mất sau đó
+    }
     // Hàm hiển thị Dialog xác nhận chuyển màn hình
     private void showDialogOutExam(Context context){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -351,20 +377,60 @@ public class ExamSynthetic extends AppCompatActivity {
                 finish();
             }
         });
-
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 // Xử lý khi người dùng nhấn Cancel
                 dialogInterface.dismiss();
+                if(cancel == 1){
+                    progressDialog = new ProgressDialog(ExamSynthetic.this);
+                    showDialogLoading();
+                }
             }
         });
 
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+    private void countDown(){
+        progressDialog = new ProgressDialog(this);
+        got = 0; cancel = 0;
+        countDownTimer = new CountDownTimer(1000, 1000) {
+            public void onTick(long millisUntilFinished) {
+            }
+            public void onFinish() {
+                if(got == 0){
+                    // Hiển thị thông báo sau 1 giây nếu chưa get được dữ liệu
+                    showDialogLoading();
+                }
+            }
+        }.start();
+    }
+    public void showDialogLoading(){
+        progressDialog.setTitle("Loading...");
+        progressDialog.setMessage("Đường truyền không ổn định. Vui lòng chờ trong giây lát!");
+        progressDialog.setCancelable(false);
+        progressDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Xử lý khi người dùng nhấn cancel
+                if (countDownTimer != null) {
+                    countDownTimer.cancel(); // Hủy bộ đếm ngược nếu đang chạy
+                }
+                try {
+                    cancel = 1;
+                    showDialogOutExam(ExamMain.class.newInstance());
+                } catch (IllegalAccessException e) {
+                    throw new RuntimeException(e);
+                } catch (InstantiationException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+        progressDialog.show();
+    }
     private void show_dialog(String s, int time){
-        ProgressDialog progressDialog = new ProgressDialog(this);
+        ProgressDialog progressDialog = new ProgressDialog(ExamSynthetic.this);
         progressDialog.setTitle("Thông báo");
         progressDialog.setMessage(s);
         progressDialog.show();
@@ -377,51 +443,6 @@ public class ExamSynthetic extends AppCompatActivity {
                 progressDialog.dismiss();
             }
         }, time * 1000); // Số milliseconds bạn muốn Dialog biến mất sau đó
-    }
-    private void getSapshotSize(){
-        database = FirebaseDatabase.getInstance();
-        DatabaseReference ref = database.getReference("Exam/Synthetic");
-        ref.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                snapshot_size = (int) snapshot.getChildrenCount();
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-            }
-        });
-    }
-    public void showDialogLoading(){
-        progressDialog = new ProgressDialog(this);
-        progressDialog.setTitle("Loading...");
-        progressDialog.setMessage("Đang tải...");
-        progressDialog.setCancelable(false);
-        progressDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss(); // Đóng dialog khi người dùng nhấn cancel
-                // Xử lý khi người dùng nhấn cancel
-                Intent intent = new Intent(getApplicationContext(), ExamMain.class);
-                startActivity(intent);
-                finish();
-                if (countDownTimer != null) {
-                    countDownTimer.cancel(); // Hủy bộ đếm ngược nếu đang chạy
-                }
-            }
-        });
-        progressDialog.show();
-        countDownTimer = new CountDownTimer(2000, 2000) { // 1 giây
-            public void onTick(long millisUntilFinished) {
-                // Không làm gì trong onTick
-            }
-
-            public void onFinish() {
-                if (progressDialog != null && progressDialog.isShowing()) {
-                    progressDialog.setTitle("Loading...");
-                    progressDialog.setMessage("Đường truyền không ổn định. Vui lòng chờ trong giây lát!"); // Thay đổi message sau 1 giây
-                }
-            }
-        }.start();
     }
     public void onBackPressed(){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);

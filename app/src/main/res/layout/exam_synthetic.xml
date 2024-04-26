@@ -68,7 +68,6 @@
                     android:background="@drawable/exam_part_s_bg_blue"
                     android:backgroundTint="@color/exam_blue3"
                     android:backgroundTintMode="multiply"
-                    android:text="A. finish"
                     android:textSize="20sp" />
 
                 <TextView
@@ -81,7 +80,6 @@
                     android:background="@drawable/exam_part_s_bg_blue"
                     android:backgroundTint="@color/exam_blue3"
                     android:backgroundTintMode="multiply"
-                    android:text="B. are finishing"
                     android:textSize="20sp" />
 
             </LinearLayout>
@@ -102,7 +100,6 @@
                     android:background="@drawable/exam_part_s_bg_blue"
                     android:backgroundTint="@color/exam_blue3"
                     android:backgroundTintMode="multiply"
-                    android:text="C. finished"
                     android:textSize="20sp" />
 
                 <TextView
@@ -115,7 +112,6 @@
                     android:background="@drawable/exam_part_s_bg_blue"
                     android:backgroundTint="@color/exam_blue3"
                     android:backgroundTintMode="multiply"
-                    android:text="D. were finished"
                     android:textSize="20sp" />
 
             </LinearLayout>
