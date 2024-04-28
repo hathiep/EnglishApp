@@ -48,7 +48,7 @@ public class NotificationHelper {
 
         // Build the notification
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
-                .setSmallIcon(R.drawable.icon_email)
+                .setSmallIcon(R.drawable.bell)
                 .setContentTitle(title)
                 .setContentText(body)
                 .setContentIntent(pendingIntent)
