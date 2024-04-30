@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -22,8 +24,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.ArrayList;
 
 public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.ViewHolder> {
-    private ArrayList<UserDomain.Note> notes;
-    private FirebaseUser user;
+    private final ArrayList<UserDomain.Note> notes;
+    private final FirebaseUser user;
 
     DatabaseReference mDataBase = FirebaseDatabase.getInstance().getReference("User");
 
@@ -50,6 +52,11 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.ViewHolder> {
         // Set the title of the note
         holder.checkBox.setText(
                 notes.get(position).getTitle()
+        );
+
+        // Set the body of the note
+        holder.bodyPlan.setText(
+                notes.get(position).getBody()
         );
 
         // Set the status of the note
@@ -98,12 +105,14 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.ViewHolder> {
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private CheckBox checkBox;
-        private ImageButton imageButton;
+        private final CheckBox checkBox;
+        private final ImageView imageButton;
+        private final TextView bodyPlan;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             checkBox = itemView.findViewById(R.id.checkBox);
             imageButton = itemView.findViewById(R.id.deleteButton);
+            bodyPlan = itemView.findViewById(R.id.bodyPlan);
         }
 
     }
