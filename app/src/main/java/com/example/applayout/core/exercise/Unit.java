@@ -6,12 +6,14 @@ import java.util.Map;
 
 public class Unit implements Serializable {
     private String unit;
-
+    private String img;
     public Unit(){
 
     }
-    public Unit( String unit) {
+
+    public Unit(String unit, String img) {
         this.unit = unit;
+        this.img = img;
     }
 
     public String getUnit() {
@@ -22,4 +24,11 @@ public class Unit implements Serializable {
         this.unit = unit;
     }
 
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
+    }
 }

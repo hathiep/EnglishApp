@@ -52,25 +52,28 @@
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingHorizontal="10dp"
-                    android:paddingVertical="5dp"
+                    android:layout_height="200dp"
+                    android:layout_marginHorizontal="10dp"
+                    android:paddingVertical="20dp"
                     android:orientation="horizontal"
-                    android:gravity="bottom">
+                    android:gravity="bottom"
+                    android:background="@drawable/exam_part_w_border">
 
-
-                    <TextView
-                        android:id="@+id/tv_question"
+                    <ScrollView
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingHorizontal="20dp"
-                        android:paddingVertical="20dp"
-                        android:text=""
-                        android:textSize="18dp"
-                        android:justificationMode="inter_word"
-                        android:background="@drawable/exam_part_w_border">
+                        android:layout_height="match_parent"
+                        android:fillViewport="true">
 
-                    </TextView>
+                        <TextView
+                            android:id="@+id/tv_question"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingHorizontal="20dp"
+                            android:textSize="18dp"
+                            android:justificationMode="inter_word">
+
+                        </TextView>
+                    </ScrollView>
 
                 </RelativeLayout>
 
@@ -95,11 +98,12 @@
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="180dp"
+                    android:paddingVertical="30px"
                     android:orientation="vertical">
                     <ScrollView
                         android:layout_width="match_parent"
-                        android:layout_height="200dp"
+                        android:layout_height="match_parent"
                         android:fillViewport="true">
                         <LinearLayout
                             android:id="@+id/layout_input"
@@ -107,7 +111,7 @@
                             android:layout_height="wrap_content"
                             android:orientation="vertical"
                             android:paddingHorizontal="10dp"
-                            android:paddingVertical="10dp">
+                            android:paddingBottom="80dp">
 
                         </LinearLayout>
                     </ScrollView>
@@ -145,6 +149,11 @@
                     android:textSize="20sp"/>
 
             </LinearLayout>
+<!--            <LinearLayout-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="180dp">-->
+
+<!--            </LinearLayout>-->
 
         </LinearLayout>
 

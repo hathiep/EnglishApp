@@ -40,7 +40,7 @@ public class TimeService extends Service {
                 "Dậy học Tiếng Anh thôi nào bạn ơi!!!",
                 "Bắt đầu ngày mới bằng việc học tiếng ANH một cách hiệu quả",
                 2002,
-                R.drawable.notification
+                R.drawable.logo2
         );
         System.out.println("Notification sent");
 

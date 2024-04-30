@@ -116,8 +116,8 @@ public class ExerciseAdvancedActivity extends AppCompatActivity {
     }
     private void setOnClickListener() throws IllegalAccessException, InstantiationException {
         // Menu dưới màn hình
+        onClickImVMenu(imV_home, MainActivity.class.newInstance());
         onClickImVMenu(imV_learn, LearnMain.class.newInstance());
-        onClickImVMenu(imV_exercise, ExerciseMain.class.newInstance());
         onClickImVMenu(imV_exam, ExamMain.class.newInstance());
         onClickImVMenu(imV_support, SupportMain.class.newInstance());
         onClickImVMenu(imV_profile, Profile.class.newInstance());
@@ -156,5 +156,12 @@ public class ExerciseAdvancedActivity extends AppCompatActivity {
                 Toast.makeText(ExerciseAdvancedActivity.this, "Get list Units faild", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(intent);
+        finish();
+        super.onBackPressed();
     }
 }

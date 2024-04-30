@@ -1,10 +1,13 @@
 package com.example.applayout.core.exam.vocabulary;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.os.CountDownTimer;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -23,6 +26,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.applayout.R;
 import com.example.applayout.core.MainActivity;
 import com.example.applayout.core.Profile;
+import com.example.applayout.core.exam.grammar.ExamGrammar;
 import com.example.applayout.core.main_class.RandomArray;
 import com.example.applayout.core.exam.ExamMain;
 import com.example.applayout.core.exam.ExamPartFinal;
@@ -63,6 +67,9 @@ public class ExamVocabulary extends AppCompatActivity {
     //Tạo ma trận màu ngẫu nhiên các chỉnh hợp chập 4 của 4 đáp án
     RandomArray random = new RandomArray(4);
     List<List<Integer>> colors_matrix = random.generateRandomPermutations();
+    private ProgressDialog progressDialog;
+    private CountDownTimer countDownTimer;
+    private Integer got, cancel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,11 +139,20 @@ public class ExamVocabulary extends AppCompatActivity {
     }
     // Hàm lấy dữ liệu word từ RealtimeDatabase
     private void getWordFromDataBase(){
+        for(int i=0; i<4; i++){
+            list_tv_q.get(i).setText("" + (i+1) + ". ");
+            list_tv_a.get(i).setText((char)('A'+ i) + ". ");
+        }
+
+        // Gọi hàm đếm ngược sau 1 giây nếu không get được dữ liệu thì hiển thị thông báo
+        countDown();
+
         database = FirebaseDatabase.getInstance();
         DatabaseReference ref_vocabulary = database.getReference("Exam/Vocabulary");
         ref_vocabulary.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+
                 int size = (int) snapshot.getChildrenCount();
                 RandomArray random = new RandomArray();
                 word_index = random.generateRandomNumbersNotInArray(word_used, size);
@@ -157,6 +173,11 @@ public class ExamVocabulary extends AppCompatActivity {
         ref_word.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
+                got = 1;
+                countDownTimer.cancel();
+                // Tắt thông báo khi đã lấy được dữ liệu
+                if(progressDialog.isShowing()) progressDialog.dismiss();
+
                 Word word = snapshot.getValue(Word.class);
                 list_tv_q.get(i).setText("" + (i+1) + ". " + word.getWord());
                 list_tv_a.get(x).setText((char)('A'+ x) + ". " + word.getMeaning());
@@ -238,8 +259,7 @@ public class ExamVocabulary extends AppCompatActivity {
                             click_right[index] = -1;
                         }
                         else if(st.empty()){
-                            Toast toast = Toast.makeText(getApplicationContext(), "Hãy chọn từ bên trái trước!", Toast.LENGTH_SHORT);
-                            toast.show();
+                            show_dialog("Hãy chọn từ bên trái trước!", 1);
                         }
                         else {
                             tv_a.setBackgroundTintList(ContextCompat.getColorStateList(ExamVocabulary.this, colors_dark[st.peek()]));
@@ -265,8 +285,7 @@ public class ExamVocabulary extends AppCompatActivity {
                     }
                 }
                 if(full == 1){
-                    Toast toast = Toast.makeText(getApplicationContext(), "Hãy chọn đầy đủ các từ!", Toast.LENGTH_SHORT);
-                    toast.show();
+                    show_dialog("Hãy chọn đầy đủ các từ!", 1);
                 }
                 else if(click_btn[1] == 0) {
                     int quantity_correct_word = 0;
@@ -298,27 +317,7 @@ public class ExamVocabulary extends AppCompatActivity {
                         sendToFinal();
                     }
                     else {
-                        click_btn[0] = click_btn[1] = 0;
-                        question++;
-                        getWordFromDataBase();
-                        st.clear();
-                        tv_question_num.setText(String.valueOf(question) + "/10");
-
-                        for(int i=0; i<4; i++) {
-                            TextView tv_q = list_tv_q.get(i);
-                            TextView tv_a = list_tv_a.get(colors_matrix.get(question).get(i));
-                            tv_q.setBackgroundTintList(ContextCompat.getColorStateList(ExamVocabulary.this, colors_light[i]));
-                            tv_q.setBackgroundTintMode(PorterDuff.Mode.MULTIPLY);
-                            tv_q.setTextColor(getColor(R.color.black));
-                            tv_a.setBackgroundTintList(ContextCompat.getColorStateList(ExamVocabulary.this, R.color.white));
-                            tv_a.setBackgroundTintMode(PorterDuff.Mode.MULTIPLY);
-                            tv_a.setTextColor(getColor(R.color.black));
-                            click_left[i] = 0;
-                            click_right[i] = -1;
-                        }
-                        btn_reset.setText("Reset");
-                        btn_reset.setBackgroundTintList(ContextCompat.getColorStateList(ExamVocabulary.this, R.color.red));
-                        btn_answer.setText("Đáp án");
+                        setTextNextQuestion();
                     }
                 }
             }
@@ -443,27 +442,7 @@ public class ExamVocabulary extends AppCompatActivity {
                     sendToFinal();
                 }
                 else{
-                    click_btn[0] = click_btn[1] = 0;
-                    question++;
-                    getWordFromDataBase();
-                    st.clear();
-                    tv_question_num.setText(String.valueOf(question) + "/10");
-
-                    for(int i=0; i<4; i++) {
-                        TextView tv_q = list_tv_q.get(i);
-                        TextView tv_a = list_tv_a.get(colors_matrix.get(question).get(i));
-                        tv_q.setBackgroundTintList(ContextCompat.getColorStateList(ExamVocabulary.this, colors_light[i]));
-                        tv_q.setBackgroundTintMode(PorterDuff.Mode.MULTIPLY);
-                        tv_q.setTextColor(getColor(R.color.black));
-                        tv_a.setBackgroundTintList(ContextCompat.getColorStateList(ExamVocabulary.this, R.color.white));
-                        tv_a.setBackgroundTintMode(PorterDuff.Mode.MULTIPLY);
-                        tv_a.setTextColor(getColor(R.color.black));
-                        click_left[i] = 0;
-                        click_right[i] = -1;
-                    }
-                    btn_reset.setText("Reset");
-                    btn_reset.setBackgroundTintList(ContextCompat.getColorStateList(ExamVocabulary.this, R.color.red));
-                    btn_answer.setText("Đáp án");
+                    setTextNextQuestion();
                 }
             }
         });
@@ -480,6 +459,57 @@ public class ExamVocabulary extends AppCompatActivity {
         AlertDialog dialog = builder.create();
         dialog.show();
     }
+    // Hàm set giá trị cho câu hỏi tiếp theo
+    private void setTextNextQuestion(){
+        // Sang câu hỏi tiếp theo
+        question++;
+        // Hiển thị số thứ tự câu hỏi
+        tv_question_num.setText(String.valueOf(question) + "/10");
+        // Set lại text status
+        tv_status.setText("Click vào từ ở danh sách bên dưới để sắp xếp");
+        click_btn[0] = click_btn[1] = 0;
+        st.clear();
+        for(int i=0; i<4; i++) {
+            TextView tv_q = list_tv_q.get(i);
+            TextView tv_a = list_tv_a.get(colors_matrix.get(question).get(i));
+            tv_q.setBackgroundTintList(ContextCompat.getColorStateList(ExamVocabulary.this, colors_light[i]));
+            tv_q.setBackgroundTintMode(PorterDuff.Mode.MULTIPLY);
+            tv_q.setTextColor(getColor(R.color.black));
+            tv_a.setBackgroundTintList(ContextCompat.getColorStateList(ExamVocabulary.this, R.color.white));
+            tv_a.setBackgroundTintMode(PorterDuff.Mode.MULTIPLY);
+            tv_a.setTextColor(getColor(R.color.black));
+            click_left[i] = 0;
+            click_right[i] = -1;
+        }
+        // Gọi hàm chờ loading
+        showDialogLoadingNextQuestion();
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Get dữ liệu từ Database
+                getWordFromDataBase();
+            }
+        }, 1000); // Số milliseconds bạn muốn Dialog biến mất sau đó
+        // Set lại text và trạng thái click cho button
+        btn_reset.setText("Reset");
+        btn_reset.setBackgroundTintList(ContextCompat.getColorStateList(ExamVocabulary.this, R.color.red));
+        btn_answer.setText("Đáp án");
+    }
+    // Hàm loading chờ sang câu tiếp theo
+    private void showDialogLoadingNextQuestion(){
+        ProgressDialog progressDialog = new ProgressDialog(ExamVocabulary.this);
+        progressDialog.setMessage("Loading...");
+        progressDialog.show();
+
+        // Sử dụng Handler để gửi một tin nhắn hoạt động sau một khoảng thời gian
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Ẩn Dialog sau khi đã qua một khoảng thời gian nhất định
+                progressDialog.dismiss();
+            }
+        }, 1000); // Số milliseconds bạn muốn Dialog biến mất sau đó
+    }
     // Hàm hiển thị Dialog xác nhận chuyển màn hình
     private void showDialogOutExam(Context context){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -491,6 +521,83 @@ public class ExamVocabulary extends AppCompatActivity {
                 // Xử lý khi người dùng nhấn Yes
                 Intent intent = new Intent(getApplicationContext(), context.getClass());
                 startActivity(intent);
+                finish();
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                // Xử lý khi người dùng nhấn Cancel
+                dialogInterface.dismiss();
+                if(cancel == 1){
+                    progressDialog = new ProgressDialog(ExamVocabulary.this);
+                    showDialogLoading();
+                }
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+    private void countDown(){
+        progressDialog = new ProgressDialog(this);
+        got = 0; cancel = 0;
+        countDownTimer = new CountDownTimer(1000, 1000) {
+            public void onTick(long millisUntilFinished) {
+            }
+            public void onFinish() {
+                if(got == 0){
+                    // Hiển thị thông báo sau 1 giây nếu chưa get được dữ liệu
+                    showDialogLoading();
+                }
+            }
+        }.start();
+    }
+    public void showDialogLoading(){
+        progressDialog.setTitle("Loading...");
+        progressDialog.setMessage("Đường truyền không ổn định. Vui lòng chờ trong giây lát!");
+        progressDialog.setCancelable(false);
+        progressDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Xử lý khi người dùng nhấn cancel
+                if (countDownTimer != null) {
+                    countDownTimer.cancel(); // Hủy bộ đếm ngược nếu đang chạy
+                }
+                try {
+                    cancel = 1;
+                    showDialogOutExam(ExamMain.class.newInstance());
+                } catch (IllegalAccessException e) {
+                    throw new RuntimeException(e);
+                } catch (InstantiationException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        });
+        progressDialog.show();
+    }
+    private void show_dialog(String s, int time){
+        ProgressDialog progressDialog = new ProgressDialog(ExamVocabulary.this);
+        progressDialog.setTitle("Thông báo");
+        progressDialog.setMessage(s);
+        progressDialog.show();
+
+        // Sử dụng Handler để gửi một tin nhắn hoạt động sau một khoảng thời gian
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Ẩn Dialog sau khi đã qua một khoảng thời gian nhất định
+                progressDialog.dismiss();
+            }
+        }, time * 1000); // Số milliseconds bạn muốn Dialog biến mất sau đó
+    }
+    public void onBackPressed(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Thông báo");
+        builder.setMessage("Bạn chưa hoàn thành bài kiểm tra. Bài làm sẽ bị huỷ nếu bạn chuyển sang chức năng khác. Bạn có chắc chắn muốn tiếp tục?");
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
                 finish();
             }
         });

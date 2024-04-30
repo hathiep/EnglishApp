@@ -1,6 +1,7 @@
 package com.example.applayout.core.exercise;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -14,12 +15,14 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.applayout.R;
+import com.example.applayout.core.MainActivity;
 import com.example.applayout.core.Profile;
 import com.example.applayout.core.exam.ExamMain;
 import com.example.applayout.core.learn.LearnMain;
@@ -36,7 +39,7 @@ import java.util.List;
 
 public class ExerciseUnit1AdvancedActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private ImageView imV_home, imV_learn, imV_exercise, imV_exam, imV_support, imV_profile;
+    private ImageView imV_home, imV_learn, imV_exercise, imV_exam, imV_support, imV_profile,ic_back;
     private TextView tv_exercise;
     private TextView tvQuantity;
     private TextView tvQuestion;
@@ -73,18 +76,6 @@ public class ExerciseUnit1AdvancedActivity extends AppCompatActivity implements 
         imV_exercise.setImageResource(R.drawable.icon_exercise2);
         tv_exercise.setTextAppearance(R.style.menu_text);
 
-        //back trang home
-        ImageView ic_back = findViewById(R.id.ic_back);
-
-        ic_back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), ExerciseMain.class);
-                startActivity(intent);
-                finish();
-            }
-        });
-
         //ket noi unit
         Bundle bundle = getIntent().getExtras();
         if (bundle == null){
@@ -113,22 +104,23 @@ public class ExerciseUnit1AdvancedActivity extends AppCompatActivity implements 
         imV_exam = findViewById(R.id.imV_exam);
         imV_support = findViewById(R.id.imV_support);
         imV_profile = findViewById(R.id.imV_profile);
+        ic_back = findViewById(R.id.ic_back);
     }
 
     private void setOnClickListener() throws IllegalAccessException, InstantiationException {
         // Menu dưới màn hình
         onClickImVMenu(imV_learn, LearnMain.class.newInstance());
-        //onClickImVMenu(imV_exercise, ExerciseMain.class.newInstance());
+        onClickImVMenu(imV_home, MainActivity.class.newInstance());
         onClickImVMenu(imV_exam, ExamMain.class.newInstance());
         onClickImVMenu(imV_support, SupportMain.class.newInstance());
         onClickImVMenu(imV_profile, Profile.class.newInstance());
+        onClickImVMenu(ic_back, ExerciseMain.class.newInstance());
     }
     private void onClickImVMenu(ImageView imV, Context context){
         imV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), context.getClass());
-                startActivity(intent);
+                showDialogOutExercise(context);
             }
         });
     }
@@ -262,6 +254,32 @@ public class ExerciseUnit1AdvancedActivity extends AppCompatActivity implements 
             },1000);
 
         }
+    }
+
+    private void showDialogOutExercise(Context context){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Thông báo");
+        builder.setMessage("Bạn chưa hoàn thành bài tập. Bài làm sẽ bị huỷ nếu bạn chuyển sang chức năng khác. Bạn có chắc chắn muốn tiếp tục?");
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                // Xử lý khi người dùng nhấn Yes
+                Intent intent = new Intent(getApplicationContext(), context.getClass());
+                startActivity(intent);
+                finish();
+            }
+        });
+
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                // Xử lý khi người dùng nhấn Cancel
+                dialogInterface.dismiss();
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
 }
