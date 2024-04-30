@@ -52,6 +52,14 @@ dependencies {
     implementation(libs.firebase.auth)
     implementation(libs.firebase.database)
     implementation(libs.firebase.storage)
+    implementation ("com.squareup.picasso:picasso:2.71828")
+    implementation ("jp.wasabeef:glide-transformations:4.3.0")
+    annotationProcessor ("com.github.bumptech.glide:compiler:4.12.0")
+
+
+
+
+
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)

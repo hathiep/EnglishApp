@@ -7,15 +7,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.bumptech.glide.load.resource.bitmap.GranularRoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.applayout.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
+
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 public class UnitAdapterAdvanced extends RecyclerView.Adapter<UnitAdapterAdvanced.UnitViewHolder> {
 
@@ -41,11 +49,11 @@ public class UnitAdapterAdvanced extends RecyclerView.Adapter<UnitAdapterAdvance
             return;
         }
 
-//        // Lấy màu từ colors.xml
-//        int colorId = mColorIds[position % mColorIds.length]; // Lặp lại màu nếu hết mảng màu
-//        int color = ContextCompat.getColor(mContext, colorId);
-//        holder.itemView.setBackgroundColor(color);
         holder.tvUnit.setText(unit.getUnit());
+        Glide.with(mContext).load(unit.getImg()).transform(
+                new CenterCrop(),
+                new GranularRoundedCorners(40, 40, 40, 40)
+        ).into(holder.imV_unit);
         holder.layoutUnit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -72,13 +80,14 @@ public class UnitAdapterAdvanced extends RecyclerView.Adapter<UnitAdapterAdvance
 
     public class UnitViewHolder extends RecyclerView.ViewHolder{
         private TextView tvUnit;
-        private ImageView imgItem;
-        private LinearLayout layoutUnit;
+        private ImageView imV_unit;
+        private RelativeLayout layoutUnit;
         public UnitViewHolder(@NonNull View itemView) {
             super(itemView);
             tvUnit = itemView.findViewById(R.id.tv_unit);
-            tvUnit.setBackgroundResource(R.drawable.ex_bg_blue_2_corner_30);
             layoutUnit = itemView.findViewById(R.id.layout_unit);
+            imV_unit = itemView.findViewById(R.id.imV_unit);
+            layoutUnit.setBackgroundResource(R.drawable.ex_bg_blue_2_corner_15);
         }
     }
 }

@@ -1,20 +1,31 @@
 package com.example.applayout.core.exercise;
 
+import static com.github.mikephil.charting.utils.Utils.convertDpToPixel;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.bumptech.glide.load.resource.bitmap.GranularRoundedCorners;
 import com.example.applayout.R;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Transformation;
 
 import java.util.List;
+
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 public class UnitAdapterBasic extends RecyclerView.Adapter<UnitAdapterBasic.UnitViewHolder> {
 
@@ -26,16 +37,6 @@ public class UnitAdapterBasic extends RecyclerView.Adapter<UnitAdapterBasic.Unit
         this.mContext = mContext;
     }
 
-//    private List<Unit> mListUnits;
-//    private Context mContext;
-//    private int[] mColorIds;
-//
-//    // Constructor
-//    public UnitAdapter(Context context, List<Unit> listUnits) {
-//        this.mContext = context;
-//        this.mListUnits = listUnits;
-//        this.mColorIds = new int[]{R.drawable.ex_bg_blue_1_corner_30, R.drawable.ex_bg_yellow_1_corner_30, R.drawable.ex_bg_red_1_corner_30, R.drawable.ex_bg_purple_1_corner_30, R.drawable.ex_bg_green_1_corner_30}; // Chỉnh sửa với màu trong colors.xml
-//    }
     @NonNull
     @Override
     public UnitViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -50,11 +51,12 @@ public class UnitAdapterBasic extends RecyclerView.Adapter<UnitAdapterBasic.Unit
             return;
         }
 
-//        // Lấy màu từ colors.xml
-//        int colorId = mColorIds[position % mColorIds.length]; // Lặp lại màu nếu hết mảng màu
-//        int color = ContextCompat.getColor(mContext, colorId);
-//        holder.itemView.setBackgroundColor(color);
+
         holder.tvUnit.setText(unit.getUnit());
+        Glide.with(mContext).load(unit.getImg()).transform(
+                new CenterCrop(),
+                new GranularRoundedCorners(40, 40, 40, 40)
+        ).into(holder.imV_unit);
         holder.layoutUnit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -81,11 +83,13 @@ public class UnitAdapterBasic extends RecyclerView.Adapter<UnitAdapterBasic.Unit
 
     public class UnitViewHolder extends RecyclerView.ViewHolder{
         private TextView tvUnit;
-        private LinearLayout layoutUnit;
+        private ImageView imV_unit;
+        private RelativeLayout layoutUnit;
         public UnitViewHolder(@NonNull View itemView) {
             super(itemView);
             tvUnit = itemView.findViewById(R.id.tv_unit);
             layoutUnit = itemView.findViewById(R.id.layout_unit);
+            imV_unit = itemView.findViewById(R.id.imV_unit);
         }
     }
 }
