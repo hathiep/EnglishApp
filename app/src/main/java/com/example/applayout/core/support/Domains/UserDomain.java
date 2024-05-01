@@ -1,5 +1,7 @@
 package com.example.applayout.core.support.Domains;
 
+import androidx.annotation.NonNull;
+
 import com.example.applayout.core.main_class.Exam;
 import com.example.applayout.core.support.Domains.ExerciseDomain;
 import com.google.firebase.database.Exclude;
@@ -99,6 +101,7 @@ public class UserDomain {
 
     public static class Note implements Comparable<Note> {
         private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+        private final DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("HH:mm:ss dd-MM-yyyy");
         private LocalDateTime createdDateReal;
         private String id;
         private String name;
@@ -125,6 +128,10 @@ public class UserDomain {
 
         public String getCreatedDate() {
             return createdDate;
+        }
+
+        public String getCreatedDate2() {
+            return createdDateReal.format(formatter2);
         }
 
         public void setCreatedDate(String createdDate) {
@@ -160,6 +167,7 @@ public class UserDomain {
             this.status = status;
         }
 
+        @NonNull
         @Override
         public String toString() {
             return "Note{" +
