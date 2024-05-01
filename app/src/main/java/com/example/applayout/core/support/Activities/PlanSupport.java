@@ -1,15 +1,18 @@
 package com.example.applayout.core.support.Activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ViewFlipper;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -53,7 +56,7 @@ public class PlanSupport extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.support_plan);
         initRecyclerView();
-        Button progressBtn = findViewById(R.id.add_btn);
+        ImageButton progressBtn = findViewById(R.id.add_btn);
         progressBtn.setOnClickListener(v -> {
             Intent intent = new Intent(
                     this,
@@ -132,6 +135,7 @@ public class PlanSupport extends AppCompatActivity {
         });
 
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        assert currentUser != null;
         user.setId(currentUser.getUid());
 
         System.out.println(user.getId());
@@ -144,6 +148,7 @@ public class PlanSupport extends AppCompatActivity {
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                             UserDomain.Note note = dataSnapshot.getValue(UserDomain.Note.class);
+                            assert note != null;
                             note.setId(dataSnapshot.getKey());
                             System.out.println(note.getCreatedDateReal());
                             items.add(note);
@@ -152,7 +157,6 @@ public class PlanSupport extends AppCompatActivity {
                         adapterPlan = new PlanAdapter(items, currentUser);
                         recyclerViewPlan.setAdapter(adapterPlan);
                     }
-
                     @Override
                     public void onCancelled(@NonNull DatabaseError error) {
                         Log.d("Error", error.getMessage());
