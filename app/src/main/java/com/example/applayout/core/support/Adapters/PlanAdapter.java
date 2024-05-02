@@ -28,11 +28,12 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.ViewHolder> {
-    private final ArrayList<UserDomain.Note> notes;
-    private final FirebaseUser user;
+    private ArrayList<UserDomain.Note> notes;
+    private FirebaseUser user;
 
     DatabaseReference mDataBase = FirebaseDatabase.getInstance().getReference("User");
 
@@ -54,6 +55,7 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.ViewHolder> {
         return new ViewHolder(inflate);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         // Set the title of the note
@@ -68,7 +70,14 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.ViewHolder> {
 
         // Set time of the note
         holder.datePlan.setText(
-                notes.get(position).getCreatedDate2()
+                "Created: " +
+                notes.get(position).getCreatedDate3()
+        );
+
+        // Set due date of the note
+        holder.dueDatePlan.setText(
+                "Due Date: " +
+                notes.get(position).getDueDate2()
         );
 
         // Set the status of the note
@@ -77,7 +86,10 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.ViewHolder> {
             holder.checkBox.setEnabled(false);
             // Strike through the text
             holder.checkBox.setPaintFlags(Paint.STRIKE_THRU_TEXT_FLAG);
-            @SuppressLint("UseCompatLoadingForDrawables") Drawable drawable = holder.cardViewPlan.getResources().getDrawable(R.drawable.gradient_background_ischecked, null);
+            @SuppressLint("UseCompatLoadingForDrawables") Drawable drawable = holder.cardViewPlan.getResources().getDrawable(
+                    R.drawable.gradient_background_ischecked,
+                    null
+            );
             holder.cardViewPlan.setBackground(drawable);
         } else {
             holder.checkBox.setChecked(false);
@@ -85,22 +97,25 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.ViewHolder> {
 
         // Update the status of the note
         holder.checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            showDialogActive(buttonView.getContext(), buttonView, position, isChecked);
+            // Call the dialog to confirm the update
+            if(isChecked) {
+                showDialogActive(
+                        buttonView,
+                        position,
+                        isChecked,
+                        holder
+                );
+            }
         });
 
         // Delete the note
         holder.imageButton.setOnClickListener(v -> {
-            mDataBase.child(user.getUid()).child("notes").child(notes.get(position).getId()).removeValue()
-                    .addOnSuccessListener(aVoid -> {
-                        System.out.println("Deleted");
-                        notes.remove(position);
-                        Toast.makeText(v.getContext(), "Deleted", Toast.LENGTH_SHORT).show();
-                    })
-                    .addOnFailureListener(
-                            e -> Toast.makeText(v.getContext(), "Failed to delete", Toast.LENGTH_SHORT).show()
-                    );
-
-            Toast.makeText(v.getContext(), "Deleted", Toast.LENGTH_SHORT).show();
+            // Call the dialog to confirm the deletion
+            showDialogDelete(
+                    v,
+                    position,
+                    holder
+            );
         });
     }
 
@@ -110,11 +125,12 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.ViewHolder> {
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private final CheckBox checkBox;
-        private final ImageView imageButton;
-        private final TextView bodyPlan;
-        private final TextView datePlan;
-        private final ConstraintLayout cardViewPlan;
+        private CheckBox checkBox;
+        private ImageView imageButton;
+        private TextView bodyPlan;
+        private TextView datePlan;
+        private TextView dueDatePlan;
+        private ConstraintLayout cardViewPlan;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             cardViewPlan = itemView.findViewById(R.id.cardview_plan);
@@ -122,12 +138,13 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.ViewHolder> {
             imageButton = itemView.findViewById(R.id.deleteButton);
             bodyPlan = itemView.findViewById(R.id.bodyPlan);
             datePlan = itemView.findViewById(R.id.datePlan);
+            dueDatePlan = itemView.findViewById(R.id.dueDatePlan);
         }
-
     }
 
-    private void showDialogActive(Context context, CompoundButton buttonView, int position, boolean isChecked) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+    @SuppressLint("NotifyDataSetChanged")
+    private void showDialogActive(CompoundButton buttonView, int position, boolean isChecked, ViewHolder holder) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(buttonView.getContext());
 
         // Set title and message
         builder.setTitle("Hoành thành kế hoạch");
@@ -141,11 +158,44 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.ViewHolder> {
             mDataBase.child(user.getUid()).child("notes").child(notes.get(position).getId()).setValue(notes.get(position))
                     .addOnSuccessListener(aVoid -> {
                         System.out.println("Updated");
+                        notifyDataSetChanged();
                         Toast.makeText(buttonView.getContext(), "Updated", Toast.LENGTH_SHORT).show();
                     })
                     .addOnFailureListener(
                             e -> Toast.makeText(buttonView.getContext(), "Failed to update", Toast.LENGTH_SHORT).show()
                     );
+        });
+
+        builder.setNegativeButton("No", (dialog, which) -> {
+            // Do nothing
+            System.out.println("Do nothing!!!");
+            holder.checkBox.setChecked(false);
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private void showDialogDelete(View view, int position, ViewHolder holder) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+
+        // Set title and message
+        builder.setTitle("Xóa kế hoạch");
+        builder.setMessage("Bạn muốn xóa kế hoạch học tập này không");
+        builder.setPositiveButton("Yes", (dialog, which) -> {
+            // Delete the note
+            mDataBase.child(user.getUid()).child("notes").child(notes.get(position).getId()).removeValue()
+                    .addOnSuccessListener(aVoid -> {
+                        System.out.println("Deleted");
+                        notes.remove(position);
+                        notifyDataSetChanged();
+                        Toast.makeText(view.getContext(), "Deleted", Toast.LENGTH_SHORT).show();
+                    })
+                    .addOnFailureListener(
+                            e -> Toast.makeText(view.getContext(), "Failed to delete", Toast.LENGTH_SHORT).show()
+                    );
+            Toast.makeText(view.getContext(), "Deleted", Toast.LENGTH_SHORT).show();
         });
 
         builder.setNegativeButton("No", (dialog, which) -> {

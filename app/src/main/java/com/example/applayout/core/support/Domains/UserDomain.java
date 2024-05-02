@@ -37,6 +37,7 @@ public class UserDomain {
         this.phone = phone;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "UserDomain{" +
@@ -102,10 +103,13 @@ public class UserDomain {
     public static class Note implements Comparable<Note> {
         private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
         private final DateTimeFormatter formatter2 = DateTimeFormatter.ofPattern("HH:mm:ss dd-MM-yyyy");
+        private final DateTimeFormatter formatter3 = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         private LocalDateTime createdDateReal;
+        private LocalDateTime dueDateReal;
         private String id;
         private String name;
         private String createdDate;
+        private String dueDate;
         private String title;
         private String body;
         private String status;
@@ -129,11 +133,24 @@ public class UserDomain {
         public String getCreatedDate() {
             return createdDate;
         }
-
+        public String getDueDate() {
+            return dueDate;
+        }
+        public void setDueDate(String dueDate) {
+            this.dueDate = dueDate;
+            this.dueDateReal = LocalDateTime.parse(dueDate, formatter);
+        }
+        @Exclude
         public String getCreatedDate2() {
             return createdDateReal.format(formatter2);
         }
-
+        public String getCreatedDate3() {
+            return createdDateReal.format(formatter3);
+        }
+        @Exclude
+        public String getDueDate2() {
+            return dueDateReal.format(formatter2);
+        }
         public void setCreatedDate(String createdDate) {
             this.createdDate = createdDate;
             this.createdDateReal = LocalDateTime.parse(createdDate, formatter);
