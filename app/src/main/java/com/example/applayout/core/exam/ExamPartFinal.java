@@ -1,28 +1,20 @@
 package com.example.applayout.core.exam;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.activity.EdgeToEdge;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.applayout.R;
-import com.example.applayout.core.MainActivity;
 import com.example.applayout.core.Profile;
-import com.example.applayout.core.exam.listening.ExamListening;
-import com.example.applayout.core.exam.synthetic.ExamSynthetic;
-import com.example.applayout.core.exam.vocabulary.ExamVocabulary;
-import com.example.applayout.core.exam.writing.ExamWriting;
 import com.example.applayout.core.exercise.ExerciseMain;
 import com.example.applayout.core.learn.LearnMain;
 import com.example.applayout.core.support.SupportMain;

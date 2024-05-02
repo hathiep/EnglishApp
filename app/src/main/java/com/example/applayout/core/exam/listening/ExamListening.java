@@ -38,7 +38,6 @@ import com.example.applayout.core.Profile;
 import com.example.applayout.core.exam.ExamMain;
 import com.example.applayout.core.exam.ExamPartFinal;
 import com.example.applayout.core.exam.Result;
-import com.example.applayout.core.exam.grammar.ExamGrammar;
 import com.example.applayout.core.exercise.ExerciseMain;
 import com.example.applayout.core.learn.LearnMain;
 import com.example.applayout.core.main_class.RandomArray;
@@ -54,7 +53,6 @@ import com.google.firebase.database.ValueEventListener;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class ExamListening extends AppCompatActivity {
     FirebaseAuth auth = FirebaseAuth.getInstance();
