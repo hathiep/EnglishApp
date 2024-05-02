@@ -40,6 +40,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
+
         <EditText
             android:id="@+id/editTextTitle"
             android:layout_width="match_parent"
@@ -63,6 +64,16 @@
             android:padding="10dp"
             android:textSize="16sp" />
 
+        <TextView
+            android:id="@+id/datePickerTxt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/datePickerButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Date Picker" />
         <Button
             android:id="@+id/buttonSaveNote"
             android:layout_width="match_parent"
