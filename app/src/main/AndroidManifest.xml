@@ -2,11 +2,15 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:targetSandboxVersion="1">
+
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
     <uses-permission android:name="com.android.alarm.permission.SET_ALARM"/>
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.SCHEDULE_ALARM_SERVICE" />
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -108,8 +112,12 @@
             android:name=".core.support.SupportMain$SupportMain"
             android:exported="true">
         </activity>
-
-        <service android:name=".core.support.utils.TimeService"/>
+        <receiver
+            android:name="com.example.applayout.core.support.utils.AlarmReceiver"
+            android:enabled="true"
+            android:exported="true"
+            android:label="RestartServiceWhenStopped">
+        </receiver>
         <receiver android:name="com.example.applayout.core.learn.NoticeReviewService" />
     </application>
 

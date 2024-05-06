@@ -1,5 +1,6 @@
 package com.example.applayout.core.support.utils;
 
+import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -20,7 +21,7 @@ public class NotificationHelper {
     private static final String CHANNEL_NAME = "Notification Channel";
     private static final String CHANNEL_DESC = "Receive updates and alerts from My App";
 
-    public static void showNotification(Context context, String title, String body, int notificationId, int resourceId) {
+    public static Notification createNotification(Context context, String title, String body, int resourceId) {
         NotificationManager notificationManager =
                 (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
@@ -69,7 +70,7 @@ public class NotificationHelper {
         }
 
         // Issue the notification
-        notificationManager.notify(notificationId, builder.build());
+        return builder.build();
     }
 
     public static void cancelNotification(Context applicationContext, int i) {
