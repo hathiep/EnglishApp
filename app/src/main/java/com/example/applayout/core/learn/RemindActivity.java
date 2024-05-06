@@ -76,6 +76,7 @@ public class RemindActivity extends AppCompatActivity {
                 });
             }
         });
+
         binding.startRemind.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -17,6 +17,7 @@ public class FlashCardEntity {
         this.word = word;
     }
 
+
     public FlashCardEntity() {
     }
 

@@ -15,6 +15,7 @@
         android:background="#61dd61"
         >
 
+
         <ImageView
             android:id="@+id/imV_back"
             android:layout_width="77dp"
@@ -33,7 +34,6 @@
             android:gravity="center"
             />
         <ImageView
-
             android:layout_width="77dp"
             android:layout_height="match_parent"
             android:background="#FFCB7D"
@@ -61,7 +61,6 @@
             android:layout_height="wrap_content"
             android:id="@+id/view_pager"
             />
-
 
     </LinearLayout>
 

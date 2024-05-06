@@ -57,7 +57,6 @@ public class ReviewWordFragment extends Fragment {
         firebaseAuth = FirebaseAuth.getInstance();
         String userKey = firebaseAuth.getUid();
         databaseReference = firebaseDatabase.getReference("User/" + userKey + "/newword");
-
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
