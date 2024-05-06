@@ -1,7 +1,11 @@
 package com.example.applayout.core.support.Activities;
 
 import android.annotation.SuppressLint;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -17,11 +21,15 @@ import com.example.applayout.core.exam.ExamMain;
 import com.example.applayout.core.exercise.ExerciseMain;
 import com.example.applayout.core.learn.LearnMain;
 import com.example.applayout.core.support.SupportMain;
+import com.example.applayout.core.support.utils.AlarmReceiver;
 import com.example.applayout.core.support.utils.NotificationHelper;
-import com.example.applayout.core.support.utils.TimeService;
+
+
+import java.util.Calendar;
 
 
 public class AnnouncementSupport extends AppCompatActivity {
+    Intent mServiceIntent;
     private ImageView back_button;
     private ViewFlipper viewFlipper;
     private Button nextFlipperButton;
@@ -42,20 +50,12 @@ public class AnnouncementSupport extends AppCompatActivity {
         });
 
         Switch switch1 = findViewById(R.id.switch1);
-        Intent intent = new Intent(this, TimeService.class);
-        startService(intent);
         switch1.setOnClickListener(new View.OnClickListener() {
-            @SuppressLint("UseCompatLoadingForDrawables")
+            @SuppressLint({"UseCompatLoadingForDrawables", "ShortAlarm"})
             @Override
             public void onClick(View view) {
                 if (switch1.isChecked()) {
-//                    NotificationHelper.showNotification(
-//                            getApplicationContext(),
-//                            "New Announcement",
-//                            "New announcement from the support team",
-//                            2002,
-//                            "https://pbs.twimg.com/media/GLtoRg5WYAAvJtQ?format=jpg&name=large"
-//                    );
+                    scheduleAlarm(getApplicationContext());
                 } else {
                     NotificationHelper.cancelNotification(
                             getApplicationContext(),
@@ -112,5 +112,25 @@ public class AnnouncementSupport extends AppCompatActivity {
                 finish();
             }
         });
+    }
+    @SuppressLint("ScheduleExactAlarm")
+    public static void scheduleAlarm(Context context) {
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        if (alarmManager == null) {
+            return;
+        }
+
+        Intent intent = new Intent(context, AlarmReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+//        calendar.add(Calendar.MINUTE, 1);
+
+        alarmManager.setRepeating(
+                AlarmManager.RTC_WAKEUP,
+                calendar.getTimeInMillis(),
+                60000 * 2,
+                pendingIntent
+        );
     }
 }

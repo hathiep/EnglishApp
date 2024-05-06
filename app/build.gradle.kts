@@ -56,6 +56,8 @@ dependencies {
     implementation ("jp.wasabeef:glide-transformations:4.3.0")
     annotationProcessor ("com.github.bumptech.glide:compiler:4.12.0")
 
+    implementation ("androidx.work:work-runtime:2.7.0")
+
 
 
 
