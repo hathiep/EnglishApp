@@ -48,7 +48,6 @@ import java.util.List;
 
 
 public class AnnouncementSupport extends AppCompatActivity {
-    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     private DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("User");
     private List<UserDomain.Note> items = new ArrayList<>();
     @SuppressLint("UseSwitchCompatOrMaterialCode")
@@ -188,7 +187,6 @@ public class AnnouncementSupport extends AppCompatActivity {
     private void checkTaskAndShowNotification() {
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         assert currentUser != null;
-
 
         mDatabase = FirebaseDatabase.getInstance().getReference("User").child(currentUser.getUid()).child("notes");
         mDatabase.addListenerForSingleValueEvent(

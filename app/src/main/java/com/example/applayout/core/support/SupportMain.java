@@ -3,16 +3,9 @@ package com.example.applayout.core.support;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
-
 import com.example.applayout.R;
 import com.example.applayout.core.Profile;
 import com.example.applayout.core.exam.ExamMain;
@@ -27,6 +20,15 @@ public class SupportMain extends AppCompatActivity {
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.support_general_plan);
+
+            ImageView backBtn = findViewById(R.id.generalBackBtn);
+            backBtn.setOnClickListener(v -> {
+                Intent intent = new Intent(
+                        SupportMain.this,
+                        com.example.applayout.core.MainActivity.class
+                );
+                startActivity(intent);
+            });
 
             ImageView imV_support = findViewById(R.id.imV_support);
             TextView tv_support = findViewById(R.id.tv_support);
