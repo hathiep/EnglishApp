@@ -67,6 +67,19 @@
 
         </ImageView>
 
+        <Button
+            android:id="@+id/remind_button"
+            android:layout_width="160dp"
+            android:layout_height="80dp"
+            android:layout_below="@id/header_name"
+            android:layout_marginTop="1dp"
+            android:backgroundTint="#7C7CDF"
+            android:text="Nhắc tôi học"
+            android:layout_alignParentEnd="true"
+            >
+
+        </Button>
+
         <ViewFlipper
             android:id="@+id/view_flipper"
             android:layout_width="match_parent"

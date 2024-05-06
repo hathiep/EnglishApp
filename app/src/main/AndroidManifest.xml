@@ -118,7 +118,11 @@
             android:exported="true"
             android:label="RestartServiceWhenStopped">
         </receiver>
-        <receiver android:name="com.example.applayout.core.learn.NoticeReviewService" />
+        <activity
+            android:name=".core.learn.RemindActivity"
+            android:exported="false">
+        </activity>
+        <receiver android:name="com.example.applayout.core.learn.ReminderBroadcastReceiver" />
     </application>
 
 </manifest>
