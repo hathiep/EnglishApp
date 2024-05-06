@@ -188,7 +188,6 @@ public class LearnFragment extends Fragment {
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
-                    // Xử lý khi có lỗi
                 }
             });
         }

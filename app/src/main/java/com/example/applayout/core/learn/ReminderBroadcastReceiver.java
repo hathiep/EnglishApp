@@ -54,7 +54,6 @@ public class ReminderBroadcastReceiver extends BroadcastReceiver {
 
                         long diffInMillis = currentDate.getTime() - date1.getTime();
 
-                        // Chuyển đổi số mili giây thành số ngày
                         diffInDays = diffInMillis / (1000 * 60 * 60 * 24);
                     } catch (ParseException e) {
                         e.printStackTrace();

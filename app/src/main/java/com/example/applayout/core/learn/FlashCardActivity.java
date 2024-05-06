@@ -253,7 +253,6 @@ public class FlashCardActivity extends AppCompatActivity {
             });
         } catch (IOException e) {
             e.printStackTrace();
-            // Thay Toast bằng Log để xem lỗi trong Logcat
             Log.e("MediaPlayerError", "Error: " + e.getMessage());
         }
     }
