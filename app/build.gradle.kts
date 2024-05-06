@@ -1,5 +1,3 @@
-@file:Suppress("UNUSED_EXPRESSION")
-
 plugins {
     alias(libs.plugins.androidApplication)
     id("com.google.gms.google-services")
@@ -29,9 +27,6 @@ android {
             )
         }
     }
-    buildFeatures {
-        dataBinding = true
-    }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -57,7 +52,6 @@ dependencies {
     implementation(libs.firebase.auth)
     implementation(libs.firebase.database)
     implementation(libs.firebase.storage)
-    implementation ("androidx.work:work-runtime:2.9.0")
     implementation ("com.squareup.picasso:picasso:2.71828")
     implementation ("jp.wasabeef:glide-transformations:4.3.0")
     annotationProcessor ("com.github.bumptech.glide:compiler:4.12.0")

@@ -1,13 +1,7 @@
 package com.example.applayout.core.learn;
 
-import android.Manifest;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -22,17 +16,9 @@ import android.widget.ViewFlipper;
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-import androidx.work.Constraints;
-import androidx.work.ExistingPeriodicWorkPolicy;
-import androidx.work.OutOfQuotaPolicy;
-import androidx.work.PeriodicWorkRequest;
-import androidx.work.WorkManager;
 
 import com.example.applayout.R;
 import com.google.firebase.database.DataSnapshot;
@@ -45,7 +31,6 @@ import com.squareup.picasso.Picasso;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -54,14 +39,12 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class FlashCardActivity extends AppCompatActivity {
-
     private MediaPlayer mediaPlayer;
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
     private String topic;
     private List<FlashCardEntity> flashCardEntityList;
     private ImageView back_button;
-    private Button remind_button;
     private ImageView sound;
     private TextView headerView;
 
@@ -142,17 +125,11 @@ public class FlashCardActivity extends AppCompatActivity {
         imV_home.setImageResource(R.drawable.icon_learn2);
         tv_home.setTextAppearance(R.style.menu_text);
 
-
-
         viewFlipper = findViewById(R.id.view_flipper);
         nextFlipperButton = findViewById(R.id.learn_next_btn1);
         backFlipperButton = findViewById(R.id.learn_back_btn1);
         back_button = findViewById(R.id.learn_back_button);
-        remind_button = findViewById(R.id.remind_button);
         sound = findViewById(R.id.sound);
-
-        // bat dau dat lich
-
 
         back_button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -160,15 +137,6 @@ public class FlashCardActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), LearnMain.class);
                 startActivity(intent);
                 finish();
-            }
-        });
-        remind_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), RemindActivity.class);
-                startActivity(intent);
-
-
             }
         });
 
@@ -271,6 +239,5 @@ public class FlashCardActivity extends AppCompatActivity {
             Log.e("MediaPlayerError", "Error: " + e.getMessage());
         }
     }
-
 
 }
