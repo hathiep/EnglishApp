@@ -26,8 +26,8 @@
 
             <ImageView
                 android:id="@+id/image_word"
-                android:layout_width="330dp"
-                android:layout_height="330dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 >
 
             </ImageView>
@@ -35,7 +35,7 @@
                 android:id="@+id/example_word"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:textSize="24sp"
+                android:textSize="70sp"
                 android:background="@drawable/border"
                 android:backgroundTint="#C695CC"
                 android:textAlignment="center"
@@ -46,8 +46,8 @@
 
         <!-- Front Layout Goes Here -->
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="330dp"
-            android:layout_height="330dp"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
             android:background="@drawable/border"
             android:backgroundTint="#C695CC"
             android:layout_gravity="center">
@@ -56,7 +56,7 @@
                 android:id="@+id/word"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="40sp"
+                android:textSize="70sp"
                 android:textAlignment="center"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

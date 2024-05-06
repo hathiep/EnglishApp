@@ -1,7 +1,13 @@
 package com.example.applayout.core.learn;
 
+import android.Manifest;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.media.MediaPlayer;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -16,9 +22,17 @@ import android.widget.ViewFlipper;
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import androidx.work.Constraints;
+import androidx.work.ExistingPeriodicWorkPolicy;
+import androidx.work.OutOfQuotaPolicy;
+import androidx.work.PeriodicWorkRequest;
+import androidx.work.WorkManager;
 
 import com.example.applayout.R;
 import com.google.firebase.database.DataSnapshot;
@@ -31,6 +45,7 @@ import com.squareup.picasso.Picasso;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -91,7 +106,6 @@ public class FlashCardActivity extends AppCompatActivity {
                         TextView spellTextView = cardView.findViewById(R.id.spell_word);
                         TextView meaningTextView = cardView.findViewById(R.id.meaning_word);
                         ImageView imageView = cardView.findViewById(R.id.image_word);
-
                         TextView exampleTextView = cardView.findViewById(R.id.example_word);
 
                         wordTextView.setText(flashCard.getWord());
