@@ -12,6 +12,7 @@
         android:layout_height="60dp"
         android:id="@+id/heading"
         android:orientation="horizontal"
+
         android:background="#61dd61"
         >
 

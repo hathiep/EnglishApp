@@ -84,6 +84,7 @@
             android:id="@+id/view_flipper"
             android:layout_width="match_parent"
             android:layout_height="400dp"
+
             android:layout_below="@+id/sound"
             >
             <include layout="@layout/learn_viewflipper1"></include>
