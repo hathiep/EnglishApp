@@ -12,14 +12,14 @@
         android:layout_height="60dp"
         android:id="@+id/heading"
         android:orientation="horizontal"
-        android:background="#FFCB7D"
+        android:background="#61dd61"
         >
 
         <ImageView
             android:id="@+id/imV_back"
             android:layout_width="77dp"
             android:layout_height="match_parent"
-            android:background="#FFCB7D"
+            android:background="#61dd61"
             app:srcCompat="@drawable/icon_back" />
 
         <TextView
@@ -36,7 +36,7 @@
 
             android:layout_width="77dp"
             android:layout_height="match_parent"
-            android:background="#FFCB7D"
+            android:background="#61dd61"
             />
     </LinearLayout>
 
@@ -53,7 +53,7 @@
             android:id="@+id/tab_layout"
             android:layout_height="60dp"
             android:layout_width="match_parent"
-            android:background="#FFDBA4"
+            android:background="#C0F4B1"
             app:tabTextAppearance="@style/MineCustomTabText"
             />
         <androidx.viewpager.widget.ViewPager
@@ -65,14 +65,7 @@
 
     </LinearLayout>
 
-    <Button
-        android:id="@+id/start_Service"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/menu_bottom"
-        android:layout_centerHorizontal="true">
 
-    </Button>
 
     <include layout="@layout/menu_bottom"/>
 

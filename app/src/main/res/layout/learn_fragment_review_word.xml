@@ -8,12 +8,12 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/green_1"
+        android:background="@color/learn_background"
         android:orientation="vertical">
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/blue_1">
+            android:background="@color/learn_background">
             <LinearLayout
                 android:id="@+id/review_learn_frag_layout"
                 android:layout_width="match_parent"
