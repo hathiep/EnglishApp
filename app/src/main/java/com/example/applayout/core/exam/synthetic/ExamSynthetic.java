@@ -24,7 +24,6 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.applayout.R;
 import com.example.applayout.core.MainActivity;
 import com.example.applayout.core.Profile;
-import com.example.applayout.core.exam.grammar.ExamGrammar;
 import com.example.applayout.core.main_class.RandomArray;
 import com.example.applayout.core.exam.ExamMain;
 import com.example.applayout.core.exam.ExamPartFinal;
@@ -42,7 +41,6 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class ExamSynthetic extends AppCompatActivity {
     FirebaseAuth auth = FirebaseAuth.getInstance();

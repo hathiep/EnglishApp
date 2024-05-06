@@ -120,7 +120,7 @@
                             android:layout_marginTop="47dp"
                             android:layout_marginEnd="15dp"
                             android:gravity="center"
-                            android:text=" question1 vvasbvabacnvaefwgfwewfecnadcdnvfhgwdghdhwvgvwdgvdew"
+                            android:text=" "
                             android:textSize="16sp" />
 
                         <ImageView
@@ -148,7 +148,7 @@
                         android:layout_height="60dp"
                         android:background="@drawable/ex_bg_while_border_corner_15"
                         android:gravity="center"
-                        android:text="tv_answer1"
+                        android:text=" "
                         android:textSize="16sp" />
 
                     <FrameLayout
@@ -162,7 +162,7 @@
                             android:layout_gravity="end"
                             android:background="@drawable/ex_bg_while_border_corner_15"
                             android:gravity="center"
-                            android:text="tv_answer2"
+                            android:text=" "
                             android:textSize="16sp" />
                     </FrameLayout>
 
@@ -180,7 +180,7 @@
                         android:layout_height="60dp"
                         android:background="@drawable/ex_bg_while_border_corner_15"
                         android:gravity="center"
-                        android:text="tv_answer3"
+                        android:text=" "
                         android:textSize="16sp" />
 
                     <FrameLayout
@@ -194,7 +194,7 @@
                             android:layout_gravity="end"
                             android:background="@drawable/ex_bg_while_border_corner_15"
                             android:gravity="center"
-                            android:text="tv_answer4"
+                            android:text=" "
                             android:textSize="16sp" />
                     </FrameLayout>
 
