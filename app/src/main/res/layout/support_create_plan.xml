@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/background"
     android:padding="16dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -64,21 +65,39 @@
             android:padding="10dp"
             android:textSize="16sp" />
 
-        <TextView
-            android:id="@+id/datePickerTxt"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <Button
-            android:id="@+id/datePickerButton"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Date Picker" />
-        <Button
-            android:id="@+id/buttonSaveNote"
+            android:orientation="vertical"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            >
+            <TextView
+                android:id="@+id/datePickerTxt"
+                android:textColor="@color/text"
+                android:textSize="20sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+            <Button
+                android:layout_marginTop="12dp"
+                android:id="@+id/datePickerButton"
+                android:layout_width="140dp"
+                android:layout_height="wrap_content"
+                android:text="Chọn ngày" />
+        </LinearLayout>
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Lưu kế hoạch" />
+            android:orientation="horizontal"
+            android:gravity="center_horizontal"
+            android:layout_marginTop="14dp"
+            >
+            <Button
+                android:id="@+id/buttonSaveNote"
+                android:layout_width="160dp"
+                android:layout_height="wrap_content"
+                android:text="Lưu kế hoạch" />
+        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>

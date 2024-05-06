@@ -144,6 +144,7 @@ public class UserDomain {
         public String getCreatedDate2() {
             return createdDateReal.format(formatter2);
         }
+        @Exclude
         public String getCreatedDate3() {
             return createdDateReal.format(formatter3);
         }

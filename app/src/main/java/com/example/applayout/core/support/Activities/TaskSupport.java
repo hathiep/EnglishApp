@@ -358,6 +358,11 @@ public class TaskSupport extends AppCompatActivity {
         ImageView imV_exercise = findViewById(R.id.imV_exercise);
         ImageView imV_profile = findViewById(R.id.imV_profile);
         ImageView imv_exam = findViewById(R.id.imV_exam);
+        ImageView imV_support = findViewById(R.id.imV_support);
+        TextView tv_support = findViewById(R.id.tv_support);
+        imV_support.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        imV_support.setImageResource(R.drawable.icon_support2);
+        tv_support.setTextAppearance(R.style.menu_text);
 
         imV_home.setOnClickListener(new View.OnClickListener() {
             @Override

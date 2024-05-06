@@ -34,7 +34,7 @@ public class SupportMain extends AppCompatActivity {
             imV_support.setImageResource(R.drawable.icon_support2);
             tv_support.setTextAppearance(R.style.menu_text);
 
-            Button progressBtn = findViewById(R.id.btn_progress);
+            TextView progressBtn = findViewById(R.id.btn_progress);
             progressBtn.setOnClickListener(v -> {
                 Intent intent = new Intent(
                         SupportMain.this,
@@ -42,7 +42,7 @@ public class SupportMain extends AppCompatActivity {
                 );
                 startActivity(intent);
             });
-            Button planBtn = findViewById(R.id.btn_plan);
+            TextView planBtn = findViewById(R.id.btn_plan);
             planBtn.setOnClickListener(v -> {
                 Intent intent = new Intent(
                         SupportMain.this,
@@ -50,7 +50,7 @@ public class SupportMain extends AppCompatActivity {
                 );
                 startActivity(intent);
             });
-            Button announcementBtn = findViewById(R.id.btn_annoucement);
+            TextView announcementBtn = findViewById(R.id.btn_annoucement);
             announcementBtn.setOnClickListener(v -> {
                 Intent intent = new Intent(
                         SupportMain.this,

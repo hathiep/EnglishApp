@@ -70,13 +70,13 @@ public class PlanAdapter extends RecyclerView.Adapter<PlanAdapter.ViewHolder> {
 
         // Set time of the note
         holder.datePlan.setText(
-                "Created: " +
+                "Ngày tạo: " +
                 notes.get(position).getCreatedDate3()
         );
 
         // Set due date of the note
         holder.dueDatePlan.setText(
-                "Due Date: " +
+                "Tới hạn: " +
                 notes.get(position).getDueDate2()
         );
 
